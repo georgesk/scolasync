@@ -24,7 +24,8 @@ install:
 scolasync.1: manpage.xml
 	$(XP) $(DB2MAN) $<
 
-doxy: doc/html/index.html
+doxy: doc/html/index.html src/version.py
+	update_config_dox
 
 pdfdoc: doc/latex/refman.pdf
 
