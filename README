@@ -1,3 +1,47 @@
-dependencies : udisks, freedesktop-sound-theme, sox, python-gdbm
+PREREQUISITES
+=============
 
-build-dependencies: stuff providing python-qt4 and development with qt4
+To INSTALL scolasync, first check dependencies. If you want to BUILD
+scolasync, you need additional packages (build dependencies)
+
+dependencies : 
+  python3, python3-dbus, python3-pyqt4, python-pysqlite2, tango-icon-theme
+
+build-dependencies:
+  make 
+  stuff providing development tools for qt4 and python3-qt4
+  doxygen,  doxypy, graphviz to build the technical documentation in HTML
+  texlive and related packages to add PDF docs
+  xsltproc, docbook-xsl to build a manpage
+
+To BUILD scolasync
+==================
+
+  run make.
+  if all of the build dependencies are here, you will get a directory
+  doc/ with all technical doc updated in it.
+  language files and user interfaces files will be updated.
+
+To RUN scolasync
+================
+  if you do not want to make scolasync available for everybody, you can
+  just change to the directory src/ and launch the command:
+  "python3 scolasync.py" or just: "scolasync.py"
+
+  if you want scolasync to be installed for any user, a more careful
+  method is needed. language files must be installed to /usr/share/scolasync/
+  in a lang/ subdirectory, as well as other stuff: help files, images,
+  html and pdf documents.
+
+Files which scolasync will create when it is launched
+=====================================================
+
+  Scolasync will create a file "${HOME}/.scolasync/db"
+
+  This file contains persistent data which are useful between two sessions
+  of scolasync: for example, the naming of mobile media.
+
+  If a file with this name exists, but was created with a previous version
+  of scolasync, some issues may happen. If so, delete the file "db", and
+  launch scolasync again. You will lose previous settings, but settings
+  should be reset to valid defaults.
