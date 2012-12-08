@@ -22,19 +22,17 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
 def major():
     """
     @return le numéro majeur de version
     """
-    return "3"
+    return "4"
 
 def minor():
     """
     @return le numéro mineur de version
     """
-    return "1"
+    return "0"
 
 def version():
     """
