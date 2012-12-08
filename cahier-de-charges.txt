@@ -1,0 +1,36 @@
+Cahier des charges
+
+   1.
+      l'application doit pouvoir être utilisable par un enseignant
+      quelques minutes après la prise en main.
+   2.
+      un enseignant doit pouvoir très simplement créer une association
+      permanente entre les identifiants des baladeurs et les noms
+      d'élèves.
+   3.
+      un prof doit pouvoir envoyer un ensemble de fichiers vers les
+      baladeurs numériques de ses élèves ou certains baladeurs en
+      définissant le dossier racine de destination par défaut
+   4.
+      un prof doit pouvoir supprimer un ensemble de fichiers ou
+      dossiers ou contenus d'un dossier des baladeurs numériques de
+      ses élèves ou de certains baladeurs.
+   5.
+      chaque élève doit pouvoir retrouver facilement ces fichiers et
+      surtout la consigne expliquant ce qu'il doit faire, et comment
+      il sera noté
+   6.
+      le prof doit pouvoir récolter les baladeurs des élèves et
+      récupérer leur travail en quelques minutes seulement.
+   7.
+      le prof doit pouvoir vérifier d'un coup d'œil qui a et qui n'a
+      pas rendu le travail
+   8.
+      un élève doit pouvoir de façon autonome, dans son lycée, rendre
+      son travail (par exemple travail oublié, rendu en retard en
+      branchant la clé USB sur une machine au CDI) → plus tard
+   9.
+      l'application doit être aussi indépendante que possible de
+      configurations particulières de baladeurs, et ainsi fonctionner
+      avec un nombre maximum de marques et modèles.
+

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Aide</class>
+ <widget class="QDialog" name="Aide">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>423</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Aide</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>images/scolasync.svg</normaloff>images/scolasync.svg</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="icon">
+       <iconset>
+        <normaloff>../../../../../../usr/share/icons/Tango/scalable/status/info.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/status/info.svg</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>Aide</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid gray;
+border-radius: 10px;
+padding: 1em 0px 0px 0px;
+font-weight:bold;
+</string>
+         </property>
+         <property name="title">
+          <string>Mode d'emploi</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="myTextBrowser" name="usageBrowser">
+            <property name="styleSheet">
+             <string notr="true">padding:0px;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Manuel</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="myTextBrowser" name="manualBrowser">
+         <property name="styleSheet">
+          <string notr="true">padding:0px;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="icon">
+       <iconset>
+        <normaloff>../../../../../../usr/share/icons/Tango/scalable/status/stock_attach.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/status/stock_attach.svg</iconset>
+      </attribute>
+      <attribute name="title">
+       <string>A propos</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>ScolaSync, pour gerer les fichiers des baladeurs</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelVersion">
+         <property name="text">
+          <string>Numero de version :</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid gray;
+border-radius: 10px;
+padding: 1em 0px 0px 0px;
+font-weight:bold;
+</string>
+         </property>
+         <property name="title">
+          <string>Auteurs</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="myTextBrowser" name="authorsBrowser">
+            <property name="styleSheet">
+             <string notr="true">padding:0px;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid gray;
+border-radius: 10px;
+padding: 1em 0px 0px 0px;
+font-weight:bold;
+</string>
+         </property>
+         <property name="title">
+          <string>Licence</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="myTextBrowser" name="licenseBrowser">
+            <property name="styleSheet">
+             <string notr="true">padding:0px;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid gray;
+border-radius: 10px;
+padding: 1em 0px 0px 0px;
+font-weight:bold;
+</string>
+         </property>
+         <property name="title">
+          <string>Langues et traductions</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="myTextBrowser" name="languagesBrowser">
+            <property name="styleSheet">
+             <string notr="true">padding:0px;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="closeButton">
+        <property name="text">
+         <string>Fermer</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>234</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>myTextBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>mytextbrowser.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

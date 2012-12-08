@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Exec=/usr/bin/scolasync
+Icon=/usr/share/scolasync/images/scolasync.png
+Terminal=false
+Name=ScolaSync
+GenericName=ScolaSync
+GenericName[fr_FR]=ScolaSync
+Comment=Interactive tool to copy files to or from USB storage media
+Comment[fr_FR]=Outil interactif pour copier des fichiers depuis ou vers des disques USB
+Categories=GNOME;Application;Education;

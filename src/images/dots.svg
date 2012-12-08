@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="170.07874"
+   height="70.866142"
+   id="svg3747"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="dots.svg"
+   inkscape:export-filename="/home/georgesk/developpement/scolasync/scolasync-1.0/src/images/dots.png"
+   inkscape:export-xdpi="25.400002"
+   inkscape:export-ydpi="25.400002">
+  <defs
+     id="defs3749">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3755" />
+    <inkscape:perspective
+       id="perspective3765"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <filter
+       id="filter4006"
+       inkscape:label="HSL Bumps"
+       inkscape:menu="Bumps"
+       inkscape:menu-tooltip="Highly flexible bump combining diffuse and specular lightings"
+       color-interpolation-filters="sRGB">
+      <feColorMatrix
+         id="feColorMatrix4008"
+         result="fbSourceGraphicAlpha"
+         in="SourceGraphic"
+         values="1 0 0 -1 0 1 0 1 -1 0 1 0 0 -1 0 -0.8 -1 0 3.7 -2.4 " />
+      <feGaussianBlur
+         id="feGaussianBlur4010"
+         stdDeviation="0.5"
+         in="fbSourceGraphicAlpha"
+         result="result0" />
+      <feSpecularLighting
+         id="feSpecularLighting4012"
+         result="result8"
+         specularConstant="0.75"
+         specularExponent="6"
+         in="result0"
+         surfaceScale="7">
+        <feDistantLight
+           id="feDistantLight4014"
+           azimuth="235"
+           elevation="15" />
+      </feSpecularLighting>
+      <feDiffuseLighting
+         id="feDiffuseLighting4016"
+         surfaceScale="20"
+         diffuseConstant="0.2"
+         result="result6"
+         lighting-color="#ffffff"
+         in="result0">
+        <feDistantLight
+           id="feDistantLight4018"
+           azimuth="235"
+           elevation="25" />
+      </feDiffuseLighting>
+      <feBlend
+         id="feBlend4020"
+         in2="SourceGraphic"
+         result="result7"
+         mode="screen" />
+      <feComposite
+         id="feComposite4022"
+         in2="result7"
+         operator="arithmetic"
+         k2="1"
+         k3="1"
+         in="result8"
+         result="result9"
+         k1="0"
+         k4="0" />
+      <feComposite
+         id="feComposite4024"
+         in2="SourceGraphic"
+         operator="in"
+         result="result2"
+         in="result9" />
+    </filter>
+    <inkscape:perspective
+       id="perspective3637"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3659"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <filter
+       id="filter3673"
+       inkscape:label="HSL Bumps"
+       inkscape:menu="Bumps"
+       inkscape:menu-tooltip="Highly flexible bump combining diffuse and specular lightings"
+       color-interpolation-filters="sRGB">
+      <feColorMatrix
+         id="feColorMatrix3675"
+         result="fbSourceGraphicAlpha"
+         in="SourceGraphic"
+         values="1 0 0 -1 0 1 0 1 -1 0 1 0 0 -1 0 -0.8 -1 0 3.7 -2.4 " />
+      <feGaussianBlur
+         id="feGaussianBlur3677"
+         stdDeviation="0.5"
+         in="fbSourceGraphicAlpha"
+         result="result0" />
+      <feSpecularLighting
+         id="feSpecularLighting3679"
+         result="result8"
+         specularConstant="0.75"
+         specularExponent="6"
+         in="result0"
+         surfaceScale="7">
+        <feDistantLight
+           id="feDistantLight3681"
+           azimuth="235"
+           elevation="15" />
+      </feSpecularLighting>
+      <feDiffuseLighting
+         id="feDiffuseLighting3683"
+         surfaceScale="20"
+         diffuseConstant="0.2"
+         result="result6"
+         lighting-color="#ffffff"
+         in="result0">
+        <feDistantLight
+           id="feDistantLight3685"
+           azimuth="235"
+           elevation="25" />
+      </feDiffuseLighting>
+      <feBlend
+         id="feBlend3687"
+         in2="SourceGraphic"
+         result="result7"
+         mode="screen" />
+      <feComposite
+         id="feComposite3689"
+         in2="result7"
+         operator="arithmetic"
+         k2="1"
+         k3="1"
+         in="result8"
+         result="result9"
+         k1="0"
+         k4="0" />
+      <feComposite
+         id="feComposite3691"
+         in2="SourceGraphic"
+         operator="in"
+         result="result2"
+         in="result9" />
+    </filter>
+    <filter
+       id="filter3693"
+       inkscape:label="HSL Bumps"
+       inkscape:menu="Bumps"
+       inkscape:menu-tooltip="Highly flexible bump combining diffuse and specular lightings"
+       color-interpolation-filters="sRGB">
+      <feColorMatrix
+         id="feColorMatrix3695"
+         result="fbSourceGraphicAlpha"
+         in="SourceGraphic"
+         values="1 0 0 -1 0 1 0 1 -1 0 1 0 0 -1 0 -0.8 -1 0 3.7 -2.4 " />
+      <feGaussianBlur
+         id="feGaussianBlur3697"
+         stdDeviation="0.5"
+         in="fbSourceGraphicAlpha"
+         result="result0" />
+      <feSpecularLighting
+         id="feSpecularLighting3699"
+         result="result8"
+         specularConstant="0.75"
+         specularExponent="6"
+         in="result0"
+         surfaceScale="7">
+        <feDistantLight
+           id="feDistantLight3701"
+           azimuth="235"
+           elevation="15" />
+      </feSpecularLighting>
+      <feDiffuseLighting
+         id="feDiffuseLighting3703"
+         surfaceScale="20"
+         diffuseConstant="0.2"
+         result="result6"
+         lighting-color="#ffffff"
+         in="result0">
+        <feDistantLight
+           id="feDistantLight3705"
+           azimuth="235"
+           elevation="25" />
+      </feDiffuseLighting>
+      <feBlend
+         id="feBlend3707"
+         in2="SourceGraphic"
+         result="result7"
+         mode="screen" />
+      <feComposite
+         id="feComposite3709"
+         in2="result7"
+         operator="arithmetic"
+         k2="1"
+         k3="1"
+         in="result8"
+         result="result9"
+         k1="0"
+         k4="0" />
+      <feComposite
+         id="feComposite3711"
+         in2="SourceGraphic"
+         operator="in"
+         result="result2"
+         in="result9" />
+    </filter>
+    <filter
+       id="filter3713"
+       inkscape:label="HSL Bumps"
+       inkscape:menu="Bumps"
+       inkscape:menu-tooltip="Highly flexible bump combining diffuse and specular lightings"
+       color-interpolation-filters="sRGB">
+      <feColorMatrix
+         id="feColorMatrix3715"
+         result="fbSourceGraphicAlpha"
+         in="SourceGraphic"
+         values="1 0 0 -1 0 1 0 1 -1 0 1 0 0 -1 0 -0.8 -1 0 3.7 -2.4 " />
+      <feGaussianBlur
+         id="feGaussianBlur3717"
+         stdDeviation="0.5"
+         in="fbSourceGraphicAlpha"
+         result="result0" />
+      <feSpecularLighting
+         id="feSpecularLighting3719"
+         result="result8"
+         specularConstant="0.75"
+         specularExponent="6"
+         in="result0"
+         surfaceScale="7">
+        <feDistantLight
+           id="feDistantLight3721"
+           azimuth="235"
+           elevation="15" />
+      </feSpecularLighting>
+      <feDiffuseLighting
+         id="feDiffuseLighting3723"
+         surfaceScale="20"
+         diffuseConstant="0.2"
+         result="result6"
+         lighting-color="#ffffff"
+         in="result0">
+        <feDistantLight
+           id="feDistantLight3725"
+           azimuth="235"
+           elevation="25" />
+      </feDiffuseLighting>
+      <feBlend
+         id="feBlend3727"
+         in2="SourceGraphic"
+         result="result7"
+         mode="screen" />
+      <feComposite
+         id="feComposite3729"
+         in2="result7"
+         operator="arithmetic"
+         k2="1"
+         k3="1"
+         in="result8"
+         result="result9"
+         k1="0"
+         k4="0" />
+      <feComposite
+         id="feComposite3731"
+         in2="SourceGraphic"
+         operator="in"
+         result="result2"
+         in="result9" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.2758797"
+     inkscape:cx="-38.892321"
+     inkscape:cy="43.250277"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="971"
+     inkscape:window-height="623"
+     inkscape:window-x="291"
+     inkscape:window-y="93"
+     inkscape:window-maximized="0"
+     units="mm" />
+  <metadata
+     id="metadata3752">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-567.52946,-299.63006)">
+    <g
+       id="g2878"
+       transform="matrix(2.4999588,0,0,2.4999588,-948.08917,-500.13106)">
+      <path
+         transform="matrix(3.8652148,0,0,3.8652148,585.33237,176.84325)"
+         d="m 11.336864,40.699341 c 0,0.939176 -0.761353,1.700529 -1.7005296,1.700529 -0.9391765,0 -1.7005296,-0.761353 -1.7005296,-1.700529 0,-0.939177 0.7613531,-1.70053 1.7005296,-1.70053 0.9391766,0 1.7005296,0.761353 1.7005296,1.70053 z"
+         sodipodi:ry="1.7005296"
+         sodipodi:rx="1.7005296"
+         sodipodi:cy="40.699341"
+         sodipodi:cx="9.6363344"
+         id="path2834"
+         style="fill:#8ab7df;fill-opacity:1;fill-rule:nonzero;stroke:#3e80c8;stroke-width:0.32671708;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3713)"
+         sodipodi:type="arc" />
+      <path
+         transform="matrix(3.8652148,0,0,3.8652148,603.72913,176.84325)"
+         d="m 11.336864,40.699341 c 0,0.939176 -0.761353,1.700529 -1.7005296,1.700529 -0.9391765,0 -1.7005296,-0.761353 -1.7005296,-1.700529 0,-0.939177 0.7613531,-1.70053 1.7005296,-1.70053 0.9391766,0 1.7005296,0.761353 1.7005296,1.70053 z"
+         sodipodi:ry="1.7005296"
+         sodipodi:rx="1.7005296"
+         sodipodi:cy="40.699341"
+         sodipodi:cx="9.6363344"
+         id="path2834-2"
+         style="fill:#8ab7df;fill-opacity:1;fill-rule:nonzero;stroke:#3e80c8;stroke-width:0.32671708;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3693)"
+         sodipodi:type="arc" />
+      <path
+         transform="matrix(3.8652148,0,0,3.8652148,622.12589,176.84325)"
+         d="m 11.336864,40.699341 c 0,0.939176 -0.761353,1.700529 -1.7005296,1.700529 -0.9391765,0 -1.7005296,-0.761353 -1.7005296,-1.700529 0,-0.939177 0.7613531,-1.70053 1.7005296,-1.70053 0.9391766,0 1.7005296,0.761353 1.7005296,1.70053 z"
+         sodipodi:ry="1.7005296"
+         sodipodi:rx="1.7005296"
+         sodipodi:cy="40.699341"
+         sodipodi:cx="9.6363344"
+         id="path2834-2-1"
+         style="fill:#8ab7df;fill-opacity:1;fill-rule:nonzero;stroke:#3e80c8;stroke-width:0.32671708;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3673)"
+         sodipodi:type="arc" />
+    </g>
+  </g>
+</svg>

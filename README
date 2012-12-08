@@ -1,0 +1,3 @@
+dependencies : udisks, freedesktop-sound-theme, sox, python-gdbm
+
+build-dependencies: stuff providing python-qt4 and development with qt4

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>818</width>
+    <height>586</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ScolaSync</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>images/scolasync.svg</normaloff>images/scolasync.svg</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid gray;
+border-radius: 10px;
+padding: 1em 0px 0px 0px;
+font-weight:bold;
+</string>
+      </property>
+      <property name="title">
+       <string>Actions</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QToolButton" name="fromButton">
+         <property name="toolTip">
+          <string>Copier depuis les baladeurs sélectionnés</string>
+         </property>
+         <property name="statusTip">
+          <string>Copier depuis les baladeurs sélectionnés</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 0px;
+padding:0px</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/back.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/back.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>48</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="toButton">
+         <property name="toolTip">
+          <string>Copier vers les baladeurs sélectionnés</string>
+         </property>
+         <property name="statusTip">
+          <string>Copier vers les baladeurs sélectionnés</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 0px;
+padding:0px</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/forward.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/forward.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>48</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="delButton">
+         <property name="toolTip">
+          <string>Effacer des fichiers ou des dossiers dans les baladeurs sélectionnés</string>
+         </property>
+         <property name="statusTip">
+          <string>Effacer des fichiers ou des dossiers dans les baladeurs sélectionnés</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 0px;
+padding:0px</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/edit-clear.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/edit-clear.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>48</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="umountButton">
+         <property name="toolTip">
+          <string>Éjecter les baladeurs sélectionnés</string>
+         </property>
+         <property name="statusTip">
+          <string>Éjecter les baladeurs sélectionnés</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 0px;
+padding:0px</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/top.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/top.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>48</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QToolButton" name="redoButton">
+         <property name="toolTip">
+          <string>Refaire à nouveau</string>
+         </property>
+         <property name="statusTip">
+          <string>Refaire à nouveau la dernière opération réussie, avec les baladeurs connectés plus récemment</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 0px;
+padding:0px</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-jump.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-jump.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>48</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="namesButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 0px;
+padding:0px</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/gtk-find.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/gtk-find.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>48</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="lcdNumber">
+         <property name="toolTip">
+          <string>Affiche le nombre de baladeurs connectés</string>
+         </property>
+         <property name="statusTip">
+          <string>Affiche le nombre de baladeurs connectés</string>
+         </property>
+         <property name="numDigits">
+          <number>2</number>
+         </property>
+         <property name="intValue" stdset="0">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="forceCheckButton">
+         <property name="toolTip">
+          <string>Force à recompter les baladeurs</string>
+         </property>
+         <property name="statusTip">
+          <string>Force à recompter les baladeurs</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 0px;
+padding:0px</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/multimedia-player.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/multimedia-player.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>48</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="preferenceButton">
+         <property name="toolTip">
+          <string>Préférences</string>
+         </property>
+         <property name="statusTip">
+          <string>Préférences</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 0px;
+padding:0px</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../../../usr/share/icons/Tango/scalable/categories/package_settings.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/categories/package_settings.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>48</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="helpButton">
+         <property name="toolTip">
+          <string>Aide</string>
+         </property>
+         <property name="statusTip">
+          <string>Aide</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 0px;
+padding:0px</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../../../../../usr/share/icons/Tango/scalable/status/info.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/status/info.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>48</width>
+           <height>48</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTableView" name="tableView"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

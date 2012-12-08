@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="53.55006"
+   height="53.512562"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="plus.svg"
+   inkscape:export-filename="/home/georgesk/developpement/scolasync/scolasync-1.0/src/images/plus.png"
+   inkscape:export-xdpi="107.5629"
+   inkscape:export-ydpi="107.5629">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective2920"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3708"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3733"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3788"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <filter
+       id="filter3944"
+       inkscape:label="HSL Bumps"
+       inkscape:menu="Bumps"
+       inkscape:menu-tooltip="Highly flexible bump combining diffuse and specular lightings"
+       color-interpolation-filters="sRGB">
+      <feColorMatrix
+         id="feColorMatrix3946"
+         result="fbSourceGraphicAlpha"
+         in="SourceGraphic"
+         values="1 0 0 -1 0 1 0 1 -1 0 1 0 0 -1 0 -0.8 -1 0 3.7 -2.4 " />
+      <feGaussianBlur
+         id="feGaussianBlur3948"
+         stdDeviation="0.5"
+         in="fbSourceGraphicAlpha"
+         result="result0" />
+      <feSpecularLighting
+         id="feSpecularLighting3950"
+         result="result8"
+         specularConstant="0.75"
+         specularExponent="6"
+         in="result0"
+         surfaceScale="7">
+        <feDistantLight
+           id="feDistantLight3952"
+           azimuth="235"
+           elevation="15" />
+      </feSpecularLighting>
+      <feDiffuseLighting
+         id="feDiffuseLighting3954"
+         surfaceScale="20"
+         diffuseConstant="0.2"
+         result="result6"
+         lighting-color="#ffffff"
+         in="result0">
+        <feDistantLight
+           id="feDistantLight3956"
+           azimuth="235"
+           elevation="25" />
+      </feDiffuseLighting>
+      <feBlend
+         id="feBlend3958"
+         in2="SourceGraphic"
+         result="result7"
+         mode="screen" />
+      <feComposite
+         id="feComposite3960"
+         in2="result7"
+         operator="arithmetic"
+         k2="1"
+         k3="1"
+         in="result8"
+         result="result9"
+         k1="0"
+         k4="0" />
+      <feComposite
+         id="feComposite3962"
+         in2="SourceGraphic"
+         operator="in"
+         result="result2"
+         in="result9" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="14.755414"
+     inkscape:cx="26.77503"
+     inkscape:cy="26.75628"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="898"
+     inkscape:window-height="910"
+     inkscape:window-x="442"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(129.775,-255.6059)">
+    <path
+       style="fill:#58a4ea;fill-opacity:1;fill-rule:nonzero;stroke:#4b7eca;stroke-opacity:1;filter:url(#filter3944)"
+       d="m -103,260.56528 c -3.92682,0 -7.10842,3.31251 -7.1875,7.4375 l -0.28125,0 0,6.875 -5.90625,0 0,0.3125 c -0.27554,-0.0287 -0.52889,-0.0312 -0.8125,-0.0312 -4.19736,0 -7.625,3.21105 -7.625,7.1875 0,3.97645 3.42764,7.21875 7.625,7.21875 0.28361,0 0.53696,0.0282 0.8125,0 l 0,0.28125 5.90625,0 0,5.875 0.3125,0 c -0.0287,0.27554 -0.0312,0.56014 -0.0312,0.84375 0,4.19736 3.21105,7.59375 7.1875,7.59375 3.97645,0 7.21875,-3.39639 7.21875,-7.59375 0,-0.28361 -0.0026,-0.56821 -0.03125,-0.84375 l 0.28125,0 0,-5.875 6.90625,0 0,-0.25 c 4.12499,-0.0791 7.4375,-3.29193 7.4375,-7.21875 l 0,-0.0312 c 0,-3.92683 -3.31251,-7.10843 -7.4375,-7.1875 l 0,-0.28125 -6.90625,0 0,-6.875 -0.25,0 c -0.07908,-4.12499 -3.291926,-7.4375 -7.21875,-7.4375 z"
+       id="path2926-6" />
+  </g>
+</svg>

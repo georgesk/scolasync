@@ -1,0 +1,5 @@
+#!/usr/bin/python
+
+from scolasync import scolasync
+
+scolasync.run()

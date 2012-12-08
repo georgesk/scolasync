@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="53.512501"
+   height="53.509998"
+   id="svg3747"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="minus.svg"
+   inkscape:export-filename="/home/georgesk/developpement/scolasync/scolasync-1.0/src/images/minus.png"
+   inkscape:export-xdpi="107.6384"
+   inkscape:export-ydpi="107.6384">
+  <defs
+     id="defs3749">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3755" />
+    <inkscape:perspective
+       id="perspective3765"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <filter
+       id="filter4006"
+       inkscape:label="HSL Bumps"
+       inkscape:menu="Bumps"
+       inkscape:menu-tooltip="Highly flexible bump combining diffuse and specular lightings"
+       color-interpolation-filters="sRGB">
+      <feColorMatrix
+         id="feColorMatrix4008"
+         result="fbSourceGraphicAlpha"
+         in="SourceGraphic"
+         values="1 0 0 -1 0 1 0 1 -1 0 1 0 0 -1 0 -0.8 -1 0 3.7 -2.4 " />
+      <feGaussianBlur
+         id="feGaussianBlur4010"
+         stdDeviation="0.5"
+         in="fbSourceGraphicAlpha"
+         result="result0" />
+      <feSpecularLighting
+         id="feSpecularLighting4012"
+         result="result8"
+         specularConstant="0.75"
+         specularExponent="6"
+         in="result0"
+         surfaceScale="7">
+        <feDistantLight
+           id="feDistantLight4014"
+           azimuth="235"
+           elevation="15" />
+      </feSpecularLighting>
+      <feDiffuseLighting
+         id="feDiffuseLighting4016"
+         surfaceScale="20"
+         diffuseConstant="0.2"
+         result="result6"
+         lighting-color="#ffffff"
+         in="result0">
+        <feDistantLight
+           id="feDistantLight4018"
+           azimuth="235"
+           elevation="25" />
+      </feDiffuseLighting>
+      <feBlend
+         id="feBlend4020"
+         in2="SourceGraphic"
+         result="result7"
+         mode="screen" />
+      <feComposite
+         id="feComposite4022"
+         in2="result7"
+         operator="arithmetic"
+         k2="1"
+         k3="1"
+         in="result8"
+         result="result9"
+         k1="0"
+         k4="0" />
+      <feComposite
+         id="feComposite4024"
+         in2="SourceGraphic"
+         operator="in"
+         result="result2"
+         in="result9" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="4.4103907"
+     inkscape:cx="26.75625"
+     inkscape:cy="26.754999"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="605"
+     inkscape:window-height="488"
+     inkscape:window-x="291"
+     inkscape:window-y="93"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata3752">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-567.52946,-316.9862)">
+    <path
+       style="fill:#58a4ea;fill-opacity:1;fill-rule:nonzero;stroke:#4b7eca;stroke-opacity:1;filter:url(#filter4006)"
+       d="m 616.08259,342.56784 c 0,-3.92683 -3.31251,-7.10843 -7.4375,-7.1875 l 0,-0.28125 -27.71875,0 0,0.3125 c -0.27554,-0.0287 -0.56014,-0.0312 -0.84375,-0.0312 -4.19736,0 -7.59375,3.21105 -7.59375,7.1875 0,3.97645 3.39639,7.21875 7.59375,7.21875 0.28361,0 0.56821,-0.003 0.84375,-0.0312 l 0,0.28125 27.71875,0 0,-0.25 c 4.12499,-0.0791 7.4375,-3.29193 7.4375,-7.21875 z"
+       id="path2926-7" />
+  </g>
+</svg>

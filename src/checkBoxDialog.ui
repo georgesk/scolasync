@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>checkBoxDialog</class>
+ <widget class="QDialog" name="checkBoxDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>294</width>
+    <height>172</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Gestion des cases à cocher</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>images/scolasync.svg</normaloff>images/scolasync.svg</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QPushButton" name="allButton">
+     <property name="toolTip">
+      <string>Cocher tous les baladeurs</string>
+     </property>
+     <property name="statusTip">
+      <string>Cocher tous les baladeurs</string>
+     </property>
+     <property name="text">
+      <string>Tout cocher</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-smile.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-smile.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="ToggleButton">
+     <property name="toolTip">
+      <string>Inverser le choix de baladeurs&lt;br&gt;Les baladeurs cochés seront décochés, et inversement</string>
+     </property>
+     <property name="statusTip">
+      <string>Inverser le choix de baladeurs&lt;br&gt;Les baladeurs cochés seront décochés, et inversement</string>
+     </property>
+     <property name="text">
+      <string>Inverser le choix</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-wink.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-wink.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="NoneButton">
+     <property name="toolTip">
+      <string>Désélectionner les baladeurs</string>
+     </property>
+     <property name="statusTip">
+      <string>Désélectionner les baladeurs</string>
+     </property>
+     <property name="text">
+      <string>Ne rien cocher</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-angel.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-angel.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="escButton">
+     <property name="toolTip">
+      <string>Ne rien faire</string>
+     </property>
+     <property name="statusTip">
+      <string>Ne rien faire</string>
+     </property>
+     <property name="text">
+      <string>Échappement</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-monkey.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-monkey.svg</iconset>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

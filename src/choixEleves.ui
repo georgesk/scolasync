@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>760</width>
+    <height>455</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Choix d'un groupe d'élèves</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Liste d'élèves</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QPushButton" name="pushButtonFile">
+        <property name="text">
+         <string>Ouvrir un fichier ...</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEditFile">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>235</width>
+           <height>333</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="gestClasseTreeView" name="treeView"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Actions</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton_replierArbre">
+        <property name="toolTip">
+         <string>Replier toutes les classes</string>
+        </property>
+        <property name="text">
+         <string>Tout replier</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-top.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-top.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_cocher">
+        <property name="toolTip">
+         <string>Cocher tous les élèves visibles</string>
+        </property>
+        <property name="text">
+         <string>Cocher</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_decocher">
+        <property name="toolTip">
+         <string>Décocher tous les élèves, visibles ou non</string>
+        </property>
+        <property name="text">
+         <string>Décocher</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_addToList">
+        <property name="toolTip">
+         <string>Ajouter les noms cochés de l'arbre dans la liste à droite</string>
+        </property>
+        <property name="text">
+         <string>Ajout à la liste</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-next.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-next.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_delInList">
+        <property name="toolTip">
+         <string>Supprimer de la liste les noms en surbrillance</string>
+        </property>
+        <property name="text">
+         <string>Suppr. de la liste</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/gtk-goto-first-ltr.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/gtk-goto-first-ltr.svg</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QCheckBox" name="checkBoxNumero">
+           <property name="toolTip">
+            <string>Quand la case est cochée, un numéro sera ajouté comme préfixe aux noms</string>
+           </property>
+           <property name="text">
+            <string>N° à partir de</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBoxNumero">
+           <property name="toolTip">
+            <string>La numérotation commence à cette valeur</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_OK">
+        <property name="toolTip">
+         <string>Accepter la liste actuelle et fermer ce dialogue</string>
+        </property>
+        <property name="text">
+         <string>Valider</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_Esc">
+        <property name="toolTip">
+         <string>Supprimer tous les noms de la liste et fermer ce dialogue</string>
+        </property>
+        <property name="text">
+         <string>Remettre à zéro</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea_2">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>236</width>
+        <height>435</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QListWidget" name="listWidget"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>gestClasseTreeView</class>
+   <extends>QTreeView</extends>
+   <header>gestclassetreeview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
