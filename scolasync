@@ -1,5 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
+import sys
+sys.path=["/usr/share/scolasync"]+sys.path
 
-from scolasync import scolasync
+import scolasync
 
 scolasync.run()

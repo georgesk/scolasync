@@ -43,6 +43,7 @@ doc/html/index.html: $(DOCSRC) config.dox
 
 clean:
 	rm -f *~ *.1
+	rm -rf __pycache__
 	cd doc/latex; rm -f *.aux *.log *~ *.toc *.idx *.out
 	for d in $(SUBDIRS); do make clean -C $$d DESTDIR=$(DESTDIR); done
 

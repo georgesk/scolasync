@@ -4,7 +4,7 @@
 
 """@package scolasync
 Scolasync est un programme pour gérer des transferts de fichiers entre un
-ordinateur et une collection de clés USB.
+ordinateur et une collection de baladeurs, de dictaphones ou de clés USB.
 
 """
 
@@ -43,7 +43,7 @@ ordinateur et une collection de clés USB.
 #
 # \section licence Licence
 #
-# <b>ScolaSync version 1.0 :</b>
+# <b>ScolaSync version 4.0 :</b>
 #
 # un programme pour gérer des transferts de fichiers entre un
 # ordinateur et une collection de clés USB.
@@ -66,7 +66,7 @@ ordinateur et une collection de clés USB.
 # précise</b> aux besoins de votre entreprise, etc. contactez
 # l'association <a href="http://www.ofset.org"
 # target="ofset">OFSET</a> et/ou <a
-# href="mailto:georgesk@ofset.org">l'auteur</a> du logiciel.
+# href="mailto:georgesk@debian.org">l'auteur</a> du logiciel.
 #
 # \section architecture Architecture de ScolaSync
 #
@@ -74,7 +74,7 @@ ordinateur et une collection de clés USB.
 # notables sont les suivants :
 #
 # - la bibliothèque Qt4 pour l'interface graphique
-# - la bibliothèque python-dbus pour l'interaction avec le noyau Linux 2.6
+# - la bibliothèque python-dbus pour l'interaction avec le noyau Linux 2.6 ou plus
 # - la bibliothèque udisks pour interroger facilement le noyau sur le
 # statut des disques, et pour réaliser certaines actions sur les
 # disques et clés USB
@@ -126,8 +126,6 @@ licenceFr="""
 licence['fr']=licenceFr
 
 
-python3safe=True
-
 import getopt, os, sys
 
 import sip
@@ -173,11 +171,13 @@ def run():
         # print "OK for qttranslator"
         app.installTranslator(qtTranslator)
     appTranslator = QTranslator()
-    langdir=os.path.join("lang",locale+".qm")
-    b= appTranslator.load(langdir)
-    if b:
-        # print "installation du fichier de traduction", langdir
-        app.installTranslator(appTranslator)
+    for path in ["/usr/share/scolasync","."]:
+        langdir=os.path.join(path,"lang",locale+".qm")
+        b= appTranslator.load(langdir)
+        if b:
+            # print "installation du fichier de traduction", langdir
+            app.installTranslator(appTranslator)
+            break
 
     import mainWindow
     windows = mainWindow.mainWindow(None,opts,locale)

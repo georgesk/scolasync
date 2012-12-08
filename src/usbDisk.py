@@ -84,10 +84,10 @@ class uDisk:
     def uniqueId(self):
         """
         renvoie un identifiant unique. Dans cette classe, cette fonction
-        est synonyme de getFatUuid
-        @return un identifiant supposément unique
+        est synonyme de file()
+        @return un identifiant unique, garanti par le système de fichiers
         """
-        return self.getFatUuid()
+        return self.file()
         
     def headers(checkable=False,locale="C"):
         """

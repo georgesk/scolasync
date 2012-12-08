@@ -13,7 +13,7 @@ Ui_%.py: %.ui
 	pyuic4 $< > $@
 
 clean:
-	rm -rf build
+	rm -rf build __pycache__
 	rm -f *~ Ui_* *.pyc
 	make -C lang clean
 
@@ -21,13 +21,11 @@ distclean: clean
 
 install:
 	install -d $(DESTDIR)/usr/share/scolasync
-	install -m 644 marques.py $(DESTDIR)/usr/share/scolasync
-	install	-d $(DESTDIR)/usr/share/pyshared/scolasync
-	install -m 644 $(SOURCES) $(DESTDIR)/usr/share/pyshared/scolasync
+	install -m 644 marques.py $(SOURCES) $(DESTDIR)/usr/share/scolasync
 	for f in $(ITF); do \
 	  sed -e 's%images%/usr/share/scolasync/images%' \
 	    -e 's%\.\./.*\(/usr/share/icons.*\)%\1%' \
-	    $$f > $(DESTDIR)/usr/share/pyshared/scolasync/$$f; done
+	    $$f > $(DESTDIR)/usr/share/scolasync/$$f; done
 	install -d $(DESTDIR)/usr/share/scolasync/lang
 	install -m 644 lang/*.qm $(DESTDIR)/usr/share/scolasync/lang
 	install -d $(DESTDIR)/usr/share/scolasync/images
