@@ -5,7 +5,7 @@ sys.path=["src"]+sys.path
 
 from version import version
 
-infile=open("config.dox","r")
+infile=open("config.dox","r", encoding='utf-8', errors='ignore')
 indat=infile.readlines()
 infile.close()
 
@@ -14,7 +14,7 @@ for l in indat:
     outdat+=re.sub(r"^PROJECT_NUMBER[ ]+=.*", "PROJECT_NUMBER         = %s" %version(), l)
 
 if outdat:
-    outfile=open("config.dox","w")
+    outfile=open("config.dox","w", encoding='utf-8', errors='ignore')
     outfile.write(outdat)
     outfile.close()
 

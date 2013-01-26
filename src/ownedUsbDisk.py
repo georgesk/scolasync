@@ -126,7 +126,7 @@ class uDisk(usbDisk.uDisk,QObject):
             f=f2
         else:
             f=f1
-        result=eval(open(f,"r").read())
+        result=eval(open(f,"r", encoding="utf-8").read())
         return result
         
     def visibleDir(self):

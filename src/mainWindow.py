@@ -600,15 +600,10 @@ class mainWindow(QMainWindow):
                 if p in qApp.diskData.disks[d] and p.selected:
                     # démontage de toutes les partitions du même disque parent
                     for partition in qApp.diskData.disks[d]:
-                        devfile=partition.getProp("device-file-by-path")
-                        if isinstance(devfile, dbus.Array):
-                            devfile=devfile[0]
-                            if partition.isMounted():
-                                subprocess.call("udisks --unmount %s" %devfile, shell=True)
+                        if partition.isMounted():
+                            subprocess.call("umount %s" %partition.mountPoint(), shell=True)
                     # détachement du disque parent
-                    devfile_disk=d.getProp("device-file-by-path")
-                    if isinstance(devfile_disk, dbus.Array):
-                        devfile_disk=devfile_disk[0]
+                    devfile_disk=d.devStuff
                     subprocess.call("udisks --detach %s" %devfile_disk, shell=True)
                     break
         self.checkDisks()  # remet à jour le compte de disques

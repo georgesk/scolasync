@@ -26,7 +26,7 @@ licence['en']=licence_en
 dependences="python3-dbus python3-dbus.mainloop.qt"
 python3safe="True"
 
-import dbus, subprocess, os.path, re, time
+import dbus, subprocess, os, os.path, re, time
 from PyQt4.QtGui import *
 
 
@@ -50,6 +50,7 @@ class uDisk:
         @param checkable vrai si on fera usage de self.selected
         """
         self.path=path
+        self.mp=None # a variable to cache the result of self.mountPoint()
         self.device = bus.get_object("org.freedesktop.UDisks", self.path)
         self.device_prop = dbus.Interface(self.device, "org.freedesktop.DBus.Properties")
         self.selected=True
@@ -58,6 +59,12 @@ class uDisk:
         self.uuid=self.getProp("id-uuid")
         self.fatuuid=None  # pour l'uuid de la première partion vfat
         self.firstFat=None # poignée de la première partition vfat
+        p=self.file()
+        # self.devStuff is the name of device which is usable to umount safely this object
+        if p:
+            self.devStuff=os.path.abspath(os.path.join(os.path.dirname(p), os.readlink(p)))
+        else:
+            self.devStuff=None
         #
 
             
@@ -155,19 +162,26 @@ class uDisk:
         à l'instance.
         """
         fileByPath=self.getProp("device-file-by-path")
-        if isinstance(fileByPath, dbus.Array): fileByPath=fileByPath[0]
-        return fileByPath
+        if isinstance(fileByPath, dbus.Array) and len(fileByPath)>0:
+            fileByPath=fileByPath[0]
+            return fileByPath
+        else:
+            return None
     
     def mountPoint(self):
         """
         Permet d'accèder à l'instance par un point de montage
         @return un point de montage, s'il en existe, sinon None
         """
-        paths=self.getProp("device-mount-paths")
-        if isinstance(paths, dbus.Array) and len(paths)>0:
-            return paths[0]
+        if self.mp==None:
+            paths=self.getProp("device-mount-paths")
+            if isinstance(paths, dbus.Array) and len(paths)>0:
+                self.mp=paths[0]
+                return paths[0]
+            else:
+                return None
         else:
-            return None
+            return self.mp
     
     def getProp(self, name):
         """
@@ -237,6 +251,7 @@ class uDisk:
                     r+=prefix+"%s = %s G" %(prop,p/1024/1024/1024)
             else:
                 r+=prefix+"%s = %s" %(prop,p)
+        r+=prefix+"%s = %s" %('devStuff', self.devStuff)
         return r
 
     def master(self):

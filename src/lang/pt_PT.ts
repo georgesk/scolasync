@@ -624,37 +624,37 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">Assinalar ou desmarcar esta casa clicando.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="808"/>
+        <location filename="../mainWindow.py" line="803"/>
         <source>Propriétaire de la clé USB ou du baladeur ;&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour modifier.</source>
         <translation>Dono da chave ou do leitor ;&lt;br&gt;&lt;b&gt;Clique-duplo&lt;/b&gt; para modificar.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="810"/>
+        <location filename="../mainWindow.py" line="805"/>
         <source>Point de montage de la clé USB ou du baladeur ;&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour voir les fichiers.</source>
         <translation>Ponto de montagem da chave ou do leitor ; &lt;br&gt;&lt;b&gt;Clique-duplo&lt;/b&gt; para ver os ficheiros.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="812"/>
+        <location filename="../mainWindow.py" line="807"/>
         <source>Capacité de la clé USB ou du baladeur en kO ;&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour voir la place occupée.</source>
         <translation>Capacidade da chave USB ou do leitor en kB ;&lt;br&gt;&lt;b&gt;Clique-duplo&lt;/b&gt; para ver o espaço ocupado.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="814"/>
+        <location filename="../mainWindow.py" line="809"/>
         <source>Fabricant de la clé USB ou du baladeur.</source>
         <translation>Fabricante da chave USB ou do leitor.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="816"/>
+        <location filename="../mainWindow.py" line="811"/>
         <source>Modèle de la clé USB ou du baladeur.</source>
         <translation>Modelo da chave ou do leitor.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="818"/>
+        <location filename="../mainWindow.py" line="813"/>
         <source>Numéro de série de la clé USB ou du baladeur.</source>
         <translation>Número de série da chave ou do leitor.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="806"/>
+        <location filename="../mainWindow.py" line="801"/>
         <source>Cocher ou décocher cette case en cliquant.&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour agir sur plusieurs baladeurs.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -866,12 +866,12 @@ p, li { white-space: pre-wrap; }(new line)
 <context>
     <name>uDisk</name>
     <message>
-        <location filename="../usbDisk.py" line="65"/>
+        <location filename="../usbDisk.py" line="72"/>
         <source>point de montage</source>
         <translation>Ponto de montagem</translation>
     </message>
     <message>
-        <location filename="../usbDisk.py" line="66"/>
+        <location filename="../usbDisk.py" line="73"/>
         <source>taille</source>
         <translation>tamanho</translation>
     </message>
@@ -881,17 +881,17 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">vendedor</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk.py" line="68"/>
+        <location filename="../usbDisk.py" line="75"/>
         <source>modèle de disque</source>
         <translation>modelo de disco</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk.py" line="69"/>
+        <location filename="../usbDisk.py" line="76"/>
         <source>numéro de série</source>
         <translation>número de série</translation>
     </message>
     <message>
-        <location filename="../usbDisk.py" line="72"/>
+        <location filename="../usbDisk.py" line="79"/>
         <source>cocher</source>
         <translation>assinalar</translation>
     </message>
@@ -901,7 +901,7 @@ p, li { white-space: pre-wrap; }(new line)
         <translation>dono</translation>
     </message>
     <message>
-        <location filename="../usbDisk.py" line="67"/>
+        <location filename="../usbDisk.py" line="74"/>
         <source>marque</source>
         <translation type="unfinished"></translation>
     </message>
