@@ -593,19 +593,11 @@ class mainWindow(QMainWindow):
             buttons,defaultButton)
         if button!=QMessageBox.Ok:
             return
-        # on parcourt les premières partition FAT
-        for p in qApp.diskData:
-            # on trouve leurs disques parents
-            for d in qApp.diskData.disks.keys():
-                if p in qApp.diskData.disks[d] and p.selected:
-                    # démontage de toutes les partitions du même disque parent
-                    for partition in qApp.diskData.disks[d]:
-                        if partition.isMounted():
-                            subprocess.call("umount %s" %partition.mountPoint(), shell=True)
-                    # détachement du disque parent
-                    devfile_disk=d.devStuff
-                    subprocess.call("udisks --detach %s" %devfile_disk, shell=True)
-                    break
+        for d in qApp.diskData.disks.keys():
+            devfile_disk=d.getProp("device-file-by-path")
+            if isinstance(devfile_disk, dbus.Array):
+                devfile_disk=devfile_disk[0]
+            subprocess.call("eject %s 2>/dev/null || true && udisks --detach %s" %(devfile_disk,devfile_disk), shell=True)
         self.checkDisks()  # remet à jour le compte de disques
         self.operations=[] # remet à zéro la liste des opérations
                 

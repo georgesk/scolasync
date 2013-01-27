@@ -624,37 +624,37 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">Assinalar ou desmarcar esta casa clicando.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="803"/>
+        <location filename="../mainWindow.py" line="795"/>
         <source>Propriétaire de la clé USB ou du baladeur ;&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour modifier.</source>
         <translation>Dono da chave ou do leitor ;&lt;br&gt;&lt;b&gt;Clique-duplo&lt;/b&gt; para modificar.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="805"/>
+        <location filename="../mainWindow.py" line="797"/>
         <source>Point de montage de la clé USB ou du baladeur ;&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour voir les fichiers.</source>
         <translation>Ponto de montagem da chave ou do leitor ; &lt;br&gt;&lt;b&gt;Clique-duplo&lt;/b&gt; para ver os ficheiros.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="807"/>
+        <location filename="../mainWindow.py" line="799"/>
         <source>Capacité de la clé USB ou du baladeur en kO ;&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour voir la place occupée.</source>
         <translation>Capacidade da chave USB ou do leitor en kB ;&lt;br&gt;&lt;b&gt;Clique-duplo&lt;/b&gt; para ver o espaço ocupado.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="809"/>
+        <location filename="../mainWindow.py" line="801"/>
         <source>Fabricant de la clé USB ou du baladeur.</source>
         <translation>Fabricante da chave USB ou do leitor.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="811"/>
+        <location filename="../mainWindow.py" line="803"/>
         <source>Modèle de la clé USB ou du baladeur.</source>
         <translation>Modelo da chave ou do leitor.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="813"/>
+        <location filename="../mainWindow.py" line="805"/>
         <source>Numéro de série de la clé USB ou du baladeur.</source>
         <translation>Número de série da chave ou do leitor.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="801"/>
+        <location filename="../mainWindow.py" line="793"/>
         <source>Cocher ou décocher cette case en cliquant.&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour agir sur plusieurs baladeurs.</source>
         <translation type="unfinished"></translation>
     </message>
