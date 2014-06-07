@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<BEE_ELEVES VERSION="1.7">
+  <DONNEES>
+    <ELEVES>
+      <ELEVE ELEVE_ID="1001">
+        <NOM>N°</NOM>
+        <PRENOM>01</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1002">
+        <NOM>N°</NOM>
+        <PRENOM>02</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1003">
+        <NOM>N°</NOM>
+        <PRENOM>03</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1004">
+        <NOM>N°</NOM>
+        <PRENOM>04</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1005">
+        <NOM>N°</NOM>
+        <PRENOM>05</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1006">
+        <NOM>N°</NOM>
+        <PRENOM>06</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1007">
+        <NOM>N°</NOM>
+        <PRENOM>07</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1008">
+        <NOM>N°</NOM>
+        <PRENOM>08</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1009">
+        <NOM>N°</NOM>
+        <PRENOM>09</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1010">
+        <NOM>N°</NOM>
+        <PRENOM>10</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1011">
+        <NOM>N°</NOM>
+        <PRENOM>11</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1012">
+        <NOM>N°</NOM>
+        <PRENOM>12</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1013">
+        <NOM>N°</NOM>
+        <PRENOM>13</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1014">
+        <NOM>N°</NOM>
+        <PRENOM>14</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1015">
+        <NOM>N°</NOM>
+        <PRENOM>15</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1016">
+        <NOM>N°</NOM>
+        <PRENOM>16</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1017">
+        <NOM>N°</NOM>
+        <PRENOM>17</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1018">
+        <NOM>N°</NOM>
+        <PRENOM>18</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1019">
+        <NOM>N°</NOM>
+        <PRENOM>19</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1020">
+        <NOM>N°</NOM>
+        <PRENOM>20</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1021">
+        <NOM>N°</NOM>
+        <PRENOM>21</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1022">
+        <NOM>N°</NOM>
+        <PRENOM>22</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1023">
+        <NOM>N°</NOM>
+        <PRENOM>23</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1024">
+        <NOM>N°</NOM>
+        <PRENOM>24</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1025">
+        <NOM>N°</NOM>
+        <PRENOM>25</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1026">
+        <NOM>N°</NOM>
+        <PRENOM>26</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1027">
+        <NOM>N°</NOM>
+        <PRENOM>27</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1028">
+        <NOM>N°</NOM>
+        <PRENOM>28</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1029">
+        <NOM>N°</NOM>
+        <PRENOM>29</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1030">
+        <NOM>N°</NOM>
+        <PRENOM>30</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1031">
+        <NOM>N°</NOM>
+        <PRENOM>31</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1032">
+        <NOM>N°</NOM>
+        <PRENOM>32</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1033">
+        <NOM>N°</NOM>
+        <PRENOM>33</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1034">
+        <NOM>N°</NOM>
+        <PRENOM>34</PRENOM>
+      </ELEVE>
+      <ELEVE ELEVE_ID="1035">
+        <NOM>N°</NOM>
+        <PRENOM>35</PRENOM>
+      </ELEVE>
+    </ELEVES>
+    <STRUCTURES>
+      <STRUCTURES_ELEVE ELEVE_ID="1001">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1002">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1003">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1004">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1005">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1006">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1007">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1008">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1009">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1010">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1011">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1012">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1013">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1014">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1015">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1016">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1017">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1018">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1019">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1020">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1021">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1022">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1023">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1024">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1025">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1026">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1027">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1028">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1029">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1030">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1031">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1032">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1033">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1034">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+      <STRUCTURES_ELEVE ELEVE_ID="1035">
+        <STRUCTURE>
+          <CODE_STRUCTURE>Suite de numéros</CODE_STRUCTURE>
+          <TYPE_STRUCTURE>D</TYPE_STRUCTURE>
+        </STRUCTURE>
+      </STRUCTURES_ELEVE>
+    </STRUCTURES>
+  </DONNEES>
+</BEE_ELEVES>

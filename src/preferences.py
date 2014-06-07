@@ -62,7 +62,7 @@ class preferenceWindow(QDialog):
         @return un dictionnaire de préférences
         """
         prefs={}
-        prefs["checkable"]      = bool(self.ui.checkCheck.isChecked())
+        prefs["checkable"]      = True
         prefs["mv"]             = bool(self.ui.mvCheck.isChecked())
         prefs["schoolFile"]     = self.ui.lineEditSchoolFile.text()
         prefs["workdir"]        = self.ui.dirEdit.text()
@@ -76,11 +76,6 @@ class preferenceWindow(QDialog):
         Met en place les préférences dans le dialogue
         @param prefs un dictionnaire de préférences
         """
-        if prefs["checkable"]:
-            state=Qt.Checked
-        else:
-            state=Qt.Unchecked
-        self.ui.checkCheck.setCheckState(state)
         if prefs["mv"]:
             state=Qt.Checked
         else:

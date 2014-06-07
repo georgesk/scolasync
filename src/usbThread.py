@@ -21,9 +21,8 @@ licenceEn="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
-import subprocess, threading, re, os, os.path, shutil, time, glob, shlex
+import subprocess, threading, re, os, os.path, shutil
+import time, glob, shlex, io
 from PyQt4.QtCore import *
 
 _threadNumber=0
@@ -111,7 +110,10 @@ def _threadName(ud):
     @return un nom de thread unique
     """
     global _threadNumber
-    name="th_%04d_%s" %(_threadNumber,_sanitizePath(ud.path))
+    if hasattr(ud, "path"):
+        name="th_%04d_%s" %(_threadNumber,_sanitizePath(ud.path))
+    else:
+        name="th_%04d_%s" %(_threadNumber,"dummy")
     _threadNumber+=1
     return name
 
@@ -124,9 +126,16 @@ def _date():
 
 class abstractThreadUSB(threading.Thread):
     """
-    Une classe abstraite
-     Cette classe sert de creuset pour les classe servant aux copies
-     et aux effacement.
+    Une classe abstraite, qui sert de creuset pour les classe servant
+    aux copies et aux effacements.
+
+    Les classes filles doivent redéfinir la méthode \b toDo : c'est celle qui
+    est démarrée quand le thread est lancé. Cette méthode est appelée dans
+    le contexte « \b with ud.rlock », qui évite que deux threads en même temps
+    ne cherchent à accéder au même média.
+
+    Une méthode \b copytree est définie pour remplacer shutils.copytree
+    qui ne fait pas tout à fait l'affaire.
     """
     def __init__(self,ud, fileList, subdir, dest=None, logfile="/dev/null",
                  parent=None):
@@ -141,17 +150,19 @@ class abstractThreadUSB(threading.Thread):
         @param parent un widget qui recevra de signaux en début et en fin
           d'exécution
         """
-        threading.Thread.__init__(self,target=self.toDo,
-                                  args=(ud, fileList, subdir, dest, logfile),
-                                  name=_threadName(ud))        
-        self.cmd="echo This is an abstract method, don't call it"
+        threading.Thread.__init__(self, name=_threadName(ud))        
+        self._args=(ud, fileList, subdir, dest, logfile)
         self.ud=ud
-        ud.threadRunning=True
+        if hasattr(ud,"threadRunning"): ud.threadRunning=True
         self.fileList=fileList
         self.subdir=subdir
         self.dest=dest
         self.logfile=logfile
         self.parent=parent
+
+    def run(self):
+        with self.ud.rlock:
+            self.toDo(*self._args)
 
     def writeToLog(self, msg):
         """
@@ -230,12 +241,12 @@ class abstractThreadUSB(threading.Thread):
         result+="  subdir   = %s\n" %self.subdir
         result+="  dest     = %s\n" %self.dest
         result+="  logfile  = %s\n" %self.logfile
-        result+="  cmd      = %s\n" %self.cmd
         result+="\n"
         return result
 
     def threadType(self):
         """
+        information sur le thread.
         @return une chaîne courte qui informe sur le type de thread
         """
         return "abstractThreadUSB"
@@ -269,7 +280,6 @@ class threadCopyToUSB(abstractThreadUSB):
           d'exécution
         """
         abstractThreadUSB.__init__(self,ud, fileList, subdir, dest=None, logfile=logfile, parent=parent)
-        self.cmd='mkdir -p "{toDir}"; cp -R {fromFile} "{toDir}"'
 
     def threadType(self):
         """
@@ -307,18 +317,19 @@ class threadCopyToUSB(abstractThreadUSB):
                 try:
                     shutil.copy2(f, destpath1)
                 except Exception as err:
-                    errors.extend((f, destpath1, str(err)))
+                    errors.append([f, destpath1, str(err)])
                     
+            print ("GRRRR il faut lire le fichier TODO")
             msg="[%s] " %_date()
             if not errors:
-                msg += "Success: "
+                msg+="Success: "
             else:
-                msg += "Error:   "
-            msg += cmd
+                msg+="Error: "
+            msg+=cmd
             for e in errors:
-                msg += " <%s>" %e
+                msg+= " <%s>" %str(e)
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.owner, msg)
+                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.owner, cmd)
             self.writeToLog(msg)
             
 class threadCopyFromUSB(abstractThreadUSB):
@@ -525,5 +536,40 @@ class threadDeleteInUSB(abstractThreadUSB):
             for e in errors:
                 msg += " <%s>" %e
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.owner, msg)
+                self.parent.emit(SIGNAL("popCmd(string, string)"), ud.owner, msg)
             self.writeToLog(msg)
+
+if __name__=="__main__":
+    import sys, ownedUsbDisk, subprocess
+
+    def test_copytree():
+        """ Teste la fonction copytree """
+        t=abstractThreadUSB(None, sys.argv[1:-1], sys.argv[-1])
+        if len(sys.argv) < 3:
+            print("Usage : %s répertoire_source répertoire_destination" %sys.argv[0])
+            print("Ça doit créer sous répertoire_destination la même arborescence que sous répertoire_source")
+            print("et ça crée répertoire_destination à la volée si nécessaire.")
+            sys.exit(-1)
+        errors=t.copytree(sys.argv[1],sys.argv[2])
+        print("Erreurs = %s" %errors)
+        subprocess.call ("diff -ruN %s %s" %(sys.argv[1],sys.argv[2]), shell=True)
+        print ("Ne pas oublier d'effacer %s si nécessaire" %sys.argv[2])
+
+    def test_copy2():
+        """
+        Teste la copie d'un fichier vers une destination telle qu'elle est pratiquée
+        dans la méthode copytree de abstractThreadUSB
+        """
+        if len(sys.argv) < 3:
+            print("Usage : %s fichier répertoire_destination" %sys.argv[0])
+            print("Ça doit créer sous répertoire_destination une copie du fichier")
+            print("et ça crée répertoire_destination à la volée si nécessaire.")
+            sys.exit(-1)
+        srcname=sys.argv[1]
+        dstname=os.path.join(sys.argv[2],sys.argv[1])
+        shutil.copy2(srcname, dstname)
+        print ("fin de la copie de %s vers %s, listing de %s" %(sys.argv[1],sys.argv[2],sys.argv[2]))
+        subprocess.call("ls %s" %sys.argv[2], shell=True)
+
+    #test_copytree()
+    test_copy2()

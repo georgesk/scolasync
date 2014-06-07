@@ -7,7 +7,7 @@ licence['en']="""
     file mainWindow.py
     this file is part of the project scolasync
     
-    Copyright (C) 2010 Georges Khaznadar <georgesk@ofset.org>
+    Copyright (C) 2010-2014 Georges Khaznadar <georgesk@ofset.org>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -38,7 +37,7 @@ import nameAdrive
 from globaldef import logFileName, _dir
 
 # cette donnée est globale, pour être utilisé depuis n'importe quel objet
-qApp.diskData=ownedUsbDisk.Available(True,access="firstFat")
+qApp.diskData=ownedUsbDisk.Available(access="firstFat")
 
 activeThreads={} # donnée globale : les threads actifs
 # cette donnée est mise à jour par des signaux émis au niveau des threads
@@ -60,11 +59,10 @@ def registerCmd(cmd,partition):
     lastCommand=cmd
 
 class mainWindow(QMainWindow):
-    def __init__(self, parent, opts, locale="fr_FR"):
+    def __init__(self, parent, locale="fr_FR"):
         """
         Le constructeur
         @param parent un QWidget
-        @param opts une liste d'options extraite à l'aide de getopts
         @param locale la langue de l'application
         """
         QMainWindow.__init__(self)
@@ -88,7 +86,6 @@ class mainWindow(QMainWindow):
         self.t=self.ui.tableView
         self.proxy=QSortFilterProxyModel()
         self.proxy.setSourceModel(self.t.model())
-        self.opts=opts
         self.timer=QTimer()
         self.listener=deviceListener.DeviceListener(self)
         self.applyPreferences()
@@ -236,13 +233,10 @@ class mainWindow(QMainWindow):
         self.refreshDelay=prefs["refreshDelay"]
         self.setTimer()
         self.manFileLocation=prefs["manfile"]
-        # on active les cases à cocher si ça a été réclamé par les options
-        # ou par les préférences
-        self.checkable=("--check","") in self.opts or ("-c","") in self.opts or prefs["checkable"]
         self.mv=prefs["mv"]
-        other=ownedUsbDisk.Available(self.checkable,access="firstFat")
+        other=ownedUsbDisk.Available(access="firstFat")
         qApp.diskData=other
-        self.header=ownedUsbDisk.uDisk.headers(self.checkable)
+        self.header=ownedUsbDisk.uDisk.headers()
         self.connectTableModel(other)
         self.updateButtons()
 
@@ -263,14 +257,14 @@ class mainWindow(QMainWindow):
         mappedIdx=self.proxy.mapFromSource(idx)
         r=mappedIdx.row()
         h=self.header[c]
-        if c==0 and self.checkable:
+        if c==0:
             self.manageCheckBoxes()
             pass
-        elif c==1 or (c==0 and not self.checkable):
+        elif c==1:
             # case du propriétaire
             self.editOwner(mappedIdx)
         elif "device-mount-paths" in h:
-            cmd="nautilus '%s'" %idx.data().toString ()
+            cmd="xdg-open '%s'" %idx.data().toString ()
             subprocess.call(cmd, shell=True)
         elif "device-size" in h:
             mount=idx.model().partition(idx).mountPoint()
@@ -336,7 +330,7 @@ class mainWindow(QMainWindow):
         """
         student="%s" %self.tm.data(idx,Qt.DisplayRole).toString()
         ownedUsbDisk.editRecord(self.diskFromOwner(student), hint=student)
-        other=ownedUsbDisk.Available(self.checkable,access="firstFat")
+        other=ownedUsbDisk.Available(access="firstFat")
         qApp.diskData=other
         self.connectTableModel(other)
         self.checkDisks()
@@ -518,7 +512,7 @@ class mainWindow(QMainWindow):
                 t.setDaemon(True)
                 t.start()
                 self.oldThreads.add(t)
-            # on ouvre nautilus pour voir le résultat des copies
+            # on ouvre un gestionnaire de fichiers pour voir le résultat
             buttons=QMessageBox.Ok|QMessageBox.Cancel
             defaultButton=QMessageBox.Cancel
             if QMessageBox.question(
@@ -526,7 +520,7 @@ class mainWindow(QMainWindow):
                 QApplication.translate("Dialog","Voir les copies",None, QApplication.UnicodeUTF8),
                 QApplication.translate("Dialog","Voulez-vous voir les fichiers copiés ?",None, QApplication.UnicodeUTF8),
                 buttons, defaultButton)==QMessageBox.Ok:
-                subprocess.call("nautilus '%s'" %destDir,shell=True)
+                subprocess.call("xdg-open '%s'" %destDir,shell=True)
             return True
         else:
             msgBox=QMessageBox.warning(
@@ -613,15 +607,11 @@ class mainWindow(QMainWindow):
                 self.visibleheader.append(self.tr(ownedUsbDisk.uDisk._itemNames[h]))
             else:
                 self.visibleheader.append(h)
-        self.tm=usbTableModel(self, self.visibleheader,data,self.checkable)
+        self.tm=usbTableModel(self, self.visibleheader,data)
         self.t.setModel(self.tm)
-        if self.checkable:
-            self.t.setItemDelegateForColumn(0, CheckBoxDelegate(self))
-            self.t.setItemDelegateForColumn(1, UsbDiskDelegate(self))
-            self.t.setItemDelegateForColumn(3, DiskSizeDelegate(self))
-        else:
-            self.t.setItemDelegateForColumn(0, UsbDiskDelegate(self))
-            self.t.setItemDelegateForColumn(2, DiskSizeDelegate(self))
+        self.t.setItemDelegateForColumn(0, CheckBoxDelegate(self))
+        self.t.setItemDelegateForColumn(1, UsbDiskDelegate(self))
+        self.t.setItemDelegateForColumn(3, DiskSizeDelegate(self))
         self.proxy.setSourceModel(self.t.model())
 
         
@@ -642,7 +632,6 @@ class mainWindow(QMainWindow):
             return
         self.checkDisksLock=True
         other=ownedUsbDisk.Available(
-            self.checkable,
             access="firstFat",
             diskDict=self.listener.connectedVolumes,
             noLoop=noLoop)
@@ -655,10 +644,6 @@ class mainWindow(QMainWindow):
             self.ui.lcdNumber.display(connectedCount)
         self.flashLCD()
         # met la table en ordre par la colonne des propriétaires
-        if self.checkable:
-            col=1
-        else:
-            col=0
         self.t.horizontalHeader().setSortIndicator(1, Qt.AscendingOrder);
         self.t.setSortingEnabled(True)
         self.t.resizeColumnsToContents()
@@ -689,17 +674,15 @@ class usbTableModel(QAbstractTableModel):
     Un modèle de table pour des séries de clés USB
     """
 
-    def __init__(self, parent=None, header=[], donnees=None, checkable=False):
+    def __init__(self, parent=None, header=[], donnees=None):
         """
         @param parent un QObject
         @param header les en-têtes de colonnes
         @param donnees les données
-        @param checkable vrai si la première colonne est composée de boîtes à cocher. Faux par défaut
         """
         QAbstractTableModel.__init__(self,parent)
         self.header=header
         self.donnees=donnees
-        self.checkable=checkable
         self.pere=parent
         self.connect(self, SIGNAL("pushCmd(QString, QString)"), self.pushCmd)
         self.connect(self, SIGNAL("popCmd(QString, QString)"), self.popCmd)
@@ -750,10 +733,7 @@ class usbTableModel(QAbstractTableModel):
         """
         force la mise à jour de la colonne des propriétaires
         """
-        if self.checkable:
-            column=1
-        else:
-            column=0
+        column=1
         self.emit(SIGNAL("dataChanged(QModelIndex, QModelIndex)"), self.index(0,column), self.index(len(self.donnees)-1, column))
         self.pere.t.viewport().update()
 
@@ -770,7 +750,7 @@ class usbTableModel(QAbstractTableModel):
         return len(self.header) 
 
     def setData(self, index, value, role):
-        if index.column()==0 and self.checkable:
+        if index.column()==0:
             self.donnees[index.row()].selected=value
             return True
         else:
@@ -789,7 +769,7 @@ class usbTableModel(QAbstractTableModel):
         elif role==Qt.ToolTipRole:
             c=index.column()
             h=self.pere.header[c]
-            if c==0 and self.checkable:
+            if c==0:
                 return QApplication.translate("Main","Cocher ou décocher cette case en cliquant.<br><b>Double-clic</b> pour agir sur plusieurs baladeurs.",None, QApplication.UnicodeUTF8)
             elif c==1:
                 return QApplication.translate("Main","Propriétaire de la clé USB ou du baladeur ;<br><b>Double-clic</b> pour modifier.",None, QApplication.UnicodeUTF8)

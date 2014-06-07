@@ -132,38 +132,23 @@ import sip
 # pour éviter des erreurs à l'instanciation des QVariant
 sip.setapi('QVariant', 1)
 
+import debug
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-def usage():
-    """
-    affiche le mode d'emploi à la console
-    """
-    print ("""\
-"{args}" : une option n'est pas reconnue
-Options :
- -c ou --check : pour que la première colonne du tableau comporte
-    des cases à cocher.""".format(args=" ".join(sys.argv))
-           )
-    return
-
-def run():
+def run(debugger=False, callback=lambda x: print(x)):
     """
     Le lancement de l'application
+    @param debugger s'il est vrai, un bouton de débogage est ajouté
+    @param callback une fonction de rappel à un paramètre (qui sera
+    la fenêtre principale, le cas échéant)
     """
+
     from dbus.mainloop.qt import DBusQtMainLoop
     DBusQtMainLoop(set_as_default=True)
     
     app = QApplication(sys.argv)
-
-    args=sys.argv[1:]
-    try:
-        #opts,args= ["check"], sys.argv
-        opts, args = getopt.getopt(args, "c", ["check"] )
-    except getopt.GetoptError:
-        usage()
-        sys.exit(2)
 
     locale = "%s" %QLocale.system().name()
     qtTranslator = QTranslator()
@@ -180,10 +165,12 @@ def run():
             break
 
     import mainWindow
-    windows = mainWindow.mainWindow(None,opts,locale)
-    windows.show()
+    window = mainWindow.mainWindow(None,locale)
+    if debugger:
+        debug.button(window, callback)
+    window.show()
     
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
-    run()
+    run(debugger=True, callback=debug.listePartitionsCochees)

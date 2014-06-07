@@ -71,7 +71,7 @@ class nameAdriveDialog(QDialog):
         lw=self.ui.listWidget
         if m:
             num=m.group(1)
-            regexp=QString("^%s-.*" %num)
+            regexp="^%s-.*" %num
             possible=lw.findItems(regexp,Qt.MatchRegExp)
             if len(possible) > 0:
                 lw.setCurrentItem(possible[0])

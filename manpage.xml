@@ -76,7 +76,7 @@ man(1), man(7), http://www.tldp.org/HOWTO/Man-Page/
       </author>
     </authorgroup>
     <copyright>
-      <year>2010</year>
+      <year>2010-2013</year>
       <holder>&dhusername;</holder>
     </copyright>
     <legalnotice>
@@ -105,13 +105,6 @@ man(1), man(7), http://www.tldp.org/HOWTO/Man-Page/
   <refsynopsisdiv>
     <cmdsynopsis>
       <command>&dhpackage;</command>
-      <!-- These are several examples, how syntaxes could look -->
-      <arg choice="opt">
-        <group choice="req">
-          <arg choice="plain"><option>-c</option></arg>
-          <arg choice="plain"><option>--check</option></arg>
-        </group>
-      </arg>
     </cmdsynopsis>
   </refsynopsisdiv>
   <refsect1 id="description">
@@ -126,24 +119,6 @@ man(1), man(7), http://www.tldp.org/HOWTO/Man-Page/
     they are given homework on their USB sticks, and they bring them back
     with modified contents to get scores.
     </para>
-  </refsect1>
-  <refsect1 id="options">
-    <title>OPTIONS</title>
-    <variablelist>
-      <!-- Use the variablelist.term.separator and the
-           variablelist.term.break.after parameters to
-           control the term elements. -->
-      <varlistentry>
-        <term><option>-c </option></term>
-        <term><option>--check</option></term>
-        <listitem>
-          <para>Enables checkboxes to select a subset of the usb storage
-	  media currently plugged to your computer, even if the checkboxes
-	  are not wanted in the preferences of the application.
-	  </para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
   </refsect1>
   <refsect1 id="files">
     <title>FILES</title>

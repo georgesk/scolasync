@@ -80,13 +80,12 @@ class uDisk(usbDisk.uDisk,QObject):
     et qui en même temps ajoute des particularités selon le nom du
     vendeur et le modèle.
     """
-    def __init__(self, path, bus, checkable=False):
+    def __init__(self, path, bus):
         """
         @param path un chemin dans le système dbus
         @param bus un objet dbus.BusSystem
-        @param checkable vrai si on fera usage de self.selected
         """
-        usbDisk.uDisk.__init__(self,path, bus, checkable)
+        usbDisk.uDisk.__init__(self,path, bus)
         QObject.__init__(self)
         self.owner="" # le propriétaire est déterminé plus tard
         self.vendor=self.getProp("drive-vendor")
@@ -141,16 +140,15 @@ class uDisk(usbDisk.uDisk,QObject):
         else:
             return "."
 
-    def headers(checkable=False,locale="C"):
+    def headers(locale="C"):
         """
         Méthode statique
         renvoie des titres pour les items obtenus par __getitem__
         la deuxième colonne sera toujours le propriétaire
-        @param checkable vrai si le premier en-tête correspond à une colonne de cases à cocher
         @param locale la locale, pour traduire les titres
         @return une liste de titres de colonnes
         """
-        result=usbDisk.uDisk.headers(checkable, locale)
+        result=usbDisk.uDisk.headers(locale)
         ownerProp=QApplication.translate("uDisk","owner",None, QApplication.UnicodeUTF8)
         result.insert(1,ownerProp)
         return result
@@ -174,29 +172,18 @@ class uDisk(usbDisk.uDisk,QObject):
         renvoie un élément de listage de données internes au disque
         Fait en sorte que la deuxième colonne soit toujours le propriétaire
         @param n un nombre
-        @param checkable vrai si on doit renvoyer une propriété supplémentaire pour n==0
-        @return si n==-1, renvoie self ; si checkable est vrai, renvoie un élément si n>0, et le drapeau self.selected si n==0 ; sinon un élément de façon ordinaire. Les noms des éléments sont dans la liste self.itemNames
+        @return si n==-1, renvoie self ; renvoie un élément si n>0, et le drapeau self.selected si n==0. Les noms des éléments sont dans la liste self.itemNames
         """
         propListe=usbDisk.uDisk.headers()
         if n == -1:
             return self # pour accéder à toutes les données d'une partition
-        if self.checkable:
-            if n==0:
-                return self.selected
-            elif n==1:
-                return self.ownerByDb()
-            elif n==2:
-                return self.unNumberProp(0)
-            else:
-                return self.unNumberProp(n-1)
+        elif n==0:
+            return self.selected
+        elif n==1:
+            return self.ownerByDb()
         else:
-            if n==0:
-                return self.unNumberProp(0)
-            elif n==1:
-                return self.ownerByDb()
-            else:
-                return self.unNumberProp(n)
-    
+            return self.unNumberProp(n)
+
     
     headers = staticmethod(headers)
 
@@ -223,19 +210,18 @@ class Available(usbDisk.Available):
     avant le montage des partions FAT.
     """
 
-    def __init__(self, checkable=False, access="disk", diskClass=uDisk, diskDict=None, noLoop=True):
+    def __init__(self, access="disk", diskClass=uDisk, diskDict=None, noLoop=True):
         """
         Le constructeur est un proxy pour usbDisk.Available.__init__
         qui force la classe de disques à utiliser : en effet ici
         uDisk désigne ownedUsbDisk.uDisk
-        @param checkable True si on veut pouvoir sélectionner des disques en cochant
         @param access le mode d'accès : 'disk' ou 'firstFat'
         @param diskClass la classe d'objets à créer pour chaque disque
         @param diskDict un dictionnaire des disque maintenu par deviceListener
         @param noLoop doit être True pour éviter de lancer un dialogue
         """
         self.noLoop=noLoop
-        usbDisk.Available.__init__(self, checkable, access, diskClass, diskDict)
+        usbDisk.Available.__init__(self, access, diskClass, diskDict)
         
     def finishInit(self):
         """

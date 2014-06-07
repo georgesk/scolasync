@@ -121,32 +121,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="282"/>
+        <location filename="../mainWindow.py" line="276"/>
         <source>Double-clic non pris en compte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="485"/>
+        <location filename="../mainWindow.py" line="479"/>
         <source>Veuillez choisir au moins un fichier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="481"/>
+        <location filename="../mainWindow.py" line="475"/>
         <source>Choix de la destination ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="524"/>
+        <location filename="../mainWindow.py" line="518"/>
         <source>Voir les copies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="532"/>
+        <location filename="../mainWindow.py" line="526"/>
         <source>Destination manquante</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="532"/>
+        <location filename="../mainWindow.py" line="526"/>
         <source>Veuillez choisir une destination pour la copie des fichiers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -186,7 +186,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="170"/>
+        <location filename="../ownedUsbDisk.py" line="168"/>
         <source>inconnu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -196,12 +196,12 @@
         <translation type="obsolete">La clé %1&lt;br&gt;n&apos;est pas identifiée, donnez le nom du propriétaire</translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="213"/>
+        <location filename="../ownedUsbDisk.py" line="200"/>
         <source>Entrer un nom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="430"/>
+        <location filename="../mainWindow.py" line="424"/>
         <source>Vous allez effacer plusieurs baladeurs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -291,32 +291,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="423"/>
+        <location filename="../mainWindow.py" line="417"/>
         <source>Choix de fichiers à supprimer (jokers autorisés)</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="485"/>
+        <location filename="../mainWindow.py" line="479"/>
         <source>Aucun fichier sélectionné</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="479"/>
+        <location filename="../mainWindow.py" line="473"/>
         <source>Choix de fichiers à copier</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="480"/>
+        <location filename="../mainWindow.py" line="474"/>
         <source>Choix de fichiers à copier depuis les baladeurs</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="493"/>
+        <location filename="../mainWindow.py" line="487"/>
         <source>Choisir un répertoire de destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="524"/>
+        <location filename="../mainWindow.py" line="518"/>
         <source>Voulez-vous voir les fichiers copiés ?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -361,7 +361,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="555"/>
+        <location filename="../mainWindow.py" line="549"/>
         <source>Réitérer la dernière commande</source>
         <translation type="unfinished"></translation>
     </message>
@@ -556,7 +556,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="212"/>
+        <location filename="../ownedUsbDisk.py" line="199"/>
         <source>La cle {id}&lt;br&gt;n&apos;est pas identifiee, donnez le nom du proprietaire</source>
         <translation type="unfinished"></translation>
     </message>
@@ -571,12 +571,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="282"/>
+        <location filename="../mainWindow.py" line="276"/>
         <source>pas d&apos;action pour l&apos;attribut {a}</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="555"/>
+        <location filename="../mainWindow.py" line="549"/>
         <source>La dernière commande était&lt;br&gt;{cmd}&lt;br&gt;Voulez-vous la relancer avec les nouveaux baladeurs ?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -584,47 +584,47 @@ p, li { white-space: pre-wrap; }
 <context encoding="UTF-8">
     <name>Main</name>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="589"/>
+        <location filename="../mainWindow.py" line="583"/>
         <source>Démontage des baladeurs</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="589"/>
+        <location filename="../mainWindow.py" line="583"/>
         <source>Êtes-vous sûr de vouloir démonter tous les baladeurs cochés de la liste ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="795"/>
+        <location filename="../mainWindow.py" line="775"/>
         <source>Propriétaire de la clé USB ou du baladeur ;&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour modifier.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="797"/>
+        <location filename="../mainWindow.py" line="777"/>
         <source>Point de montage de la clé USB ou du baladeur ;&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour voir les fichiers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="799"/>
+        <location filename="../mainWindow.py" line="779"/>
         <source>Capacité de la clé USB ou du baladeur en kO ;&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour voir la place occupée.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="801"/>
+        <location filename="../mainWindow.py" line="781"/>
         <source>Fabricant de la clé USB ou du baladeur.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="803"/>
+        <location filename="../mainWindow.py" line="783"/>
         <source>Modèle de la clé USB ou du baladeur.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="805"/>
+        <location filename="../mainWindow.py" line="785"/>
         <source>Numéro de série de la clé USB ou du baladeur.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="793"/>
+        <location filename="../mainWindow.py" line="773"/>
         <source>Cocher ou décocher cette case en cliquant.&lt;br&gt;&lt;b&gt;Double-clic&lt;/b&gt; pour agir sur plusieurs baladeurs.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -707,12 +707,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="203"/>
+        <location filename="../mainWindow.py" line="200"/>
         <source>Refaire à nouveau</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="204"/>
+        <location filename="../mainWindow.py" line="201"/>
         <source>Refaire à nouveau la dernière opération réussie, avec les baladeurs connectés plus récemment</source>
         <translation type="unfinished"></translation>
     </message>
@@ -737,22 +737,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="205"/>
+        <location filename="../mainWindow.py" line="202"/>
         <source>Arrêter les opérations en cours</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="206"/>
+        <location filename="../mainWindow.py" line="203"/>
         <source>Essaie d&apos;arrêter les opérations en cours. À faire seulement si celles-ci durent trop longtemps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="81"/>
+        <location filename="../mainWindow.py" line="79"/>
         <source>&lt;br /&gt;Des noms sont disponibles pour renommer les prochains baladeurs que vous brancherez</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="82"/>
+        <location filename="../mainWindow.py" line="80"/>
         <source>&lt;br /&gt;Cliquez sur ce bouton pour préparer une liste de noms afin de renommer les prochains baladeurs que vous brancherez</source>
         <translation type="unfinished"></translation>
     </message>
@@ -821,37 +821,37 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>uDisk</name>
     <message>
-        <location filename="../usbDisk.py" line="72"/>
+        <location filename="../usbDisk.py" line="71"/>
         <source>point de montage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../usbDisk.py" line="73"/>
+        <location filename="../usbDisk.py" line="72"/>
         <source>taille</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../usbDisk.py" line="79"/>
+        <location filename="../usbDisk.py" line="78"/>
         <source>cocher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="154"/>
+        <location filename="../ownedUsbDisk.py" line="152"/>
         <source>owner</source>
         <translation>propriétaire</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk.py" line="75"/>
+        <location filename="../usbDisk.py" line="74"/>
         <source>modèle de disque</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk.py" line="76"/>
+        <location filename="../usbDisk.py" line="75"/>
         <source>numéro de série</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../usbDisk.py" line="74"/>
+        <location filename="../usbDisk.py" line="73"/>
         <source>marque</source>
         <translation type="unfinished"></translation>
     </message>

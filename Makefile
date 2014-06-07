@@ -7,7 +7,7 @@ XP     = xsltproc --nonet --param man.charmap.use.subset "0"
 all: doxy pdfdoc scolasync.1
 	for d in $(SUBDIRS); do make all -C $$d DESTDIR=$(DESTDIR); done
 
-install:
+install: all
 	install -d $(DESTDIR)/usr/share/scolasync/html
 	cp -R doc/html/* $(DESTDIR)/usr/share/scolasync/html/
 	install -d $(DESTDIR)/usr/share/scolasync/pdf

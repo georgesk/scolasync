@@ -173,13 +173,10 @@ def writeStudent(stickid, uuid, tattoo, student):
 def writePrefs(prefs):
     """
     inscrit les préférences
-    @param prefs un dictionnaire {"checkable": booléen vrai si on doit afficher des cases à cocher, "workdir" : le répertoire préféré pour les fichiers de travail}
+    @param prefs un dictionnaire {"checkable": booléen toujours vrai, "workdir" : le répertoire préféré pour les fichiers de travail}
     """
     global database, cursor
-    if prefs["checkable"]:
-        checkable=1
-    else:
-        checkable=0
+    checkable=1
     if prefs["mv"]:
         mv=1
     else:
@@ -190,7 +187,7 @@ def writePrefs(prefs):
         refreshEnabled=0
     cursor.execute("select checkable from preferences")
     s = cursor.fetchone()
-    newValues=(checkable, mv, prefs["schoolFile"], prefs["workdir"], prefs["manfile"], refreshEnabled, prefs["refreshDelay"])
+    newValues=(1, mv, prefs["schoolFile"], prefs["workdir"], prefs["manfile"], refreshEnabled, prefs["refreshDelay"])
     if s != None:
         cursor.execute("""update preferences
                           set checkable=?, mv=?, schoolfile=?, workdir=?, manfile=?, refresh_enabled=?, refresh_delay=?""",
