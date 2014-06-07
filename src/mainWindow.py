@@ -236,7 +236,7 @@ class mainWindow(QMainWindow):
         self.mv=prefs["mv"]
         other=ownedUsbDisk.Available(access="firstFat")
         qApp.diskData=other
-        self.header=ownedUsbDisk.uDisk.headers()
+        self.header=ownedUsbDisk.uDisk2.headers()
         self.connectTableModel(other)
         self.updateButtons()
 
@@ -603,8 +603,8 @@ class mainWindow(QMainWindow):
         """
         self.visibleheader=[]
         for h in self.header:
-            if h in ownedUsbDisk.uDisk._itemNames:
-                self.visibleheader.append(self.tr(ownedUsbDisk.uDisk._itemNames[h]))
+            if h in ownedUsbDisk.uDisk2._itemNames:
+                self.visibleheader.append(self.tr(ownedUsbDisk.uDisk2._itemNames[h]))
             else:
                 self.visibleheader.append(h)
         self.tm=usbTableModel(self, self.visibleheader,data)
@@ -892,6 +892,7 @@ class DiskSizeDelegate(QStyledItemDelegate):
         
 
     def paint(self, painter, option, index):
+        print ("GRRR index =", index.row(), index.column(), index.model().data(index, Qt.DisplayRole).toString())
         value = int(index.model().data(index, Qt.DisplayRole).toString())
         text = self.val2txt(value)
         rect0=QRect(option.rect)

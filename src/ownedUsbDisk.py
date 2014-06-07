@@ -105,7 +105,6 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         ff=self.firstFat
         if ff:
             fatPath=ff.ensureMounted()
-            print ("GRRRR", fatPath)
             return tattooInDir(fatPath)
         else:
             return ""
@@ -147,7 +146,7 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         @param locale la locale, pour traduire les titres
         @return une liste de titres de colonnes
         """
-        result=usbDisk.uDisk.headers(locale)
+        result=usbDisk2.uDisk2.headers(locale)
         ownerProp=QApplication.translate("uDisk","owner",None, QApplication.UnicodeUTF8)
         result.insert(1,ownerProp)
         return result
@@ -173,7 +172,7 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         @param n un nombre
         @return si n==-1, renvoie self ; renvoie un élément si n>0, et le drapeau self.selected si n==0. Les noms des éléments sont dans la liste self.itemNames
         """
-        propListe=usbDisk.uDisk.headers()
+        propListe=usbDisk2.uDisk2.headers()
         if n == -1:
             return self # pour accéder à toutes les données d'une partition
         elif n==0:

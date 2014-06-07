@@ -319,7 +319,6 @@ class threadCopyToUSB(abstractThreadUSB):
                 except Exception as err:
                     errors.append([f, destpath1, str(err)])
                     
-            print ("GRRRR il faut lire le fichier TODO")
             msg="[%s] " %_date()
             if not errors:
                 msg+="Success: "

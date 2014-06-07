@@ -419,7 +419,7 @@ class uDisk2:
         Valeur par défaut : "C"
         @return une liste de titres de colonnes
         """
-        result= list(uDisk._specialItems.keys())+ list(uDisk._itemNames.keys())
+        result= list(uDisk2._specialItems.keys())+ list(uDisk2._itemNames.keys())
         return sorted(result)
         
     headers = staticmethod(headers)
@@ -470,7 +470,7 @@ class uDisk2:
         @param n un numéro de propriété qui se réfère aux headers
         @return une propriété renvoyée par dbus, dans un format imprimable
         """
-        m=uDisk._ItemPattern.match(self.headers()[n])
+        m=uDisk2._ItemPattern.match(self.headers()[n])
         try:
             prop=m.group(1)
             result=self.showableProp(prop)
@@ -498,7 +498,6 @@ class uDisk2:
         @result le chemin du point de montage
         """
         mount_paths=self.mp
-        print ("GRRR self.mp =", mount_paths)
         if mount_paths==None: # le cas où la notion de montage est hors-sujet
             return ""
         leftTries=5

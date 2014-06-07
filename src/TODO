@@ -1,0 +1,10 @@
+le fichier usbDisk2.py fait la gestion des branchements/débranchements de
+baladeurs.
+
+On doit laisser tomber les fonctions de rappel dans les programmes de 
+plus haut niuveau qui prétendent s'occuper de ça.
+
+D'autre part, il faut mieux implémenter la structure renvoyée par Available()
+sachant qu'elle est censée se mettre à jour dynamiquement. Cette structure
+doit donc acquérir un statut GLOBAL.
+
