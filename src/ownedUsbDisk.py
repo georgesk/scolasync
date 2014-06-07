@@ -23,7 +23,7 @@ licence['en']="""
 """
 
 python3safe=True
-import usbDisk, db
+import usbDisk2, db
 import os.path, dbus, subprocess, time
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -74,22 +74,20 @@ def editRecord(owd, hint=""):
         newStudent="%s" %newStudent
         db.writeStudent(owd.stickid, owd.getFatUuid(), owd.tattoo(), newStudent)
 
-class uDisk(usbDisk.uDisk,QObject):
+class uDisk2(usbDisk2.uDisk2,QObject):
     """
     une classe qui ajoute un nom de propriétaire aux disque USB,
     et qui en même temps ajoute des particularités selon le nom du
     vendeur et le modèle.
     """
-    def __init__(self, path, bus):
+    def __init__(self, path, ub):
         """
         @param path un chemin dans le système dbus
-        @param bus un objet dbus.BusSystem
+        @param ub est une instance de UDisksBackend
         """
-        usbDisk.uDisk.__init__(self,path, bus)
+        usbDisk2.uDisk2.__init__(self,path, ub)
         QObject.__init__(self)
         self.owner="" # le propriétaire est déterminé plus tard
-        self.vendor=self.getProp("drive-vendor")
-        self.model=self.getProp("drive-model")
         self.visibleDirs=self.readQuirks()
 
     def uniqueId(self):
@@ -104,9 +102,10 @@ class uDisk(usbDisk.uDisk,QObject):
         Renvoie un tatouage présent sur la clé, quitte à le créer.
         @result un tatouage, supposément unique.
         """
-        ff=self.getFirstFat()
+        ff=self.firstFat
         if ff:
             fatPath=ff.ensureMounted()
+            print ("GRRRR", fatPath)
             return tattooInDir(fatPath)
         else:
             return ""
@@ -194,7 +193,7 @@ class uDisk(usbDisk.uDisk,QObject):
         @param noLoop si True : ne fait pas de dialogue interactif
         @return un nom de propriétaire si c'est un disque, sinon None
         """
-        if self.getProp("device-is-drive") and self.isUsbDisk():
+        if not self.parent and self.isUsb:
             if noLoop==False and not db.knowsId(self.stickid, self.getFatUuid(), self.tattoo()) :
                 prompt=QApplication.translate("Dialog","La cle {id}<br>n'est pas identifiee, donnez le nom du proprietaire",None, QApplication.UnicodeUTF8).format(id=self.stickid)
                 title=QApplication.translate("Dialog","Entrer un nom",None, QApplication.UnicodeUTF8)
@@ -203,14 +202,14 @@ class uDisk(usbDisk.uDisk,QObject):
                     db.writeStudent(self.stickid, self.getFatUuid(), self.tattoo(), text)
         return db.readStudent(self.stickid, self.getFatUuid(), self.tattoo())
         
-class Available(usbDisk.Available):
+class Available(usbDisk2.Available):
     """
     Une classe qui fournit une collection de disques USB connectés,
     avec leurs propriétaires. Les propriétaires sont recensés juste
     avant le montage des partions FAT.
     """
 
-    def __init__(self, access="disk", diskClass=uDisk, diskDict=None, noLoop=True):
+    def __init__(self, access="disk", diskClass=uDisk2, diskDict=None, noLoop=True):
         """
         Le constructeur est un proxy pour usbDisk.Available.__init__
         qui force la classe de disques à utiliser : en effet ici
@@ -221,7 +220,7 @@ class Available(usbDisk.Available):
         @param noLoop doit être True pour éviter de lancer un dialogue
         """
         self.noLoop=noLoop
-        usbDisk.Available.__init__(self, access, diskClass, diskDict)
+        usbDisk2.Available.__init__(self, access, diskClass, diskDict)
         
     def finishInit(self):
         """

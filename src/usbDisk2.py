@@ -366,11 +366,13 @@ class uDisk2:
         """
         self.path=path
         self.ub=ub
-        self.mp=None # a variable to cache the result of self.mountPoint()
         self.selected=True
         self.rlock=threading.RLock()
 
+        self.mp=self.ub.targets[self.path]["mountpoint"]
         self.isUsb=self.ub.targets[self.path]["isUsb"]
+        self.vendor=self.ub.targets[self.path]["vendor"]
+        self.model=self.ub.targets[self.path]["model"]
         self.parent=self.ub.targets[self.path]["parent"]
         self.fstype=self.ub.targets[self.path]["fstype"]
         self.stickid=self.ub.targets[self.path]["serial"]
@@ -507,7 +509,7 @@ class uDisk2:
         """
         prefix="\n"+" "*indent
         r=""
-        props=["isUsb", "parent", "fstype", "stickid", "uuid", "fatuuid", "firstFat", "devStuff"]
+        props=["mp", "isUsb", "parent", "fstype", "stickid", "uuid", "fatuuid", "vendor", "model", "devStuff"]
         for prop in props:
             r+=prefix+"%s = %s" %(prop, getattr(self,prop))
         return r
@@ -584,20 +586,20 @@ class uDisk2:
         Permet de s'assurer qu'une partition ou un disque sera bien monté
         @result le chemin du point de montage
         """
-        raise "obsoleteFunction"
-        mount_paths=self.getProp("device-mount-paths")
+        mount_paths=self.mp
+        print ("GRRR self.mp =", mount_paths)
         if mount_paths==None: # le cas où la notion de montage est hors-sujet
             return ""
         leftTries=5
         while len(mount_paths)==0 and leftTries >0:
             leftTries = leftTries - 1
-            path=self.getProp("device-file-by-path")
-            if isinstance(path,dbus.Array) and len(path)>0:
-                path=path[0]
+            path=self.path
+            if len(path)>0:
                 subprocess.call("udisks --mount %s > /dev/null" %path,shell=True)
-                paths=self.getProp("device-mount-paths")
+                paths=self.mp
+                print("STILL TO DEBUG: is the mount OK? is self.mp updated?")
                 if paths:
-                    return self.getProp("device-mount-paths")[0]
+                    return paths
                 else:
                     time.sleep(0.5)
             else:
@@ -605,7 +607,7 @@ class uDisk2:
         if leftTries==0:
             raise Exception ("Could not mount the VFAT after 5 tries.")
         else:
-            return mount_paths[0]
+            return mount_paths
 
             
         
@@ -778,7 +780,7 @@ class Available:
                     self.fatPaths.append(p.title())
                     # on marque le disque père et la partition elle-même
                     d.fatuuid=p.uuid
-                    d.firstFat=p.title()
+                    d.firstFat=p
                     p.fatuuid=p.uuid
                     if setOwners:
                         p.owner=d.owner
