@@ -424,28 +424,6 @@ class uDisk2:
         
     headers = staticmethod(headers)
     
-    def devicePropProxy(self, bus):
-        """
-        renvoie un proxy vers un navigateur de propriétés
-        @param bus une instace de dbus.SystemBus
-        @return l'objet proxy
-        """
-        raise "obsoleteFunction"
-        return self.device_prop
-
-    def isTrue(self,prop, value=None):
-        """
-        Renvoie la valeur de vérité d'une propriété
-        @param prop une propriété
-        @param value
-        @return vrai si la propriété est vraie (cas où value==None) ou vrai si la propriété a exactement la valeur value.
-        """
-        raise "obsoleteFunction"
-        if value==None:
-            return  bool(self.getProp(prop))
-        else:
-            return self.getProp(prop)==value
-    
     def __str__(self):
         """
         Fournit une représentation imprimable
@@ -460,47 +438,18 @@ class uDisk2:
         """
         return self.path
 
-    def file(self):
-        """
-        Permet d'accèder à l'instance par un nom de fichier
-        @return un nom valide dans le système de fichiers, pour accéder
-        à l'instance.
-        """
-        raise "obsoleteFunction"
-
-    def mountPoint(self):
-        """
-        Permet d'accèder à l'instance par un point de montage
-        @return un point de montage, s'il en existe, sinon None
-        """
-        raise "obsoleteFunction"
-   
-    def getProp(self, name):
-        """
-        Facilite l'accès aux propriétés à l'aide des mots clés du module udisks
-        @param name le nom d'une propriété
-        @return une propriété dbus du disque ou de la partition, sinon None si le nom name est illégal
-        """
-        raise "obsoleteFunction"
-        try:
-            return self.device_prop.Get("org.freedesktop.UDisks", name)
-        except:
-            return None
-
     def isDosFat(self):
         """
         Permet de reconnaitre les partitions DOS-FAT
         @return True dans le cas d'une partition FAT16 ou FAT32
         """
-        raise "obsoleteFunction"
-        return self.getProp("id-type")=="vfat"
+        return self.fstype=="vfat"
 
     def isMounted(self):
         """
         @return True si le disque ou la partion est montée
         """
-        raise "obsoleteFunction"
-        return bool(self.getProp("device-is-mounted"))
+        return bool(self.mp)
         
     def valuableProperties(self,indent=4):
         """
@@ -513,14 +462,6 @@ class uDisk2:
         for prop in props:
             r+=prefix+"%s = %s" %(prop, getattr(self,prop))
         return r
-
-    def master(self):
-        """
-        renvoie le chemin du disque, dans le cas où self est une partition
-        @return le chemin dbus du disque maître, sinon "/"
-        """
-        raise "obsoleteFunction"
-        return self.getProp("partition-slave")
 
     def unNumberProp(self,n):
         """
@@ -550,36 +491,6 @@ class uDisk2:
             return self.selected
         elif n <= len(propListe):
             return self.unNumberProp(n-1)
-
-    def showableProp(self, name):
-        """
-        Renvoie une propriété dans un type "montrable" par QT.
-        les propriétés que renvoie dbus ont des types inconnus de Qt4,
-        cette fonction les transtype pour que QVariant arrive à les
-        prendre en compte.
-        @param name le nom de la propriété
-        @return une nombre ou une chaîne selon le type de propriété
-        """
-        raise "obsoleteFunction"
-        p=self.getProp(name)
-        if isinstance(p,dbus.Array):
-            if len(p)>0: return str(p[0])
-            else: return ""
-        elif isinstance(p,dbus.Boolean):
-            return "%s" %bool(p)
-        elif  isinstance(p,dbus.Int16) or isinstance(p,dbus.Int32) or isinstance(p,dbus.Int64) or isinstance(p,dbus.UInt16) or isinstance(p,dbus.UInt32) or isinstance(p,dbus.UInt64) or isinstance(p,int):
-            return int(p)
-        else:
-            return "%s" %p
-
-    def getFirstFat(self):
-        """
-        Renvoie la première partition VFAT
-        @result la première partition VFAT ou None s'il n'y en a pas
-        """
-        raise "obsoleteFunction"
-        if self.isDosFat(): return self
-        return self.firstFat
 
     def ensureMounted(self):
         """
