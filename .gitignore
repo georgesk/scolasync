@@ -1,4 +1,8 @@
 debian
 __pycache__
 .pc
+Ui_*.py
+*test
+*.qm
+
 
