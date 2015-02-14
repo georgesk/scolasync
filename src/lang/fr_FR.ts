@@ -186,7 +186,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="169"/>
+        <location filename="../ownedUsbDisk.py" line="168"/>
         <source>inconnu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -196,7 +196,7 @@
         <translation type="obsolete">La clé %1&lt;br&gt;n&apos;est pas identifiée, donnez le nom du propriétaire</translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="201"/>
+        <location filename="../ownedUsbDisk.py" line="200"/>
         <source>Entrer un nom</source>
         <translation type="unfinished"></translation>
     </message>
@@ -556,7 +556,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="200"/>
+        <location filename="../ownedUsbDisk.py" line="199"/>
         <source>La cle {id}&lt;br&gt;n&apos;est pas identifiee, donnez le nom du proprietaire</source>
         <translation type="unfinished"></translation>
     </message>
@@ -821,37 +821,37 @@ p, li { white-space: pre-wrap; }
 <context encoding="UTF-8">
     <name>uDisk</name>
     <message>
-        <location filename="../usbDisk.py" line="72"/>
+        <location filename="../usbDisk2.py" line="389"/>
         <source>point de montage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../usbDisk.py" line="73"/>
+        <location filename="../usbDisk2.py" line="390"/>
         <source>taille</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../usbDisk.py" line="79"/>
+        <location filename="../usbDisk2.py" line="396"/>
         <source>cocher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="153"/>
+        <location filename="../ownedUsbDisk.py" line="152"/>
         <source>owner</source>
         <translation>propriétaire</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk.py" line="75"/>
+        <location filename="../usbDisk2.py" line="392"/>
         <source>modèle de disque</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk.py" line="76"/>
+        <location filename="../usbDisk2.py" line="393"/>
         <source>numéro de série</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../usbDisk.py" line="74"/>
+        <location filename="../usbDisk2.py" line="391"/>
         <source>marque</source>
         <translation type="unfinished"></translation>
     </message>

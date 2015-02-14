@@ -23,8 +23,6 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 

@@ -22,7 +22,6 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
 import usbDisk2, db
 import os.path, dbus, subprocess, time
 from PyQt4.QtCore import *
@@ -67,6 +66,7 @@ def editRecord(owd, hint=""):
     @param owd une instance de ownedUsbDisk
     @param hint chaîne vide par défaut. Peut être le nom de l'ancien propriétaire
     """
+    #### !!! là il faut partir de owd et trouver sa firstfat
     title=QApplication.translate("Dialog", "Choix du propriétaire", None, QApplication.UnicodeUTF8)
     prompt=QApplication.translate("Dialog", "Nouveau nom du propriétaire du baladeur", None, QApplication.UnicodeUTF8)
     newStudent, ok = QInputDialog.getText(None, title, prompt, text=hint)
@@ -102,10 +102,8 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         Renvoie un tatouage présent sur la clé, quitte à le créer.
         @result un tatouage, supposément unique.
         """
-        ff=self.firstFat
-        if ff:
-            fatPath=ff.ensureMounted()
-            return tattooInDir(fatPath)
+        if self.mp:
+            return tattooInDir(self.mp)
         else:
             return ""
     
@@ -155,15 +153,11 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         """
         renvoie un nom de propriétaire dans tous les cas.
         """
-        if self.owner != "":
-            return self.owner
+        s=db.readStudent(self.stickid, self.getFatUuid(), self.tattoo())
+        if s != None:
+            return s
         else:
-            s=db.readStudent(self.stickid, self.getFatUuid(), self.tattoo())
-            if s != None:
-                self.owner=s
-                return s
-            else:
-                return QApplication.translate("Dialog","inconnu",None, QApplication.UnicodeUTF8)
+            return QApplication.translate("Dialog","inconnu",None, QApplication.UnicodeUTF8)
 
     def __getitem__(self,n):
         """

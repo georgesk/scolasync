@@ -22,7 +22,6 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
 import os.path, sqlite3, subprocess
 import version
 from globaldef import userShareDir

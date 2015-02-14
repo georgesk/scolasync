@@ -263,10 +263,10 @@ class mainWindow(QMainWindow):
         elif c==1:
             # case du propriétaire
             self.editOwner(mappedIdx)
-        elif "device-mount-paths" in h:
+        elif "mp" in h:
             cmd="xdg-open '%s'" %idx.data().toString ()
             subprocess.call(cmd, shell=True)
-        elif "device-size" in h:
+        elif "capacity" in h:
             mount=idx.model().partition(idx).mountPoint()
             dev,total,used,remain,pcent,path = self.diskSizeData(mount)
             pcent=int(pcent[:-1])
@@ -292,7 +292,7 @@ class mainWindow(QMainWindow):
         (the tuple comes from the command df)
         """
         if type(rowOrDev)==type(0):
-            path=qApp.diskData[rowOrDev][self.header.index("1device-mount-paths")]
+            path=qApp.diskData[rowOrDev][self.header.index("1mp")]
         else:
             path=rowOrDev
         cmd ="df '%s'" %path
@@ -304,24 +304,21 @@ class mainWindow(QMainWindow):
 
     def diskFromOwner(self,student):
         """
-        trouve le disque qui correspond à un propriétaire
+        trouve le disque qui correspond à un propriétaire, ou alors
+        renvoie le premier disque inconnu.
         @param student le propriétaire du disque
         @return le disque correspondant à l'étudiant
         """
-        found=False
-        for d in qApp.diskData.disks.keys():
-            if d.owner==student:
-                found=True
-                break
-            # si on ne trouve pas avec le nom, on essaie de trouver
-            # un disque encore inconnu, le premier venu
-            if d.owner==None or len(d.owner)==0:
-                found=True
-                break
-        if found:
-            return d
-        else:
-            return None
+        defaultDisk=None
+        for d in ownedUsbDisk.Available(access="firstFat"):
+            s=db.readStudent(d.stickid, d.uuid, d.tattoo())
+            if s==student :
+                return d
+            elif s==None and defaultDisk==None : 
+                # premier disque inconnu
+                defaultDisk=d
+        return defaultDisk
+
         
     def editOwner(self, idx):
         """
@@ -607,7 +604,7 @@ class mainWindow(QMainWindow):
                 self.visibleheader.append(self.tr(ownedUsbDisk.uDisk2._itemNames[h]))
             else:
                 self.visibleheader.append(h)
-        self.tm=usbTableModel(self, self.visibleheader,data)
+        self.tm=usbTableModel(self, self.visibleheader, data)
         self.t.setModel(self.tm)
         self.t.setItemDelegateForColumn(0, CheckBoxDelegate(self))
         self.t.setItemDelegateForColumn(1, UsbDiskDelegate(self))
@@ -773,15 +770,15 @@ class usbTableModel(QAbstractTableModel):
                 return QApplication.translate("Main","Cocher ou décocher cette case en cliquant.<br><b>Double-clic</b> pour agir sur plusieurs baladeurs.",None, QApplication.UnicodeUTF8)
             elif c==1:
                 return QApplication.translate("Main","Propriétaire de la clé USB ou du baladeur ;<br><b>Double-clic</b> pour modifier.",None, QApplication.UnicodeUTF8)
-            elif "device-mount-paths" in h:
+            elif "mp" in h:
                 return QApplication.translate("Main","Point de montage de la clé USB ou du baladeur ;<br><b>Double-clic</b> pour voir les fichiers.",None, QApplication.UnicodeUTF8)
-            elif "device-size" in h:
+            elif "capacity" in h:
                 return QApplication.translate("Main","Capacité de la clé USB ou du baladeur en kO ;<br><b>Double-clic</b> pour voir la place occupée.",None, QApplication.UnicodeUTF8)
-            elif "drive-vendor" in h:
+            elif "vendor" in h:
                 return QApplication.translate("Main","Fabricant de la clé USB ou du baladeur.",None, QApplication.UnicodeUTF8)
-            elif "drive-model" in h:
+            elif "model" in h:
                 return QApplication.translate("Main","Modèle de la clé USB ou du baladeur.",None, QApplication.UnicodeUTF8)
-            elif "drive-serial" in h:
+            elif "stickid" in h:
                 return QApplication.translate("Main","Numéro de série de la clé USB ou du baladeur.",None, QApplication.UnicodeUTF8)
             else:
                 return ""
@@ -892,8 +889,11 @@ class DiskSizeDelegate(QStyledItemDelegate):
         
 
     def paint(self, painter, option, index):
-        print ("GRRR index =", index.row(), index.column(), index.model().data(index, Qt.DisplayRole).toString())
-        value = int(index.model().data(index, Qt.DisplayRole).toString())
+        text=index.model().data(index, Qt.DisplayRole).toString()
+        if text=="":
+            value=0
+        else:
+            value = int(index.model().data(index, Qt.DisplayRole).toString())
         text = self.val2txt(value)
         rect0=QRect(option.rect)
         rect1=QRect(option.rect)

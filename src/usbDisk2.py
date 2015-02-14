@@ -226,8 +226,8 @@ class UDisksBackend:
         if mount:
             total, free = fs_size(mount)
         else:
-            # est-ce bien raisonnable de continuer avec un disque
-            # qui n'est pas monté ???
+            # si le disque n'est pas monté, on a accès à la taille mais pas
+            # à son utilisation.
             total = drive.get_cached_property('Size').get_uint64()
             free = -1
             mount = ''
@@ -377,6 +377,8 @@ class uDisk2:
         self.fstype=self.ub.targets[self.path]["fstype"]
         self.stickid=self.ub.targets[self.path]["serial"]
         self.uuid=self.ub.targets[self.path]["uuid"]
+        self.free=self.ub.targets[self.path]["free"]
+        self.capacity=self.ub.targets[self.path]["capacity"]
         self.fatuuid=None  # pour l'uuid de la première partion vfat
         self.firstFat=None # poignée de la première partition vfat
         # self.devStuff is the name of device which is usable to umount safely this object
@@ -384,11 +386,11 @@ class uDisk2:
 
             
     _itemNames={
-        "1device-mount-paths":QApplication.translate("uDisk","point de montage",None, QApplication.UnicodeUTF8),
-        "2device-size":QApplication.translate("uDisk","taille",None, QApplication.UnicodeUTF8),
-        "3drive-vendor":QApplication.translate("uDisk","marque",None, QApplication.UnicodeUTF8),
-        "4drive-model":QApplication.translate("uDisk","modèle de disque",None, QApplication.UnicodeUTF8),
-        "5drive-serial":QApplication.translate("uDisk","numéro de série",None, QApplication.UnicodeUTF8),
+        "1mp":QApplication.translate("uDisk","point de montage",None, QApplication.UnicodeUTF8),
+        "2capacity":QApplication.translate("uDisk","taille",None, QApplication.UnicodeUTF8),
+        "3vendor":QApplication.translate("uDisk","marque",None, QApplication.UnicodeUTF8),
+        "4model":QApplication.translate("uDisk","modèle de disque",None, QApplication.UnicodeUTF8),
+        "5stickid":QApplication.translate("uDisk","numéro de série",None, QApplication.UnicodeUTF8),
         }
 
     _specialItems={"0Check":QApplication.translate("uDisk","cocher",None, QApplication.UnicodeUTF8)}
@@ -458,10 +460,16 @@ class uDisk2:
         """
         prefix="\n"+" "*indent
         r=""
-        props=["mp", "isUsb", "parent", "fstype", "stickid", "uuid", "fatuuid", "vendor", "model", "devStuff"]
+        props=["mp", "isUsb", "parent", "fstype", "stickid", "uuid", "fatuuid", "vendor", "model", "devStuff", "free", "capacity"]
         for prop in props:
             r+=prefix+"%s = %s" %(prop, getattr(self,prop))
         return r
+
+    def mountPoint(self):
+        """
+        @return le point de montage
+        """
+        return self.mp
 
     def unNumberProp(self,n):
         """
@@ -472,9 +480,7 @@ class uDisk2:
         """
         m=uDisk2._ItemPattern.match(self.headers()[n])
         try:
-            prop=m.group(1)
-            result=self.showableProp(prop)
-            return result
+            return getattr(self, m.group(1))
         except:
             return ""
         
@@ -617,7 +623,7 @@ class Available:
         Fournit une représentation imprimable d'un résumé
         @return une représentation imprimable d'un résumé de la collection
         """
-        r=  "Available USB discs\n"
+        r=  "Available USB disks\n"
         r+= "===================\n"
         for d in sorted(self.disks.keys(), key=lambda disk: disk.getFatUuid()):
             r+="%s\n" %(d.title(),)
@@ -632,7 +638,7 @@ class Available:
         Fournit une représentation imprimable
         @return une représentation imprimable de la collection
         """
-        r=  "Available USB discs\n"
+        r=  "Available USB disks\n"
         r+= "===================\n"
         for d in self.disks.keys():
             r+="%s\n" %d
