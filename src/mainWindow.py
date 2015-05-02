@@ -585,10 +585,16 @@ class mainWindow(QMainWindow):
         if button!=QMessageBox.Ok:
             return
         for d in qApp.diskData.disks.keys():
-            devfile_disk=d.getProp("device-file-by-path")
-            if isinstance(devfile_disk, dbus.Array):
-                devfile_disk=devfile_disk[0]
-            subprocess.call("eject %s 2>/dev/null || true && udisks --detach %s" %(devfile_disk,devfile_disk), shell=True)
+            for partition in qApp.diskData.disks[d]:
+                cmd="umount {0}".format(partition.mp)
+                subprocess.call(cmd, shell=True)
+            cmd= "udisks --detach {0}".format(d.devStuff)
+            subprocess.call(cmd, shell=True)
+        print ("================ GRRRR =====================")
+        # delete rows in the table
+        self.tm.removeRows(0, len(self.tm.donnees))
+        # reset the dictionary of disks
+        qApp.diskData.disk={}
         self.checkDisks()  # remet à jour le compte de disques
         self.operations=[] # remet à zéro la liste des opérations
                 

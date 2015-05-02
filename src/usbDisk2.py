@@ -32,6 +32,26 @@ from dbus.mainloop.glib import DBusGMainLoop, threads_init
 from gi.repository import Gio, GLib, UDisks
 from PyQt4.QtGui import *
 
+#################### activate debugging #######################
+debug=True
+def inspectData():
+    return ""
+
+if debug :
+    logging.basicConfig(level=logging.DEBUG)
+    import inspect
+    def inspectData():
+        caller=1
+        callerframerecord = inspect.stack()[caller]
+        frame = callerframerecord[0]
+        info = inspect.getframeinfo(frame)
+        return " -- file={0}, function={1}, line={2}".format(
+            info.filename, info.function, info.lineno
+            )
+else:
+    logging.basicConfig(level=logging.NOTSET)
+###############################################################
+
 def abstract(func):
     """
     Cette "fabrique" permet de faire un décorateur @abstract.
@@ -89,6 +109,7 @@ class UDisksBackend:
     """
     Cette classe a été inspirée par le projet USBcreator. 
     Plusieurs modifications ont été faites au code original.
+    Les fonctions de rappel ne tiennent compte que des périphériques USB
     """
     def __init__(self, allow_system_internal=False, bus=None, show_all=False, logger=logging):
         """
@@ -101,6 +122,8 @@ class UDisksBackend:
         par défaut il se confond avec le module logging
         """
         self.install_thread = None
+        ## self.targets est un dictionnaire des disques détectés
+        ## les clés sont les dsiques, et les contenus sont les partitions
         self.targets = {}
         self.cbHooks = []
         self.show_all = show_all
@@ -132,7 +155,7 @@ class UDisksBackend:
             except GLib.GError as e:
                 if not 'UDisks2.Error.DeviceBusy' in e.message:
                     raise
-                logger.debug(QApplication.translate("uDisk","Disque occupé (Busy)",None, QApplication.UnicodeUTF8))
+                logger.debug(QApplication.translate("uDisk","Disque occupé (Busy)",None, QApplication.UnicodeUTF8)+inspectData())
                 time.sleep(retryDelay)
                 timeout -= retryDelay
         return ''
@@ -145,7 +168,7 @@ class UDisksBackend:
         qu'à leur mise en place durant le fonctionnement de la boucle
         principale.
         """
-        self.logger.debug(QApplication.translate("uDisk","Détection des disques",None, QApplication.UnicodeUTF8))
+        self.logger.debug(QApplication.translate("uDisk","Détection des disques",None, QApplication.UnicodeUTF8)+inspectData())
 
         self.manager = self.udisks.get_object_manager()
 
@@ -203,9 +226,9 @@ class UDisksBackend:
                 self._udisks_drive_added(obj, block, drive, path)
             
     def _udisks_partition_added(self, obj, block, drive, path):
-        self.logger.debug(QApplication.translate("uDisk","Partition ajoutée %s",None, QApplication.UnicodeUTF8) % path)
+        self.logger.debug(QApplication.translate("uDisk","Partition ajoutée %s",None, QApplication.UnicodeUTF8) % path+inspectData())
         fstype = block.get_cached_property('IdType').get_string()
-        self.logger.debug(QApplication.translate("uDisk","id-type %s ",None, QApplication.UnicodeUTF8) % fstype)
+        self.logger.debug(QApplication.translate("uDisk","id-type %s ",None, QApplication.UnicodeUTF8) % fstype+inspectData())
 
         partition = obj.get_partition()
         parent = partition.get_cached_property('Table').get_string()
@@ -231,7 +254,7 @@ class UDisksBackend:
             total = drive.get_cached_property('Size').get_uint64()
             free = -1
             mount = ''
-        self.logger.debug('mount: %s' % mount)
+        self.logger.debug('mount: %s' % mount+inspectData())
         isUsb=False
         for s in block.get_cached_property('Symlinks'):
             if '/dev/disk/by-id/usb' in bytes(s).decode("utf-8"):
@@ -262,51 +285,53 @@ class UDisksBackend:
                 if isCallable(self.target_added_cb):
                     self.target_added_cb(path)
         else:
-            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition à 0 octets.",None, QApplication.UnicodeUTF8))            
+            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition à 0 octets.",None, QApplication.UnicodeUTF8)+inspectData())            
              
     def _udisks_drive_added(self, obj, block, drive, path):
         if not drive:
             return
-        self.logger.debug(QApplication.translate("uDisk","Disque ajouté : %s",None, QApplication.UnicodeUTF8) % path)
-        
-        size = drive.get_cached_property('Size').get_uint64()
-        if size <= 0:
-            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition à 0 octets.",None, QApplication.UnicodeUTF8))            
-            return
-
-        isUsb=False
-        for s in block.get_cached_property('Symlinks'):
-            if '/dev/disk/by-id/usb' in str(s):
-                isUsb=True
-        for s in block.get_cached_property('Symlinks'):
-            if '/dev/disk/by-id/usb' in bytes(s).decode("utf-8"):
-                isUsb=True
-        self.targets[path] = {
-            'isUsb'      : isUsb,
-            'fstype'     : '',  
-            'uuid'       : block.get_cached_property('IdUUID').get_string(),
-            'serial'     : block.get_cached_property('Drive').get_string().split('_')[-1],
-            'vendor': drive.get_cached_property('Vendor').get_string(),
-            'model' : drive.get_cached_property('Model').get_string(),
-            'label' : '',
-            'free'  : -1,
-            'device': block.get_cached_property('Device').get_bytestring().decode('utf-8'),
-            'capacity' : size,
-            'mountpoint' : None,
-            'parent' : None,
-        }
-        if isCallable(self.target_added_cb):
-            if self.show_all:
-                self.target_added_cb(path)
-            else:
-                children = [x for x in self.targets
-                            if self.targets[x]['parent'] == path]
-                if not children:
+        if path in self.targets:
+            self.logger.debug(QApplication.translate("uDisk","Disque déjà ajouté auparavant : %s",None, QApplication.UnicodeUTF8) % path+inspectData())
+        else:
+            self.logger.debug(QApplication.translate("uDisk","Disque ajouté : %s",None, QApplication.UnicodeUTF8) % path+inspectData())
+            
+            size = drive.get_cached_property('Size').get_uint64()
+            if size <= 0:
+                self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition à 0 octets.",None, QApplication.UnicodeUTF8)+inspectData())
+                return
+            isUsb=False
+            for s in block.get_cached_property('Symlinks'):
+                if '/dev/disk/by-id/usb' in bytes(s).decode("utf-8"):
+                    isUsb=True
+            if not isUsb:
+                self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : type non USB.",None, QApplication.UnicodeUTF8)+inspectData())
+                return
+            self.targets[path] = {
+                'isUsb'      : isUsb,
+                'fstype'     : '',  
+                'uuid'       : block.get_cached_property('IdUUID').get_string(),
+                'serial'     : block.get_cached_property('Drive').get_string().split('_')[-1],
+                'vendor': drive.get_cached_property('Vendor').get_string(),
+                'model' : drive.get_cached_property('Model').get_string(),
+                'label' : '',
+                'free'  : -1,
+                'device': block.get_cached_property('Device').get_bytestring().decode('utf-8'),
+                'capacity' : size,
+                'mountpoint' : None,
+                'parent' : None,
+            }
+            if isCallable(self.target_added_cb):
+                if self.show_all:
                     self.target_added_cb(path)
+                else:
+                    children = [x for x in self.targets
+                                if self.targets[x]['parent'] == path]
+                    if not children:
+                        self.target_added_cb(path)
             
     def _device_changed(self, obj):
         path = obj.get_object_path()
-        self.logger.debug(QApplication.translate("uDisk","Changement pour le disque %s",None, QApplication.UnicodeUTF8) % path)
+        self.logger.debug(QApplication.translate("uDisk","Changement pour le disque %s",None, QApplication.UnicodeUTF8) % path+inspectData())
         # As this will happen in the same event, the frontend wont change
         # (though it needs to make sure the list is sorted, otherwise it will).
         self._device_removed(path)
@@ -615,7 +640,7 @@ class Available:
         @return vrai si le uDisk ud est dans la collection
         """
         for k in self.disks.keys():
-            if k.getProp("device-file-by-path")==ud.getProp("device-file-by-path"): return True
+            if k.mp==ud.mp: return True
         return False
     
     def summary(self):
@@ -719,25 +744,3 @@ class Available:
 if __name__=="__main__":
     machin=Available()
     print (machin)
-"""
-    # create logger
-    logger = logging.getLogger("my_example")
-    logger.setLevel(logging.DEBUG)
-    # create console handler and set level to debug
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    # create formatter
-    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    # add formatter to ch
-    ch.setFormatter(formatter)
-
-    # add ch to logger
-    # logger.addHandler(ch)
-
-    logger.addHandler(logging.NullHandler())
-
-    ub=UDisksBackend(logger=logger)
-    ub.detect_devices()
-    print(ub.targets)
-    
-"""
