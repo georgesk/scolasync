@@ -33,7 +33,7 @@ from gi.repository import Gio, GLib, UDisks
 from PyQt4.QtGui import *
 
 #################### activate debugging #######################
-debug=True
+debug=False
 def inspectData():
     return ""
 
@@ -49,7 +49,8 @@ if debug :
             info.filename, info.function, info.lineno
             )
 else:
-    logging.basicConfig(level=logging.NOTSET)
+    pass
+    # logging.basicConfig(level=logging.NOTSET)
 ###############################################################
 
 def abstract(func):
@@ -552,53 +553,29 @@ class uDisk2:
 
             
         
-class Available:
+class Available (UDisksBackend):
     """
     une classe pour représenter la collection des disques USB connectés
 
     les attributs publics sont :
     - \b access le type d'accès qu'on veut pour les items
-    - \b bus une instance de dbus.SystemBus
-    - \b disks la collection de disques USB, organisée en un dictionnaire
+    - \b targets la collection de disques USB, organisée en un dictionnaire
        de disques : les clés sont les disques, qui renvoient à un ensemble
        de partitions du disque
-    - \b enumdev une liste de chemins dbus vers les disques trouvés
     - \b firstFats une liste composée de la première partion DOS-FAT de chaque disque USB.
     """
 
-    def __init__(self,access="disk", diskClass=uDisk2, diskDict=None):
+    def __init__(self, access="disk", diskClass=uDisk2):
         """
         Le constructeur
         @param access définit le type d'accès souhaité. Par défaut, c'est "disk"
           c'est à dire qu'on veut la liste des disques USB. Autres valeurs
           possibles : "firstFat" pour les premières partitions vfat.
         @param diskClass la classe de disques à créer
-        @param diskDict un dictionnaire des disque maintenu par deviceListener
         """
+        UDisksBackend.__init__(self)
         self.access=access
-        self.ub = UDisksBackend()
-        self.ub.detect_devices()
-        self.disks={}
-        self.enumDev=[dev for dev in self.ub.targets]
-        ### récupération des disques usb dans le dictionnaire self.disks
-        for path in self.enumDev:
-            ud=diskClass(path, self.ub)
-            if ud.isUsb:
-                if not ud.parent:
-                    self.disks[ud]=[]
-                """
-                # cas des disques sans partitions
-                if bool(ud.getProp("device-is-partition-table")) == False:
-                    # la propriété "device-is-partition-table" est fausse,
-                    # probablement qu'il y a un système de fichiers
-                    self.disks[ud].append(ud)
-                """
-        ### une deuxième passe pour récupérer et associer les partitions
-        for path in self.enumDev:
-            ud=diskClass(path, self.ub)
-            for d in self.disks.keys():
-                if ud.parent == d.path:
-                    self.disks[d].append(ud)
+        self.detect_devices()
         self.finishInit()
 
     def finishInit(self):
@@ -615,7 +592,7 @@ class Available:
         self.firstFats = self.getFirstFats()
         if self.access=="firstFat":
             for p in self.firstFats:
-                p.ensureMounted()
+                uDisk2(p,self).ensureMounted()
 
     def __trunc__(self):
         """
@@ -639,10 +616,32 @@ class Available:
         @param ud une instance de uDisk
         @return vrai si le uDisk ud est dans la collection
         """
-        for k in self.disks.keys():
-            if k.mp==ud.mp: return True
-        return False
+        return ud.path in self.targets
     
+    def disks(self):
+        """
+        Récolte les enregistrements de niveau supérieur de self.targets
+        @return la liste des chemins vers les disque USB détectés
+        """
+        return [d for d in self.targets if self.targets[d]["parent"]==None]
+
+    def parts(self, d):
+        """
+        Récolte les partitions d'un disque
+        @param d le chemin vers un disque
+        @return la liste des partitions de ce disque
+        """
+        return [p for p in self.targets if self.targets[p]["parent"]==d]
+
+    def parts_ud(self, d):
+        """
+        Récolte les partitions d'un disque
+        @param d le chemin vers un disque
+        @return la liste des objets uDisk2 qui sont des partitions 
+        de ce disque
+        """
+        return [uDisk2(p, self) for p in self.targets if self.targets[p]["parent"]==d]
+
     def summary(self):
         """
         Fournit une représentation imprimable d'un résumé
@@ -650,12 +649,13 @@ class Available:
         """
         r=  "Available USB disks\n"
         r+= "===================\n"
-        for d in sorted(self.disks.keys(), key=lambda disk: disk.getFatUuid()):
-            r+="%s\n" %(d.title(),)
-            if len(self.disks[d])>0:
+        for d in sorted(self.disks()):
+            r+="%s\n" %(self.targets[d]["device"])
+            partlist=self.parts(d)
+            if len(partlist)>0:
                 r+="    Partitions :\n"
-                for part in sorted(self.disks[d], key=lambda disk: disk.getFatUuid()):
-                    r+="        %s\n" %(part.path,)
+                for part in partlist:
+                    r+="        %s\n" %(self.targets[part]["device"],)
         return r
 
     def __str__(self):
@@ -665,13 +665,14 @@ class Available:
         """
         r=  "Available USB disks\n"
         r+= "===================\n"
-        for d in self.disks.keys():
+        for d in self.disks():
             r+="%s\n" %d
-            if len(self.disks[d])>0:
+            partlist=self.parts(d)
+            if len(partlist)>0:
                 r+="    Partitions :\n"
-                for part in self.disks[d]:
-                    r+="        %s\n" %(part.path)
-                    r+=part.valuableProperties(12)+"\n"
+                for part in sorted(partlist):
+                    r+="        %s\n" %(self.targets[part]["device"])
+                    r+=uDisk2(part, self).valuableProperties(12)+"\n"
         return r
 
     def __getitem__(self, n):
@@ -682,9 +683,9 @@ class Available:
         @return le nième disque USB connecté
         """
         if self.access=="disk":
-            return self.disks.keys()[n]
+            return uDisk2(self.targets.keys()[n], self)
         elif self.access=="firstFat":
-            return self.firstFats[n]
+            return uDisk2(self.firstFats[n],self)
 
     def __len__(self):
         """
@@ -693,7 +694,7 @@ class Available:
         @return la longueur de la collection de disques renvoyée
         """
         if self.access=="disk":
-            return len(self.disks)
+            return len(self.targets)
         elif self.access=="firstFat":
             return len(self.firstFats)
 
@@ -711,19 +712,15 @@ class Available:
         """
         result=[]
         self.fatPaths=[]
-        for d in self.disks.keys():
-            for p in self.disks[d]:
-                if p.fstype=="vfat" or p==d :
-                    # le cas p == d correspond aux disques non partitionnés
-                    # on va supposer que dans ce cas la partition ne peut
-                    # être que de type DOS !!!
+        disks=[d for d in self.targets if self.targets[d]["parent"]==None]
+        for d in disks:
+            parts=[p for p in self.targets if self.targets[p]["parent"]==d]
+            for p in parts:
+                if self.targets[p]["fstype"]=="vfat":
                     result.append(p)
-                    self.fatPaths.append(p.title())
-                    # on marque le disque père et la partition elle-même
-                    d.fatuuid=p.uuid
-                    d.firstFat=p
-                    p.fatuuid=p.uuid
+                    self.fatPaths.append(p)
                     if setOwners:
+                        print(" !!!! IL FAUT DÉBOGUER ÇA CE CODE N'EST PAS PROPRE DANS getFirstFats")
                         p.owner=d.owner
                     break
         return result
@@ -734,6 +731,7 @@ class Available:
         @return True si la partition est dans la liste des partions disponibles
         """
         s="%s" %dev
+        print(" !!!! IL FAUT DÉBOGUER ÇA CE CODE N'EST PAS PROPRE DANS hasDev")
         s=s.replace("/org/freedesktop/UDisks/devices/","")
         for p in self.fatPaths:
             if p.split("/")[-1]==s:

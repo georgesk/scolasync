@@ -590,7 +590,6 @@ class mainWindow(QMainWindow):
                 subprocess.call(cmd, shell=True)
             cmd= "udisks --detach {0}".format(d.devStuff)
             subprocess.call(cmd, shell=True)
-        print ("================ GRRRR =====================")
         # delete rows in the table
         self.tm.removeRows(0, len(self.tm.donnees))
         # reset the dictionary of disks
@@ -636,7 +635,6 @@ class mainWindow(QMainWindow):
         self.checkDisksLock=True
         other=ownedUsbDisk.Available(
             access="firstFat",
-            diskDict=self.listener.connectedVolumes,
             noLoop=noLoop)
         if force or not self.sameDiskData(qApp.diskData, other):
             qApp.diskData=other
@@ -698,7 +696,6 @@ class usbTableModel(QAbstractTableModel):
         """
         global activeThreads, pastCommands, lastCommand
         owner="%s" %owner
-        owner=owner.encode("utf-8")
         if owner in activeThreads:
             activeThreads[owner].append(cmd)
         else:

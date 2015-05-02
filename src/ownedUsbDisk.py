@@ -202,18 +202,17 @@ class Available(usbDisk2.Available):
     avant le montage des partions FAT.
     """
 
-    def __init__(self, access="disk", diskClass=uDisk2, diskDict=None, noLoop=True):
+    def __init__(self, access="disk", diskClass=uDisk2, noLoop=True):
         """
         Le constructeur est un proxy pour usbDisk.Available.__init__
         qui force la classe de disques à utiliser : en effet ici
         uDisk désigne ownedUsbDisk.uDisk
         @param access le mode d'accès : 'disk' ou 'firstFat'
         @param diskClass la classe d'objets à créer pour chaque disque
-        @param diskDict un dictionnaire des disque maintenu par deviceListener
         @param noLoop doit être True pour éviter de lancer un dialogue
         """
         self.noLoop=noLoop
-        usbDisk2.Available.__init__(self, access, diskClass, diskDict)
+        usbDisk2.Available.__init__(self, access, diskClass)
         
     def finishInit(self):
         """
@@ -221,9 +220,42 @@ class Available(usbDisk2.Available):
         puis identifie les partitions FAT et les monte
         """
         self.getFirstFats() # premier passage, pour repérer chaque partition FAT
-        for d in self.disks.keys():
+        for d in self.disks_ud():
             d.owner=d.ensureOwner(self.noLoop)
         self.mountFirstFats()
+
+    ################# les codes de ces méthodes sont recopiés ici ###########
+    ################# sinon uDisk2 ne fait pas référence à la classe ########
+    ################# surchargée ici. Comment faire des classes vituelles ???
+    
+    def disks_ud(self):
+        """
+        Récolte les enregistrements de niveau supérieur de self.targets
+        @return la liste des objects uDisk2 détectés
+        """
+        return [uDisk2(d, self) for d in self.targets if self.targets[d]["parent"]==None]
+
+    def parts_ud(self, d):
+        """
+        Récolte les partitions d'un disque
+        @param d le chemin vers un disque
+        @return la liste des objets uDisk2 qui sont des partitions 
+        de ce disque
+        """
+        return [uDisk2(p, self) for p in self.targets if self.targets[p]["parent"]==d]
+
+    def __getitem__(self, n):
+        """
+        Renvoye le nième disque. Le fonctionnement dépend du paramètre
+        self.access
+        @param n un numéro
+        @return le nième disque USB connecté
+        """
+        if self.access=="disk":
+            return uDisk2(self.targets.keys()[n], self)
+        elif self.access=="firstFat":
+            return uDisk2(self.firstFats[n],self)
+
 
 if __name__=="__main__":
     machin=Available()
