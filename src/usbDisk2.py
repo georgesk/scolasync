@@ -429,7 +429,7 @@ class uDisk2:
         identifiée (utile pour les disques partitionnés)
         @return un uuid
         """
-        return "%s" %self.fatuuid
+        return "%s" %self.uuid
         
     def uniqueId(self):
         """

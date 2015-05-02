@@ -584,12 +584,13 @@ class mainWindow(QMainWindow):
             buttons,defaultButton)
         if button!=QMessageBox.Ok:
             return
-        for d in qApp.diskData.disks.keys():
-            for partition in qApp.diskData.disks[d]:
+        for d in qApp.diskData.disks_ud():
+            for partition in qApp.diskData.parts_ud(d.path):
                 cmd="umount {0}".format(partition.mp)
                 subprocess.call(cmd, shell=True)
             cmd= "udisks --detach {0}".format(d.devStuff)
             subprocess.call(cmd, shell=True)
+        print("=============== GRRR =======================")
         # delete rows in the table
         self.tm.removeRows(0, len(self.tm.donnees))
         # reset the dictionary of disks
