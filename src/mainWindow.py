@@ -590,11 +590,6 @@ class mainWindow(QMainWindow):
                 subprocess.call(cmd, shell=True)
             cmd= "udisks --detach {0}".format(d.devStuff)
             subprocess.call(cmd, shell=True)
-        print("=============== GRRR =======================")
-        # delete rows in the table
-        self.tm.removeRows(0, len(self.tm.donnees))
-        # reset the dictionary of disks
-        qApp.diskData.disk={}
         self.checkDisks()  # remet à jour le compte de disques
         self.operations=[] # remet à zéro la liste des opérations
                 
@@ -656,7 +651,8 @@ class mainWindow(QMainWindow):
         """
         @return True si les ensembles de uniqueId de one et two sont identiques
         """
-        return set([p.uniqueId() for p in one]) == set([p.uniqueId() for p in two])
+        return len(one.targets) == len(two.targets) and \
+            set([p.uniqueId() for p in one]) == set([p.uniqueId() for p in two])
 
     def flashLCD(self):
         """

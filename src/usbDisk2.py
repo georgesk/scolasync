@@ -141,7 +141,7 @@ class UDisksBackend:
         self.udisks = UDisks.Client.new_sync(None)
 
     # voir le fichier integration-test issu des sources de udisks2
-    def retry_mount(self, fs, timeout=3, retryDelay=0.3):
+    def retry_mount(self, fs, timeout=5, retryDelay=0.3):
         """
         Essaie de monter un système de fichier jusqu'à ce qu'il
         cesse d'échouer avec "Busy". Échoue si l'erreur est autre
@@ -208,16 +208,18 @@ class UDisksBackend:
         
         # initialise drive, nom du disque ?
         drive_name = block.get_cached_property('Drive').get_string()
-        if drive_name != '/':
-            drive = self.udisks.get_object(drive_name).get_drive()
-        else:
+        if drive_name == '/':
             drive = None
+            return
+        else:
+            drive = self.udisks.get_object(drive_name).get_drive()
         
         # on ne tient pas compte des CDROMS ni DVDROMS
         if drive and drive.get_cached_property('Optical').get_boolean():
             return
 
         # détermine si on a un disque ou une partition
+        self.logger.debug(QApplication.translate("uDisk","Disque ajouté %s",None, QApplication.UnicodeUTF8) % drive+inspectData())
         part = obj.get_partition()
         is_system = block.get_cached_property('HintSystem').get_boolean()
         if self.allow_system_internal or not is_system:
@@ -225,6 +227,7 @@ class UDisksBackend:
                 self._udisks_partition_added(obj, block, drive, path)
             else:
                 self._udisks_drive_added(obj, block, drive, path)
+        return
             
     def _udisks_partition_added(self, obj, block, drive, path):
         self.logger.debug(QApplication.translate("uDisk","Partition ajoutée %s",None, QApplication.UnicodeUTF8) % path+inspectData())
@@ -275,7 +278,6 @@ class UDisksBackend:
                 'mountpoint' : mount,
                 'parent'     : str(parent),
             }
-            self._update_free(path)
             if self.show_all:
                 if isCallable(self.target_added_cb):
                     self.target_added_cb(device)
@@ -333,10 +335,6 @@ class UDisksBackend:
     def _device_changed(self, obj):
         path = obj.get_object_path()
         self.logger.debug(QApplication.translate("uDisk","Changement pour le disque %s",None, QApplication.UnicodeUTF8) % path+inspectData())
-        # As this will happen in the same event, the frontend wont change
-        # (though it needs to make sure the list is sorted, otherwise it will).
-        self._device_removed(path)
-        self._udisks_obj_added(obj)
 
     def _device_removed(self, device):
         """
@@ -348,29 +346,6 @@ class UDisksBackend:
                 self.target_removed_cb(device)
             self.targets.pop(device)
 
-    def update_free(self):
-        """
-        À documenter
-        """
-        for k in self.targets:
-            changed = self._update_free(k)
-            if changed and isCallable(self.target_changed_cb):
-                self.target_changed_cb(k)
-        return True
-
-    # Internal functions.
-
-    def _update_free(self, k):
-        """
-        À documenter
-        """
-        changed = False
-        target = self.targets[k]
-        free = target['free']
-        target['free'] = fs_size(target['mountpoint'])[1]
-        if free != target['free']:
-            changed = True
-        return changed
 
 class uDisk2:
     """
@@ -740,5 +715,21 @@ class Available (UDisksBackend):
     
 
 if __name__=="__main__":
+    from PyQt4.QtCore import *
+    from PyQt4.QtGui import *
+    import sys
+    class MainWindow(QMainWindow):
+        def __init__(self):
+            QMainWindow.__init__(self)
+
+            # The only thing in the app is a quit button
+            quitbutton = QPushButton('Close', self)
+            self.setCentralWidget(quitbutton)
+    
+
     machin=Available()
     print (machin)
+    app = QApplication(sys.argv)
+    main = MainWindow()
+    main.show()
+    sys.exit(app.exec_())
