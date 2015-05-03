@@ -27,7 +27,7 @@ licence['en']=licence_en
 dependences="python3-dbus python3-dbus.mainloop.qt"
 
 
-import dbus, subprocess, os, os.path, re, time, threading, logging
+import dbus, subprocess, os, os.path, re, time, threading, logging, inspect
 from dbus.mainloop.glib import DBusGMainLoop, threads_init
 from gi.repository import Gio, GLib, UDisks
 from PyQt4.QtGui import *
@@ -39,7 +39,6 @@ def inspectData():
 
 if debug :
     logging.basicConfig(level=logging.DEBUG)
-    import inspect
     def inspectData():
         caller=1
         callerframerecord = inspect.stack()[caller]
@@ -123,23 +122,68 @@ class UDisksBackend:
         par défaut il se confond avec le module logging
         """
         self.install_thread = None
+        self.logger=logger
+        self.allow_system_internal=allow_system_internal
+        self.show_all=show_all
         ## self.targets est un dictionnaire des disques détectés
         ## les clés sont les dsiques, et les contenus sont les partitions
         self.targets = {}
-        self.cbHooks = []
-        self.show_all = show_all
-        self.allow_system_internal = allow_system_internal
-        self.logger=logger
-        self.logger.debug(QApplication.translate("uDisk","UDisksBackend : initialisation",None, QApplication.UnicodeUTF8))
         DBusGMainLoop(set_as_default=True)
         threads_init()
         if bus:
             self.bus = bus
         else:
             self.bus = dbus.SystemBus()
-
         self.udisks = UDisks.Client.new_sync(None)
+        self.manager = self.udisks.get_object_manager()
+        self.cbHooks = {
+            'object-added':      {
+                'profile': ['man', 'obj'],
+                'hooks'  : []
+                },
+            'object-removed':      {
+                'profile': ['man', 'obj'],
+                'hooks'  : []
+                },
+            'interface-added':      {
+                'profile': ['man', 'obj'],
+                'hooks'  : []
+                },
+            'interface-removed':      {
+                'profile': ['man', 'obj'],
+                'hooks'  : []
+                },
+            'interface-proxy-properties-changed':      {
+                'profile': ['man', 'obj', 'interface'],
+                'hooks'  : []
+                },
+        }
+        # mise en place des fonctions de rappel à utiliser pour tout changement
+        self.addHook('object-added',
+                     lambda man, obj: self._udisks_obj_added(obj))
+        self.addHook('object-removed',
+                     lambda man, obj: self._device_removed(obj.get_object_path()))
+        self.addHook('interface-added',
+                     lambda man, obj, iface: self._device_changed(obj))
+        self.addHook('interface-removed',
+                     lambda man, obj, iface: self._device_changed(obj))
+        self.addHook('interface-proxy-properties-changed',
+                     lambda man, obj, iface, props, invalid: self._device_changed(obj))
 
+    def addHook(self, signal, func):
+        """
+        ajoute une fonction à appeler pour un signal nommé, et enregistre
+        cette fonction dans self.cbHooks, après vérification de sa liste
+        de paramètres.
+        @param signal une chaîne
+        @param func une fonction
+        @return le résultat de l'appel à self.manager.connect(signal,func)
+        """
+        if inspect.getargspec(func).args == self.cbHooks[signal]['profile']:
+            cb=self.manager.connect(signal,func)
+            self.cbHooks[signal]['hooks'].append(cb)
+            return cb
+        return None
     # voir le fichier integration-test issu des sources de udisks2
     def retry_mount(self, fs, timeout=5, retryDelay=0.3):
         """
@@ -170,15 +214,6 @@ class UDisksBackend:
         principale.
         """
         self.logger.debug(QApplication.translate("uDisk","Détection des disques",None, QApplication.UnicodeUTF8)+inspectData())
-
-        self.manager = self.udisks.get_object_manager()
-
-        # mise en place des fonctions de rappel à utiliser pour tout changement
-        self.cbHooks += [self.manager.connect('object-added', lambda man, obj: self._udisks_obj_added(obj))]
-        self.cbHooks += [self.manager.connect('object-removed', lambda man, obj: self._device_removed(obj.get_object_path()))]
-        self.cbHooks += [self.manager.connect('interface-added', lambda man, obj, iface: self._device_changed(obj))]
-        self.cbHooks += [self.manager.connect('interface-removed', lambda man, obj, iface: self._device_changed(obj))]
-        self.cbHooks += [self.manager.connect('interface-proxy-properties-changed', lambda man, obj, iface, props, invalid: self._device_changed(obj))]
 
         # recensement des disque actuellement connectés
         for obj in self.manager.get_objects():
