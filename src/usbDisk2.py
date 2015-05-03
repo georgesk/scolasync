@@ -33,7 +33,7 @@ from gi.repository import Gio, GLib, UDisks
 from PyQt4.QtGui import *
 
 #################### activate debugging #######################
-debug=False
+debug=True
 def inspectData():
     return ""
 
@@ -705,9 +705,7 @@ class Available (UDisksBackend):
         @param dev un chemin comme /org/freedesktop/UDisks/devices/sdb3
         @return True si la partition est dans la liste des partions disponibles
         """
-        s="%s" %dev
-        print(" !!!! IL FAUT DÉBOGUER ÇA CE CODE N'EST PAS PROPRE DANS hasDev")
-        s=s.replace("/org/freedesktop/UDisks/devices/","")
+        s=str(dev)
         for p in self.fatPaths:
             if p.split("/")[-1]==s:
                 return True

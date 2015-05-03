@@ -448,6 +448,7 @@ class mainWindow(QMainWindow):
         d.exec_()
         if d.ok==True:
             cmd="usbThread.threadCopyToUSB(p,{selected},subdir='{subdir}', logfile='{logfile}', parent=self.tm)".format(selected=list(d.selectedList()), subdir=self.workdir, logfile=logFileName)
+            ## !!!!!!!!!!!!!!!!! itérations dans qApp.diskData à revoir !
             for p in qApp.diskData:
                 if not p.selected: continue # pas les médias désélectionnés
                 registerCmd(cmd,p)
