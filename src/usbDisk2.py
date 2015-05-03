@@ -53,6 +53,17 @@ else:
 ###############################################################
 
 
+def safePath(obj):
+    """
+    Récupère de façon sûre le path d'une instance de UDisksObjectProxy
+    @param obj instance de UDisksObjectProxy
+    """
+    path= obj.get_object_path()
+    if "_" in path:
+        m= re.match(r"(.*)_.*", path)
+        path=m.group(1)
+    return path
+                
 def fs_size(device):
     """
     Renvoie la taille d'un système de fichier et la place disponible
@@ -206,7 +217,7 @@ class UDisksBackend:
         partition=None
         
         # ne tient pas compte des périphériques non débranchables
-        path = obj.get_object_path()
+        path = safePath(obj)
         for boring in not_interesting:
             if path.startswith(boring):
                 return interesting, drive, partition
@@ -263,7 +274,7 @@ class UDisksBackend:
         @param drive une instance de ...
         @param partition une instance de ...
         """
-        path  = obj.get_object_path()
+        path  = safePath(obj)
         block = obj.get_block()
         self.logger.debug(QApplication.translate("uDisk","Partition ajoutée %s",None, QApplication.UnicodeUTF8) % path+inspectData())
         fstype = block.get_cached_property('IdType').get_string()
@@ -306,7 +317,7 @@ class UDisksBackend:
         return
              
     def _udisks_drive_added(self, obj, drive, part):
-        path  = obj.get_object_path()
+        path  = safePath(obj)
         block = obj.get_block()
         if path in self.targets:
             self.logger.debug(QApplication.translate("uDisk","Disque déjà ajouté auparavant : %s",None, QApplication.UnicodeUTF8) % path+inspectData())
@@ -340,7 +351,7 @@ class UDisksBackend:
         return
         
     def _device_changed(self, obj):
-        path = obj.get_object_path()
+        path = safePath(obj)
         self.logger.debug(QApplication.translate("uDisk","Changement pour le disque %s",None, QApplication.UnicodeUTF8) % path+inspectData())
 
     def _udisks_obj_removed(self, obj):
@@ -349,7 +360,7 @@ class UDisksBackend:
         Met à jour self.targets
         @param obj une instance de UDisksObjectProxy
         """
-        path=obj.get_object_path()
+        path=safePath(obj)
         logging.debug(QApplication.translate("uDisk","Disque débranché du système : %s",None, QApplication.UnicodeUTF8) % path)
         if path in self.targets:
             self.targets.pop(path)

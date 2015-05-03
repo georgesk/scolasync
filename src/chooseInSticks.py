@@ -96,8 +96,8 @@ class chooseDialog(QDialog):
         sélectionné dans la fenêtre principale
         """
         sel=self.mainWindow.ui.tableView.selectedIndexes()
-        for d in qApp.diskData:
-            o=d.ownerByDb()
+        for d in qApp.available:
+            o=qApp.available.targets[d].ownerByDb()
             mountPath=d.ensureMounted()
             item=QStandardItem(o)
             # on cherche à voir si la clé est déjà sélectionnée

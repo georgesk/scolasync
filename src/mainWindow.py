@@ -30,13 +30,14 @@ import ownedUsbDisk, help, copyToDialog1, chooseInSticks, usbThread
 import diskFull, preferences, checkBoxDialog
 import os.path, operator, subprocess, dbus, re, time, copy
 from notification import Notification
+from usbDisk2 import safePath
 import db
 import choixEleves
 import nameAdrive
 from globaldef import logFileName, _dir
 
 # cette donnée est globale, pour être utilisé depuis n'importe quel objet
-qApp.diskData=ownedUsbDisk.Available(access="firstFat")
+qApp.available=ownedUsbDisk.Available(access="firstFat")
 
 activeThreads={} # donnée globale : les threads actifs
 # cette donnée est mise à jour par des signaux émis au niveau des threads
@@ -113,8 +114,8 @@ class mainWindow(QMainWindow):
         QObject.connect(self,SIGNAL("checkNone()"), self.checkNone)
         QObject.connect(self,SIGNAL("shouldNameDrive()"), self.namingADrive)
         ## accrochage d'une fonction de rappel pour les disque ajoutés
-        qApp.diskData.addHook('object-added',   self.cbAdded())
-        qApp.diskData.addHook('object-removed', self.cbRemoved())
+        qApp.available.addHook('object-added',   self.cbAdded())
+        qApp.available.addHook('object-removed', self.cbRemoved())
         
     def checkModify(self, boolFunc):
         """
@@ -154,9 +155,9 @@ class mainWindow(QMainWindow):
         self.recentConnect
         """
         if self.availableNames:
-            if self.recentConnect not in qapp.Available.targets:
+            if self.recentConnect not in qApp.available.targets:
                 return
-            disk=qapp.Available.targets[self.recentConnect]
+            disk=qApp.available.targets[self.recentConnect]
             hint=db.readStudent(disk.serial, disk.uuid, ownedUsbDisk.tattooInDir(disk.mp))
             if hint != None:
                 oldName=hint
@@ -175,12 +176,12 @@ class mainWindow(QMainWindow):
         Il s'agit de la fonction pour les disques branchés
         """
         def _cbAdded(man, obj):
-            if qApp.diskData.modified:
-                path=obj.get_object_path()
+            if qApp.available.modified:
+                path=safePath(obj)
                 self.recentConnect=str(path)
                 delai=0.5 # petit délai pour que targets soit à jour
                 QTimer.singleShot(delai, self.deviceAdded) 
-                qApp.diskData.modified=False
+                qApp.available.modified=False
         return _cbAdded
     
     def cbRemoved(self):
@@ -189,24 +190,24 @@ class mainWindow(QMainWindow):
         Il s'agit de la fonction pour les disques débranchés
         """
         def _cbRemoved(man, obj):
-            if qApp.diskData.modified:
-                path=obj.get_object_path()
-                if path in qApp.diskData.targets:
-                    partition=bool(qApp.diskData.targets[path].parent)
+            if qApp.available.modified:
+                path=safePath(obj)
+                if path in qApp.available.targets:
+                    partition=bool(qApp.available.targets[path].parent)
                     if partition:
                         self.recentDisConnect=str(path)
                         delai=0.5 # petit délai pour que targets soit à jour
                         QTimer.singleShot(delai, self.deviceRemoved) 
-                qApp.diskData.modified=False
+                qApp.available.modified=False
         return _cbRemoved
     
     def deviceAdded(self):
         """
         Fonction de rappel pour un medium ajouté ; se base sur la valeur de self.recentConnect
         """
-        if self.recentConnect not in qApp.diskData.targets:
+        if self.recentConnect not in qApp.available.targets:
             return
-        disk=qApp.diskData.targets[self.recentConnect]
+        disk=qApp.available.targets[self.recentConnect]
         if disk.parent: # c'est une partition
             print ("=== Il faudrait enregistrer le disque", disk)
             # pas tout à fait équivalent à l'émission d'un signal avec emit :
@@ -279,16 +280,42 @@ class mainWindow(QMainWindow):
         @param other un catalogue déjà tout prêt de disques (None par défaut)
         """
         if other:
-            qApp.diskData=other
+            qApp.available=other
         else:
-            qApp.diskData=ownedUsbDisk.Available(access="firstFat")
-        self.connectTableModel(qApp.diskData)
-        connectedCount=int(qApp.diskData)
+            qApp.available=ownedUsbDisk.Available(access="firstFat")
+        self.connectTableModel(qApp.available)
+        connectedCount=int(qApp.available)
         self.ui.lcdNumber.display(connectedCount)
         self.t.resizeColumnsToContents()
         self.updateButtons()
         return
         
+    def checkDisks(self, force=False, noLoop=True):
+        """
+        fonction relancée périodiquement pour vérifier s'il y a un changement
+        dans le baladeurs, et signaler dans le tableau les threads en cours.
+        Le tableau est complètement régénéré à chaque fois, ce qui n'est pas
+        toujours souhaitable.
+        À la fin de chaque vérification, un court flash est déclenché sur
+        l'afficheur de nombre de baladeurs connectés et sa valeur est mise à
+        jour.
+        @param force pour forcer une mise à jour du tableau
+        @param noLoop si False, on ne rentrera pas dans une boucle de Qt
+        """
+        if self.checkDisksLock:
+            # jamais plus d'un appel à la fois pour checkDisks
+            return
+        self.checkDisksLock=True
+        other=ownedUsbDisk.Available(access="firstFat", noLoop=noLoop)
+        if force or not self.sameDiskData(qApp.available, other):
+            self.findAllDisks(other)
+        self.flashLCD()
+        # met la table en ordre par la colonne des propriétaires
+        self.t.horizontalHeader().setSortIndicator(1, Qt.AscendingOrder);
+        self.t.setSortingEnabled(True)
+        self.checkDisksLock=False
+
+
     def changeWd(self, newDir):
         """
         change le répertoire par défaut contenant les fichiers de travail
@@ -341,7 +368,7 @@ class mainWindow(QMainWindow):
         (the tuple comes from the command df)
         """
         if type(rowOrDev)==type(0):
-            path=qApp.diskData[rowOrDev][self.header.index("1mp")]
+            path=qApp.available[rowOrDev][self.header.index("1mp")]
         else:
             path=rowOrDev
         cmd ="df '%s'" %path
@@ -409,7 +436,7 @@ class mainWindow(QMainWindow):
         noms disponibles dans le dialogue des noms.
         """
         global activeThreads, lastCommand
-        active = len(qApp.diskData)>0
+        active = len(qApp.available)>0
         for button in (self.ui.toButton,
                        self.ui.fromButton,
                        self.ui.delButton,
@@ -473,7 +500,7 @@ class mainWindow(QMainWindow):
                 buttons, defaultButton)
             if reply == QMessageBox.Ok:
                 cmd="usbThread.threadDeleteInUSB(p,{paths},subdir='Travail', logfile='{log}', parent=self.tm)".format(paths=pathList,log=logFileName)
-                for p in qApp.diskData:
+                for p in qApp.available:
                     if not p.selected: continue # pas les médias désélectionnés
                     registerCmd(cmd,p)
                     t=eval(cmd)
@@ -496,8 +523,8 @@ class mainWindow(QMainWindow):
         d.exec_()
         if d.ok==True:
             cmd="usbThread.threadCopyToUSB(p,{selected},subdir='{subdir}', logfile='{logfile}', parent=self.tm)".format(selected=list(d.selectedList()), subdir=self.workdir, logfile=logFileName)
-            ## !!!!!!!!!!!!!!!!! itérations dans qApp.diskData à revoir !
-            for p in qApp.diskData:
+            ## !!!!!!!!!!!!!!!!! itérations dans qApp.available à revoir !
+            for p in qApp.available:
                 if not p.selected: continue # pas les médias désélectionnés
                 registerCmd(cmd,p)
                 t=eval(cmd)
@@ -546,7 +573,7 @@ class mainWindow(QMainWindow):
                            rootPath='{mp}', dest='{dest}', logfile='{log}',
                            parent=self.tm)""".format(paths=pathList, mp=mp, dest=destDir, log=logFileName)
                 
-            for p in qApp.diskData:
+            for p in qApp.available:
                 if not p.selected: continue # pas les médias désélectionnés
                 # on devrait vérifier s'il y a des données à copier
                 # et s'il n'y en a pas, ajouter des lignes au journal
@@ -597,7 +624,7 @@ class mainWindow(QMainWindow):
                 QApplication.translate("Dialog","Réitérer la dernière commande",None, QApplication.UnicodeUTF8),
                 QApplication.translate("Dialog","La dernière commande était<br>{cmd}<br>Voulez-vous la relancer avec les nouveaux baladeurs ?",None, QApplication.UnicodeUTF8).format(cmd=lastCommand))==QMessageBox.Cancel:
                 return
-            for p in qApp.diskData:
+            for p in qApp.available:
                 if p.owner in pastCommands[lastCommand] : continue
                 exec(compile(lastCommand,'<string>','exec'))
                 t.setDaemon(True)
@@ -633,8 +660,8 @@ class mainWindow(QMainWindow):
             buttons,defaultButton)
         if button!=QMessageBox.Ok:
             return
-        for d in qApp.diskData.disks_ud():
-            for partition in qApp.diskData.parts_ud(d.path):
+        for d in qApp.available.disks_ud():
+            for partition in qApp.available.parts_ud(d.path):
                 cmd="umount {0}".format(partition.mp)
                 subprocess.call(cmd, shell=True)
             cmd= "udisks --detach {0}".format(d.devStuff)
@@ -662,34 +689,6 @@ class mainWindow(QMainWindow):
         self.proxy.setSourceModel(self.t.model())
 
         
-    def checkDisks(self, force=False, noLoop=True):
-        """
-        fonction relancée périodiquement pour vérifier s'il y a un changement
-        dans le baladeurs, et signaler dans le tableau les threads en cours.
-        Le tableau est complètement régénéré à chaque fois, ce qui n'est pas
-        toujours souhaitable.
-        À la fin de chaque vérification, un court flash est déclenché sur
-        l'afficheur de nombre de baladeurs connectés et sa valeur est mise à
-        jour.
-        @param force pour forcer une mise à jour du tableau
-        @param noLoop si False, on ne rentrera pas dans une boucle de Qt
-        """
-        if self.checkDisksLock:
-            # jamais plus d'un appel à la fois pour checkDisks
-            return
-        self.checkDisksLock=True
-        other=ownedUsbDisk.Available(
-            access="firstFat",
-            noLoop=noLoop)
-        if force or not self.sameDiskData(qApp.diskData, other):
-            self.findAllDisks(other)
-        self.flashLCD()
-        # met la table en ordre par la colonne des propriétaires
-        self.t.horizontalHeader().setSortIndicator(1, Qt.AscendingOrder);
-        self.t.setSortingEnabled(True)
-        self.checkDisksLock=False
-
-
     def sameDiskData(self, one, two):
         """
         @return True si les ensembles de uniqueId de one et two sont identiques
