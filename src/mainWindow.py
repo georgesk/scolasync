@@ -114,6 +114,9 @@ class mainWindow(QMainWindow):
         QObject.connect(self,SIGNAL("checkToggle()"), self.checkToggle)
         QObject.connect(self,SIGNAL("checkNone()"), self.checkNone)
         QObject.connect(self,SIGNAL("shouldNameDrive()"), self.namingADrive)
+        ## accrochage d'une fonction de rappel pour les disque ajoutés
+        qApp.diskData.addHook('object-added',   self.cbAdded())
+        qApp.diskData.addHook('object-removed', self.cbRemoved())
         
     def checkModify(self, boolFunc):
         """
@@ -165,6 +168,38 @@ class mainWindow(QMainWindow):
             d.show()
             result=d.exec_()
         return
+
+    def cbAdded(self):
+        """
+        Renvoie une fonction de rappel pour l'abonnement aux évènements de l'arrière-boutique.
+        Il s'agit de la fonction pour les disques branchés
+        """
+        def _cbAdded(man, obj):
+            if qApp.diskData.modified:
+                path=obj.get_object_path()
+                if path not in qApp.diskData.targets:
+                    return
+                disk=qApp.diskData.targets[path]
+                if disk.parent: # c'est une partition
+                    print ("=== Il faudrait enregistrer le disque", disk)
+                qApp.diskData.modified=False
+        return _cbAdded
+    
+    def cbRemoved(self):
+        """
+        Renvoie une fonction de rappel pour l'abonnement aux évènements de l'arrière-boutique.
+        Il s'agit de la fonction pour les disques débranchés
+        """
+        def _cbRemoved(man, obj):
+            if qApp.diskData.modified:
+                path=obj.get_object_path()
+                if path in qApp.diskData.targets:
+                    partition=bool(qApp.diskData.targets[path].parent)
+                    qApp.diskData.targets.pop(path)
+                    if partition:
+                        print("===",path,"a été débranché, il faut mettre à jour l'affichage")
+                qApp.diskData.modified=False
+        return _cbRemoved
     
     def deviceAdded(self, s):
         """
@@ -234,10 +269,10 @@ class mainWindow(QMainWindow):
         self.setTimer()
         self.manFileLocation=prefs["manfile"]
         self.mv=prefs["mv"]
-        other=ownedUsbDisk.Available(access="firstFat")
-        qApp.diskData=other
+        # initialisation du catalogue de disques déjà présents
+        qApp.diskData=ownedUsbDisk.Available(access="firstFat")
         self.header=ownedUsbDisk.uDisk2.headers()
-        self.connectTableModel(other)
+        self.connectTableModel(qApp.diskData)
         self.updateButtons()
 
     def changeWd(self, newDir):
