@@ -743,7 +743,7 @@ if __name__=="__main__":
             self.setCentralWidget(quitbutton)
     
 
-    machin=Available(diskClass=uDisk2)
+    machin=Available()
     print (machin)
     def print_targets_if_modif(man, obj):
         if machin.modified:
