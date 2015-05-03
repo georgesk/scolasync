@@ -52,6 +52,7 @@ else:
     # logging.basicConfig(level=logging.NOTSET)
 ###############################################################
 
+
 def fs_size(device):
     """
     Renvoie la taille d'un système de fichier et la place disponible
@@ -91,16 +92,18 @@ class UDisksBackend:
     Plusieurs modifications ont été faites au code original.
     Les fonctions de rappel ne tiennent compte que des périphériques USB
     """
-    def __init__(self, logger=logging):
+    def __init__(self, logger=logging, diskClass=object):
         """
         Le constructeur.
         @param logger un objet permettant de journaliser les messages ; 
         par défaut il se confond avec le module logging
+        @param diskClass la classe à utiliser pour créer des instances de disques
         """
         self.install_thread = None
         self.logger=logger
         ## self.targets est un dictionnaire des disques détectés
-        ## les clés sont les paths et les contenus des instances de uDisk2
+        ## les clés sont les paths et les contenus des instances de diskClass
+        self.diskClass=diskClass
         self.targets = {}
         ## self.modified signifie une modification récente, à prendre en compte
         ## par une application au niveau utilisateur
@@ -282,7 +285,7 @@ class UDisksBackend:
         elif total < 1:
             self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition vide",None, QApplication.UnicodeUTF8)+inspectData())
         else:
-            udisk=uDisk2(
+            udisk=self.diskClass(
                 path=path, mp=mount, isUsb=isUsb,
                 vendor=drive.get_cached_property('Vendor').get_string(),
                 model=drive.get_cached_property('Model').get_string(),
@@ -317,7 +320,7 @@ class UDisksBackend:
         if not isUsb:
             self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition non-USB",None, QApplication.UnicodeUTF8)+inspectData())
         else:
-            udisk=uDisk2(
+            udisk=self.diskClass(
                 path=path,
                 isUsb=isUsb,
                 parent='',
@@ -347,7 +350,6 @@ class UDisksBackend:
         if path in self.targets:
             self.targets.pop(path)
             self.modified=True
-
 
 class uDisk2:
     """
@@ -553,7 +555,7 @@ class Available (UDisksBackend):
           possibles : "firstFat" pour les premières partitions vfat.
         @param diskClass la classe de disques à créer
         """
-        UDisksBackend.__init__(self)
+        UDisksBackend.__init__(self, diskClass=diskClass)
         self.access=access
         self.detect_devices()
         self.finishInit()
@@ -612,6 +614,13 @@ class Available (UDisksBackend):
         @return la liste des partitions de ce disque
         """
         return [p for p in self.targets if self.targets[p].parent==d]
+
+    def disks_ud(self):
+        """
+        Récolte les enregistrements de niveau supérieur de self.targets
+        @return la liste des objects uDisk2 détectés
+        """
+        return [self.targets[d] for d in self.targets if not self.targets[d].parent]
 
     def parts_ud(self, d):
         """
@@ -716,6 +725,9 @@ class Available (UDisksBackend):
                 return True
         return False
     
+##################### fin de la définition de la calsse uDisk2 ################
+
+
 
 if __name__=="__main__":
     from PyQt4.QtCore import *
@@ -726,11 +738,12 @@ if __name__=="__main__":
             QMainWindow.__init__(self)
 
             # The only thing in the app is a quit button
-            quitbutton = QPushButton('Close', self)
+            quitbutton = QPushButton('Examinez le terminal\nbranchez et débranchez des clés USB, puis\nQuittez', self)
+            QObject.connect(quitbutton, SIGNAL("clicked()"), self.close)
             self.setCentralWidget(quitbutton)
     
 
-    machin=Available()
+    machin=Available(diskClass=uDisk2)
     print (machin)
     def print_targets_if_modif(man, obj):
         if machin.modified:

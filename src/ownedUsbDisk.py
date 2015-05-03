@@ -72,7 +72,7 @@ def editRecord(owd, hint=""):
     newStudent, ok = QInputDialog.getText(None, title, prompt, text=hint)
     if ok:
         newStudent="%s" %newStudent
-        db.writeStudent(owd.stickid, owd.getFatUuid(), owd.tattoo(), newStudent)
+        db.writeStudent(owd.stickid, owd.uuid, owd.tattoo(), newStudent)
 
 class uDisk2(usbDisk2.uDisk2,QObject):
     """
@@ -80,12 +80,31 @@ class uDisk2(usbDisk2.uDisk2,QObject):
     et qui en même temps ajoute des particularités selon le nom du
     vendeur et le modèle.
     """
-    def __init__(self, path, ub):
+    def __init__(self, path, mp='', isUsb=False, vendor='', model='', parent=None,
+                 fstype='', serial='', uuid='',
+                 free=0, capacity=0, device='', firstFat=False, selected=True):
         """
-        @param path un chemin dans le système dbus
-        @param ub est une instance de UDisksBackend
+        Le constructeur
+        @param path un chemin comme '/org/freedesktop/UDisks2/block_devices/sdX'
+        @param mp point de montage ('' par défaut)
+        @param isUsb en général, vrai vu qu'on se s'intéressera qu'à des périphériques
+        USB
+        @param vendor indication de vendeur
+        @param model indication de modèle
+        @param parent périphérique parent (None par défaut)
+        @param fstype type de système de fichiers
+        @param serial numéro de série
+        @param uuid identifiant donné au disque lors du formatage
+        @param free taille de la zone libre pour l'écriture
+        @param capacity taille du périphérique
+        @param device pseudo-fichier pour l'accès au périphérique
+        @param firstFat vrai s'il s'agit de la première partition de type vfat
+        @param selected vrai/faux selon qu'on sélectionne ou non le périphérique (vrai par défaut)
         """
-        usbDisk2.uDisk2.__init__(self,path, ub)
+        usbDisk2.uDisk2.__init__(self, path=path, mp=mp, isUsb=isUsb, vendor=vendor,
+                                 model=model, parent=parent, fstype=fstype, serial=serial,
+                                 uuid=uuid, free=free, capacity=capacity, device=device,
+                                 firstFat=firstFat, selected=selected)
         QObject.__init__(self)
         self.owner="" # le propriétaire est déterminé plus tard
         self.visibleDirs=self.readQuirks()
@@ -153,7 +172,7 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         """
         renvoie un nom de propriétaire dans tous les cas.
         """
-        s=db.readStudent(self.stickid, self.getFatUuid(), self.tattoo())
+        s=db.readStudent(self.stickid, self.uuid, self.tattoo())
         if s != None:
             return s
         else:
@@ -187,13 +206,13 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         @return un nom de propriétaire si c'est un disque, sinon None
         """
         if not self.parent and self.isUsb:
-            if noLoop==False and not db.knowsId(self.stickid, self.getFatUuid(), self.tattoo()) :
+            if noLoop==False and not db.knowsId(self.stickid, self.uuid, self.tattoo()) :
                 prompt=QApplication.translate("Dialog","La cle {id}<br>n'est pas identifiee, donnez le nom du proprietaire",None, QApplication.UnicodeUTF8).format(id=self.stickid)
                 title=QApplication.translate("Dialog","Entrer un nom",None, QApplication.UnicodeUTF8)
                 text,ok = QInputDialog.getText(None, title, prompt)
                 if ok and len(text)>0 and not db.hasStudent(text):
-                    db.writeStudent(self.stickid, self.getFatUuid(), self.tattoo(), text)
-        return db.readStudent(self.stickid, self.getFatUuid(), self.tattoo())
+                    db.writeStudent(self.stickid, self.uuid, self.tattoo(), text)
+        return db.readStudent(self.stickid, self.uuid, self.tattoo())
         
 class Available(usbDisk2.Available):
     """
@@ -233,7 +252,7 @@ class Available(usbDisk2.Available):
         Récolte les enregistrements de niveau supérieur de self.targets
         @return la liste des objects uDisk2 détectés
         """
-        return [uDisk2(d, self) for d in self.targets if self.targets[d]["parent"]==None]
+        return [self.targets[d] for d in self.targets if not self.targets[d].parent]
 
     def parts_ud(self, d):
         """
@@ -242,7 +261,7 @@ class Available(usbDisk2.Available):
         @return la liste des objets uDisk2 qui sont des partitions 
         de ce disque
         """
-        return [uDisk2(p, self) for p in self.targets if self.targets[p]["parent"]==d]
+        return [self.targets[p] for p in self.targets if self.targets[p].parent==d]
 
     def __getitem__(self, n):
         """
@@ -252,9 +271,9 @@ class Available(usbDisk2.Available):
         @return le nième disque USB connecté
         """
         if self.access=="disk":
-            return uDisk2(self.targets.keys()[n], self)
+            return self.targets.keys()[n]
         elif self.access=="firstFat":
-            return uDisk2(self.firstFats[n],self)
+            return self.firstFats[n]
 
 
 if __name__=="__main__":
