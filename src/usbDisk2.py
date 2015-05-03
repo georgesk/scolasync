@@ -669,12 +669,13 @@ class Available (UDisksBackend):
         Renvoye le nième disque. Le fonctionnement dépend du paramètre
         self.access
         @param n un numéro
-        @return le nième disque USB connecté
+        @return le nième disque USB connecté sous forme d'instance de uDisk2
         """
         if self.access=="disk":
-            return self.targets.keys()[n]
+            path=self.targets.keys()[n]
         elif self.access=="firstFat":
-            return self.firstFats[n]
+            path=self.firstFats[n]
+        return self.targets[path]
 
     def __len__(self):
         """
