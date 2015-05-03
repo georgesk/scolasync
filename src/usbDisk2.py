@@ -732,9 +732,10 @@ if __name__=="__main__":
 
     machin=Available()
     print (machin)
-    def print_targets_if_modif(manager, obj):
+    def print_targets_if_modif(man, obj):
         if machin.modified:
             print([s.split("/")[-1] for s in machin.targets.keys()])
+        machin.modified=False
     machin.addHook('object-added',   print_targets_if_modif)
     machin.addHook('object-removed', print_targets_if_modif)
         
