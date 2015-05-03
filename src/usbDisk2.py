@@ -56,12 +56,16 @@ else:
 def safePath(obj):
     """
     Récupère de façon sûre le path d'une instance de UDisksObjectProxy
-    @param obj instance de UDisksObjectProxy
+    @param obj instance de UDisksObjectProxy, ou simple chaine
     """
-    path= obj.get_object_path()
-    if "_" in path:
-        m= re.match(r"(.*)_.*", path)
-        path=m.group(1)
+    if type(obj)==type(""):
+        path=obj
+    else:
+        path= obj.get_object_path()
+    posUnderscore=path.rfind("_")
+    posSlash=path.rfind("/")
+    if posUnderscore > posSlash: # il faut retirer tout après l'underscore final
+        path=path[:posUnderscore]
     return path
                 
 def fs_size(device):
@@ -304,7 +308,7 @@ class UDisksBackend:
                 path=path, mp=mount, isUsb=isUsb,
                 vendor=drive.get_cached_property('Vendor').get_string(),
                 model=drive.get_cached_property('Model').get_string(),
-                parent=str(parent),
+                parent=safePath(parent),
                 fstype=fstype,
                 serial=block.get_cached_property('Drive').get_string().split('_')[-1],
                 uuid=block.get_cached_property('IdUUID').get_string(),
@@ -716,18 +720,17 @@ class Available (UDisksBackend):
           partition de type FAT de chaque disque USB connecté
         """
         result=[]
-        self.fatPaths=[]
         disks=[d for d in self.targets if not self.targets[d].parent]
         for d in disks:
             parts=[p for p in self.targets if self.targets[p].parent==d]
             for p in parts:
                 if self.targets[p].fstype=="vfat":
                     result.append(p)
-                    self.fatPaths.append(p)
+                    self.targets[d].firstFat=self.targets[p]
                     if setOwners:
                         print(" !!!! IL FAUT DÉBOGUER ÇA CE CODE N'EST PAS PROPRE DANS getFirstFats")
                         p.owner=d.owner
-                    break
+                    
         return result
 
     def hasDev(self, dev):

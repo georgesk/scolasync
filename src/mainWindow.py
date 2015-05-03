@@ -86,18 +86,11 @@ class mainWindow(QMainWindow):
         self.t=self.ui.tableView
         self.proxy=QSortFilterProxyModel()
         self.proxy.setSourceModel(self.t.model())
-        self.timer=QTimer()
         self.applyPreferences()
         self.updateButtons()
         self.setAvailableNames(False)
         self.operations=[] # liste des opérations précédemment "réussies"
         self.oldThreads=set() # threads lancés éventuellement encore vivants
-        self.flashTimer=QTimer()
-        self.flashTimer.setSingleShot(True)
-        self.checkDisksLock=False # autorise self.checkDisks
-        QObject.connect(self.ui.forceCheckButton, SIGNAL("clicked()"), self.checkDisks)
-        QObject.connect(self.timer, SIGNAL("timeout()"), self.checkDisks)
-        QObject.connect(self.flashTimer, SIGNAL("timeout()"), self.normalLCD);
         QObject.connect(self.ui.helpButton, SIGNAL("clicked()"), self.help)
         QObject.connect(self.ui.umountButton, SIGNAL("clicked()"), self.umount)
         QObject.connect(self.ui.toButton, SIGNAL("clicked()"), self.copyTo)
@@ -107,8 +100,6 @@ class mainWindow(QMainWindow):
         QObject.connect(self.ui.namesButton, SIGNAL("clicked()"), self.namesCmd)
         QObject.connect(self.ui.preferenceButton, SIGNAL("clicked()"), self.preference)
         QObject.connect(self.ui.tableView, SIGNAL("doubleClicked(const QModelIndex&)"), self.tableClicked)
-        QObject.connect(self,SIGNAL("deviceAdded(QString)"), self.deviceAdded)
-        QObject.connect(self,SIGNAL("deviceRemoved(QString)"), self.deviceRemoved)
         QObject.connect(self,SIGNAL("checkAll()"), self.checkAll)
         QObject.connect(self,SIGNAL("checkToggle()"), self.checkToggle)
         QObject.connect(self,SIGNAL("checkNone()"), self.checkNone)
@@ -193,11 +184,9 @@ class mainWindow(QMainWindow):
             if qApp.available.modified:
                 path=safePath(obj)
                 if path in qApp.available.targets:
-                    partition=bool(qApp.available.targets[path].parent)
-                    if partition:
-                        self.recentDisConnect=str(path)
-                        delai=0.5 # petit délai pour que targets soit à jour
-                        QTimer.singleShot(delai, self.deviceRemoved) 
+                    self.recentDisConnect=path
+                    delai=0.5 # petit délai pour que targets soit à jour
+                    QTimer.singleShot(delai, self.deviceRemoved)
                 qApp.available.modified=False
         return _cbRemoved
     
@@ -210,13 +199,13 @@ class mainWindow(QMainWindow):
         disk=qApp.available.targets[self.recentConnect]
         if disk.parent: # c'est une partition
             QTimer.singleShot(0, self.namingADrive)
-            self.checkDisks(noLoop=True)
+            self.findAllDisks()
             
     def deviceRemoved(self):
         """
         fonction de rappel pour un medium retiré ; se base sur la valeur de self.recentDisConnect
         """
-        self.checkDisks()
+        self.findAllDisks()
         
     def initRedoStuff(self):
         """
@@ -233,26 +222,6 @@ class mainWindow(QMainWindow):
         self.stopToolTip=QApplication.translate("MainWindow", "Arrêter les opérations en cours", None, QApplication.UnicodeUTF8)
         self.stopStatusTip=QApplication.translate("MainWindow", "Essaie d'arrêter les opérations en cours. À faire seulement si celles-ci durent trop longtemps", None, QApplication.UnicodeUTF8)
 
-    def showEvent (self, ev):
-        """
-        modification du comportement du widget original, pour
-        démarrer le timer et les vérifications de baladeurs
-        après construction de la fenêtre seulement
-        """
-        result=QMainWindow.showEvent(self, ev)
-        self.setTimer()
-        self.checkDisks(force=True) # met à jour le compte de disques affiché
-        return result
-
-    def setTimer(self, enabled=True):
-        """
-        sets the main timer
-        """
-        if self.refreshEnabled:
-            self.timer.start(self.refreshDelay*1000)
-        else:
-            self.timer.stop()
-
     def applyPreferences(self):
         """
         Applique les préférences et les options de ligne de commande
@@ -262,7 +231,6 @@ class mainWindow(QMainWindow):
         self.workdir=prefs["workdir"]
         self.refreshEnabled=prefs["refreshEnabled"]
         self.refreshDelay=prefs["refreshDelay"]
-        self.setTimer()
         self.manFileLocation=prefs["manfile"]
         self.mv=prefs["mv"]
         self.header=ownedUsbDisk.uDisk2.headers()
@@ -286,32 +254,6 @@ class mainWindow(QMainWindow):
         self.updateButtons()
         return
         
-    def checkDisks(self, force=False, noLoop=True):
-        """
-        fonction relancée périodiquement pour vérifier s'il y a un changement
-        dans le baladeurs, et signaler dans le tableau les threads en cours.
-        Le tableau est complètement régénéré à chaque fois, ce qui n'est pas
-        toujours souhaitable.
-        À la fin de chaque vérification, un court flash est déclenché sur
-        l'afficheur de nombre de baladeurs connectés et sa valeur est mise à
-        jour.
-        @param force pour forcer une mise à jour du tableau
-        @param noLoop si False, on ne rentrera pas dans une boucle de Qt
-        """
-        if self.checkDisksLock:
-            # jamais plus d'un appel à la fois pour checkDisks
-            return
-        self.checkDisksLock=True
-        other=ownedUsbDisk.Available(access="firstFat", noLoop=noLoop)
-        if force or not self.sameDiskData(qApp.available, other):
-            self.findAllDisks(other)
-        self.flashLCD()
-        # met la table en ordre par la colonne des propriétaires
-        self.t.horizontalHeader().setSortIndicator(1, Qt.AscendingOrder);
-        self.t.setSortingEnabled(True)
-        self.checkDisksLock=False
-
-
     def changeWd(self, newDir):
         """
         change le répertoire par défaut contenant les fichiers de travail
@@ -662,7 +604,7 @@ class mainWindow(QMainWindow):
                 subprocess.call(cmd, shell=True)
             cmd= "udisks --detach {0}".format(d.devStuff)
             subprocess.call(cmd, shell=True)
-        self.checkDisks()  # remet à jour le compte de disques
+        self.findAllDisks()     # remet à jour le compte de disques
         self.operations=[] # remet à zéro la liste des opérations
                 
 
@@ -689,21 +631,10 @@ class mainWindow(QMainWindow):
         """
         @return True si les ensembles de uniqueId de one et two sont identiques
         """
+        print ("GRRR one=", one)
+        print ("GRRR two=", two)
         return len(one.targets) == len(two.targets) and \
             set([p.uniqueId() for p in one]) == set([p.uniqueId() for p in two])
-
-    def flashLCD(self):
-        """
-        change le style de l'afficheur LCD pendant une fraction de seconde
-        """
-        self.ui.lcdNumber.setBackgroundRole(QPalette.Highlight)
-        self.flashTimer.start(250) ## un quart de seconde
-
-    def normalLCD(self):
-        """
-        remet le style par défaut pour l'afficheur LCD
-        """
-        self.ui.lcdNumber.setBackgroundRole(QPalette.Window)
 
 class usbTableModel(QAbstractTableModel):
     """

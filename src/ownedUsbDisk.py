@@ -121,8 +121,12 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         Renvoie un tatouage présent sur la clé, quitte à le créer.
         @result un tatouage, supposément unique.
         """
-        if self.mp:
-            return tattooInDir(self.mp)
+        if not self.parent: # on a affaire à un disque, pas une partition
+            mp=self.firstFat.mp
+        else:
+            mp=self.mp
+        if mp:
+            return tattooInDir(mp)
         else:
             return ""
     
@@ -232,6 +236,7 @@ class Available(usbDisk2.Available):
         """
         self.noLoop=noLoop
         usbDisk2.Available.__init__(self, access, diskClass)
+        self.finishInit()
         
     def finishInit(self):
         """
