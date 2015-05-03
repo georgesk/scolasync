@@ -33,7 +33,7 @@ from gi.repository import Gio, GLib, UDisks
 from PyQt4.QtGui import *
 
 #################### activate debugging #######################
-debug=False
+debug=True
 def inspectData():
     return ""
 
@@ -276,60 +276,60 @@ class UDisksBackend:
                     logging.exception(QApplication.translate("uDisk","Échec au montage du disque : %s",None, QApplication.UnicodeUTF8) % path)
         if mount:
             total, free = fs_size(mount)
-        self.logger.debug('mount: %s' % mount+inspectData())
-        is_system = block.get_cached_property('HintSystem').get_boolean()
         isUsb=self.objIsUsb(obj)
-        if isUsb and total > 1:
-            self.targets[path] = {
-                'isUsb'      : isUsb,
-                'is_system'  : is_system,
-                'fstype'     : fstype,  
-                'uuid'       : block.get_cached_property('IdUUID').get_string(),
-                'serial'     : block.get_cached_property('Drive').get_string().split('_')[-1],
-                'vendor'     : drive.get_cached_property('Vendor').get_string(),
-                'model'      : drive.get_cached_property('Model').get_string(),
-                'label'      : block.get_cached_property('IdLabel').get_string(),
-                'free'       : free,
-                'device'     : block.get_cached_property('Device').get_bytestring().decode('utf-8'),
-                'capacity'   : total,
-                'mountpoint' : mount,
-                'parent'     : str(parent),
-            }
+        if not isUsb:
+            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition non-USB",None, QApplication.UnicodeUTF8)+inspectData())
+        elif total < 1:
+            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition vide",None, QApplication.UnicodeUTF8)+inspectData())
         else:
-            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition non-USB ou à 0 octets.",None, QApplication.UnicodeUTF8)+inspectData())            
+            udisk=uDisk2(
+                path=path, mp=mount, isUsb=isUsb,
+                vendor=drive.get_cached_property('Vendor').get_string(),
+                model=drive.get_cached_property('Model').get_string(),
+                parent=str(parent),
+                fstype=fstype,
+                serial=block.get_cached_property('Drive').get_string().split('_')[-1],
+                uuid=block.get_cached_property('IdUUID').get_string(),
+                free=free,
+                capacity=total,
+                device=block.get_cached_property('Device').get_bytestring().decode('utf-8'),
+            )
+            self.targets[path] = udisk
+        return
              
     def _udisks_drive_added(self, obj, drive, part):
         path  = obj.get_object_path()
         block = obj.get_block()
         if path in self.targets:
             self.logger.debug(QApplication.translate("uDisk","Disque déjà ajouté auparavant : %s",None, QApplication.UnicodeUTF8) % path+inspectData())
+            return
+        self.logger.debug(QApplication.translate("uDisk","Disque ajouté : %s",None, QApplication.UnicodeUTF8) % path+inspectData())
+        size = drive.get_cached_property('Size').get_uint64()
+        ##### désactivé, quelquefois drive.get_cached_property('Size').get_uint64()
+        ##### renvoie des résultats erronés juste après le branchement
+        """
+        if size <= 0:
+            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition à 0 octets.",None, QApplication.UnicodeUTF8)+inspectData())
+            return
+        """
+        isUsb = self.objIsUsb(obj)
+        if not isUsb:
+            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition non-USB",None, QApplication.UnicodeUTF8)+inspectData())
         else:
-            self.logger.debug(QApplication.translate("uDisk","Disque ajouté : %s",None, QApplication.UnicodeUTF8) % path+inspectData())
-            
-            size = drive.get_cached_property('Size').get_uint64()
-            if size <= 0:
-                self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition à 0 octets.",None, QApplication.UnicodeUTF8)+inspectData())
-                return
-            is_system = block.get_cached_property('HintSystem').get_boolean()
-            isUsb = self.objIsUsb(obj)
-            if not isUsb:
-                return
-            self.targets[path] = {
-                'isUsb'      : isUsb,
-                'is_system'  : is_system,
-                'fstype'     : '',  
-                'uuid'       : block.get_cached_property('IdUUID').get_string(),
-                'serial'     : block.get_cached_property('Drive').get_string().split('_')[-1],
-                'vendor': drive.get_cached_property('Vendor').get_string(),
-                'model' : drive.get_cached_property('Model').get_string(),
-                'label' : '',
-                'free'  : -1,
-                'device': block.get_cached_property('Device').get_bytestring().decode('utf-8'),
-                'capacity' : size,
-                'mountpoint' : None,
-                'parent' : None,
-            }
-            
+            udisk=uDisk2(
+                path=path,
+                isUsb=isUsb,
+                parent='',
+                vendor=drive.get_cached_property('Vendor').get_string(),
+                model=drive.get_cached_property('Model').get_string(),
+                serial=block.get_cached_property('Drive').get_string().split('_')[-1],
+                uuid=block.get_cached_property('IdUUID').get_string(),
+                capacity=size,
+                device=block.get_cached_property('Device').get_bytestring().decode('utf-8'),
+            )
+            self.targets[path] =udisk
+        return
+        
     def _device_changed(self, obj):
         path = obj.get_object_path()
         self.logger.debug(QApplication.translate("uDisk","Changement pour le disque %s",None, QApplication.UnicodeUTF8) % path+inspectData())
@@ -358,32 +358,43 @@ class uDisk2:
     - \b rlock un verrou récursif permettant de réserver l'usage du media pour un seul thread
     """
 
-    def __init__(self, path, ub):
+    def __init__(self, path, mp='', isUsb=False, vendor='', model='', parent=None,
+                 fstype='', serial='', uuid='',
+                 free=0, capacity=0, device='', firstFat=False, selected=True):
         """
         Le constructeur
         @param path un chemin comme '/org/freedesktop/UDisks2/block_devices/sdX'
-        @param ub est une instance de UDisksBackend
+        @param mp point de montage ('' par défaut)
+        @param isUsb en général, vrai vu qu'on se s'intéressera qu'à des périphériques
+        USB
+        @param vendor indication de vendeur
+        @param model indication de modèle
+        @param parent périphérique parent (None par défaut)
+        @param fstype type de système de fichiers
+        @param serial numéro de série
+        @param uuid identifiant donné au disque lors du formatage
+        @param free taille de la zone libre pour l'écriture
+        @param capacity taille du périphérique
+        @param device pseudo-fichier pour l'accès au périphérique
+        @param firstFat vrai s'il s'agit de la première partition de type vfat
+        @param selected vrai/faux selon qu'on sélectionne ou non le périphérique (vrai par défaut)
         """
         self.path=path
-        self.ub=ub
-        self.selected=True
+        self.mp=mp
+        self.isUsb=isUsb
+        self.vendor=vendor
+        self.model=model
+        self.parent=parent
+        self.fstype=fstype
+        self.stickid=serial
+        self.uuid=uuid
+        self.free=free
+        self.capacity=capacity
+        self.devStuff=device
+        self.firstFat=firstFat
+        self.selected=selected
         self.rlock=threading.RLock()
-
-        self.mp=self.ub.targets[self.path]["mountpoint"]
-        self.isUsb=self.ub.targets[self.path]["isUsb"]
-        self.vendor=self.ub.targets[self.path]["vendor"]
-        self.model=self.ub.targets[self.path]["model"]
-        self.parent=self.ub.targets[self.path]["parent"]
-        self.fstype=self.ub.targets[self.path]["fstype"]
-        self.stickid=self.ub.targets[self.path]["serial"]
-        self.uuid=self.ub.targets[self.path]["uuid"]
-        self.free=self.ub.targets[self.path]["free"]
-        self.capacity=self.ub.targets[self.path]["capacity"]
-        self.fatuuid=None  # pour l'uuid de la première partion vfat
-        self.firstFat=None # poignée de la première partition vfat
-        # self.devStuff is the name of device which is usable to umount safely this object
-        self.devStuff=self.ub.targets[self.path]["device"]
-
+        return
             
     _itemNames={
         "1mp":QApplication.translate("uDisk","point de montage",None, QApplication.UnicodeUTF8),
@@ -397,14 +408,6 @@ class uDisk2:
 
     _ItemPattern=re.compile("[0-9]?(.*)")
     
-    def getFatUuid(self):
-        """
-        renvoie l'uuid de la première partition FAT après que celle-ci aura été
-        identifiée (utile pour les disques partitionnés)
-        @return un uuid
-        """
-        return "%s" %self.uuid
-        
     def uniqueId(self):
         """
         renvoie un identifiant unique. Dans cette classe, cette fonction
@@ -460,7 +463,7 @@ class uDisk2:
         """
         prefix="\n"+" "*indent
         r=""
-        props=["mp", "isUsb", "parent", "fstype", "stickid", "uuid", "fatuuid", "vendor", "model", "devStuff", "free", "capacity"]
+        props=["mp", "isUsb", "parent", "fstype", "stickid", "uuid", "vendor", "model", "devStuff", "free", "capacity"]
         for prop in props:
             r+=prefix+"%s = %s" %(prop, getattr(self,prop))
         return r
@@ -597,7 +600,7 @@ class Available (UDisksBackend):
         Récolte les enregistrements de niveau supérieur de self.targets
         @return la liste des chemins vers les disque USB détectés
         """
-        return [d for d in self.targets if self.targets[d]["parent"]==None]
+        return [d for d in self.targets if not self.targets[d].parent]
 
     def parts(self, d):
         """
@@ -605,7 +608,7 @@ class Available (UDisksBackend):
         @param d le chemin vers un disque
         @return la liste des partitions de ce disque
         """
-        return [p for p in self.targets if self.targets[p]["parent"]==d]
+        return [p for p in self.targets if self.targets[p].parent==d]
 
     def parts_ud(self, d):
         """
@@ -614,7 +617,7 @@ class Available (UDisksBackend):
         @return la liste des objets uDisk2 qui sont des partitions 
         de ce disque
         """
-        return [uDisk2(p, self) for p in self.targets if self.targets[p]["parent"]==d]
+        return [self.targets[p] for p in self.targets if self.targets[p].parent==d]
 
     def summary(self):
         """
@@ -645,8 +648,8 @@ class Available (UDisksBackend):
             if len(partlist)>0:
                 r+="    Partitions :\n"
                 for part in sorted(partlist):
-                    r+="        %s\n" %(self.targets[part]["device"])
-                    r+=uDisk2(part, self).valuableProperties(12)+"\n"
+                    r+="        %s\n" %(self.targets[part].devStuff)
+                    r+=self.targets[part].valuableProperties(12)+"\n"
         return r
 
     def __getitem__(self, n):
@@ -686,11 +689,11 @@ class Available (UDisksBackend):
         """
         result=[]
         self.fatPaths=[]
-        disks=[d for d in self.targets if self.targets[d]["parent"]==None]
+        disks=[d for d in self.targets if not self.targets[d].parent]
         for d in disks:
-            parts=[p for p in self.targets if self.targets[p]["parent"]==d]
+            parts=[p for p in self.targets if self.targets[p].parent==d]
             for p in parts:
-                if self.targets[p]["fstype"]=="vfat":
+                if self.targets[p].fstype=="vfat":
                     result.append(p)
                     self.fatPaths.append(p)
                     if setOwners:
