@@ -243,40 +243,34 @@ class Available(usbDisk2.Available):
             d.owner=d.ensureOwner(self.noLoop)
         self.mountFirstFats()
 
-    ################# les codes de ces méthodes sont recopiés ici ###########
-    ################# sinon uDisk2 ne fait pas référence à la classe ########
-    ################# surchargée ici. Comment faire des classes vituelles ???
-    
-    def disks_ud(self):
-        """
-        Récolte les enregistrements de niveau supérieur de self.targets
-        @return la liste des objects uDisk2 détectés
-        """
-        return [self.targets[d] for d in self.targets if not self.targets[d].parent]
-
-    def parts_ud(self, d):
-        """
-        Récolte les partitions d'un disque
-        @param d le chemin vers un disque
-        @return la liste des objets uDisk2 qui sont des partitions 
-        de ce disque
-        """
-        return [self.targets[p] for p in self.targets if self.targets[p].parent==d]
-
-    def __getitem__(self, n):
-        """
-        Renvoye le nième disque. Le fonctionnement dépend du paramètre
-        self.access
-        @param n un numéro
-        @return le nième disque USB connecté
-        """
-        if self.access=="disk":
-            return self.targets.keys()[n]
-        elif self.access=="firstFat":
-            return self.firstFats[n]
-
 
 if __name__=="__main__":
+    from PyQt4.QtCore import *
+    from PyQt4.QtGui import *
+    import sys
+    class MainWindow(QMainWindow):
+        def __init__(self):
+            QMainWindow.__init__(self)
+
+            # The only thing in the app is a quit button
+            quitbutton = QPushButton('Examinez le terminal\nbranchez et débranchez des clés USB, puis\nQuittez', self)
+            QObject.connect(quitbutton, SIGNAL("clicked()"), self.close)
+            self.setCentralWidget(quitbutton)
+    
     machin=Available()
     print (machin)
+    def print_targets_if_modif(man, obj):
+        if machin.modified:
+            print([s.split("/")[-1] for s in machin.targets.keys()])
+            for t in machin.targets:
+                machin.targets[t].owner=machin.targets[t].ownerByDb()
+                print (machin.targets[t].owner,":", t)
+        machin.modified=False
+    machin.addHook('object-added',   print_targets_if_modif)
+    machin.addHook('object-removed', print_targets_if_modif)
+        
+    app = QApplication(sys.argv)
+    main = MainWindow()
+    main.show()
+    sys.exit(app.exec_())
     
