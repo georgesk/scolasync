@@ -33,7 +33,7 @@ from gi.repository import Gio, GLib, UDisks
 from PyQt4.QtGui import *
 
 #################### activate debugging #######################
-debug=True
+debug=False
 def inspectData():
     return ""
 
@@ -51,26 +51,6 @@ else:
     pass
     # logging.basicConfig(level=logging.NOTSET)
 ###############################################################
-
-def abstract(func):
-    """
-    Cette "fabrique" permet de faire un décorateur @abstract.
-    Le code est inspiré du projet USBcreator
-    """
-    def not_implemented(*args):
-        raise NotImplementedError(QApplication.translate("uDisk","%s n'est pas implémenté actuellement",None, QApplication.UnicodeUTF8) %
-                                  func.__name__)
-    return not_implemented
-
-def isCallable(obj):
-    """
-    Cette fonction utilise un ABC (abstract base class) pour dire si un
-    objet possède ou non une méthode __call__
-    @param obj un objet quelconque
-    @return True si l'objet peut être utilisé comme fonction
-    """
-    import collections
-    return isinstance(obj, collections.Callable)
 
 def fs_size(device):
     """
@@ -111,29 +91,23 @@ class UDisksBackend:
     Plusieurs modifications ont été faites au code original.
     Les fonctions de rappel ne tiennent compte que des périphériques USB
     """
-    def __init__(self, allow_system_internal=False, bus=None, show_all=False, logger=logging):
+    def __init__(self, logger=logging):
         """
         Le constructeur.
-        @param allow_system_internal à documenter
         @param bus un bus de dbus, si on ne précise rien ce sera
         dbus.SystemBus().
-        @param show_all à documenter
         @param logger un objet permettant de journaliser les messages ; 
         par défaut il se confond avec le module logging
         """
         self.install_thread = None
         self.logger=logger
-        self.allow_system_internal=allow_system_internal
-        self.show_all=show_all
         ## self.targets est un dictionnaire des disques détectés
-        ## les clés sont les dsiques, et les contenus sont les partitions
+        ## les clés sont les paths et les contenus des dictionnaires
+        ## précis. On pourrait faire des contenus uDisk2 ????
         self.targets = {}
         DBusGMainLoop(set_as_default=True)
         threads_init()
-        if bus:
-            self.bus = bus
-        else:
-            self.bus = dbus.SystemBus()
+        self.bus = dbus.SystemBus()
         self.udisks = UDisks.Client.new_sync(None)
         self.manager = self.udisks.get_object_manager()
         self.cbHooks = {
@@ -162,7 +136,7 @@ class UDisksBackend:
         self.addHook('object-added',
                      lambda man, obj: self._udisks_obj_added(obj))
         self.addHook('object-removed',
-                     lambda man, obj: self._device_removed(obj.get_object_path()))
+                     lambda man, obj: self._udisks_obj_removed(obj))
         self.addHook('interface-added',
                      lambda man, obj, iface: self._device_changed(obj))
         self.addHook('interface-removed',
@@ -184,6 +158,7 @@ class UDisksBackend:
             self.cbHooks[signal]['hooks'].append(cb)
             return cb
         return None
+    
     # voir le fichier integration-test issu des sources de udisks2
     def retry_mount(self, fs, timeout=5, retryDelay=0.3):
         """
@@ -207,100 +182,107 @@ class UDisksBackend:
 
     def detect_devices(self):
         """
-        Fait un inventaire des disques à prendre en compte. 
-        Il faudra remonter les disques au programme graphique par des
-        messages appropriés. L'ajout de disques n'est censé se faire
-        qu'à leur mise en place durant le fonctionnement de la boucle
-        principale.
+        Fait un inventaire des disques. 
         """
-        self.logger.debug(QApplication.translate("uDisk","Détection des disques",None, QApplication.UnicodeUTF8)+inspectData())
-
-        # recensement des disque actuellement connectés
         for obj in self.manager.get_objects():
             self._udisks_obj_added(obj)
 
-    def target_removed_cb(self, drive):
-        pass
-
-    def target_added_cb(self, drive):
-        pass
-
-    def _udisks_obj_added(self, obj):
+    def _interesting_obj(self, obj):
         """
-        Fonction de rappel pour les ajouts de disque
-        @param obj un objet renvoyé par l'évènement
+        trouve si un objet est intéressant à cataloguer
+        @param obj une instance de UDisksObjectProxy
+        @return un triplet interesting (vrai/faux), drive (objet),
+        partition (objet).
         """
+        interesting=False
+        drive=None
+        partition=None
+        
         # ne tient pas compte des périphériques non débranchables
         path = obj.get_object_path()
         for boring in not_interesting:
             if path.startswith(boring):
-                return
+                return interesting, drive, partition
 
         # ne considère que les périphériques de type block
         block = obj.get_block()
         if not block:
-            return
+            return interesting, drive, partition
         
         # initialise drive, nom du disque ?
         drive_name = block.get_cached_property('Drive').get_string()
         if drive_name == '/':
-            drive = None
-            return
+            return interesting, drive, partition
         else:
             drive = self.udisks.get_object(drive_name).get_drive()
         
         # on ne tient pas compte des CDROMS ni DVDROMS
         if drive and drive.get_cached_property('Optical').get_boolean():
-            return
+            return interesting, drive, partition
 
+        interesting=True
         # détermine si on a un disque ou une partition
-        self.logger.debug(QApplication.translate("uDisk","Disque ajouté %s",None, QApplication.UnicodeUTF8) % drive+inspectData())
-        part = obj.get_partition()
-        is_system = block.get_cached_property('HintSystem').get_boolean()
-        if self.allow_system_internal or not is_system:
-            if part:
-                self._udisks_partition_added(obj, block, drive, path)
-            else:
-                self._udisks_drive_added(obj, block, drive, path)
+        partition = obj.get_partition()
+        return interesting, drive, partition
+    
+    def _udisks_obj_added(self, obj):
+        """
+        Fonction de rappel pour les ajouts de disque
+        @param obj un objet renvoyé par l'évènement
+        """
+        interesting, drive, part = self._interesting_obj(obj)
+        if part:
+            self._udisks_partition_added(obj, drive, part)
+        elif drive:
+            self._udisks_drive_added    (obj, drive, part)
         return
-            
-    def _udisks_partition_added(self, obj, block, drive, path):
+
+    def objIsUsb(self,obj):
+        """
+        détermine si un périphérique est de type USB
+        @param obj un objet UDisksObjectProxy
+        @return vrai si c'est un périphérique USB
+        """
+        for s in obj.get_block().get_cached_property('Symlinks'):
+            if b'/dev/disk/by-id/usb' in bytes(s):
+                return True
+        return False
+    
+    def _udisks_partition_added(self, obj, drive, partition):
+        """
+        Fonction de rappel pour l'ajout d'une partition,
+        met à jour self.targets
+        @param obj une instance de UDisksObjectProxy
+        @param drive une instance de ...
+        @param partition une instance de ...
+        """
+        path  = obj.get_object_path()
+        block = obj.get_block()
         self.logger.debug(QApplication.translate("uDisk","Partition ajoutée %s",None, QApplication.UnicodeUTF8) % path+inspectData())
         fstype = block.get_cached_property('IdType').get_string()
-        self.logger.debug(QApplication.translate("uDisk","id-type %s ",None, QApplication.UnicodeUTF8) % fstype+inspectData())
-
-        partition = obj.get_partition()
         parent = partition.get_cached_property('Table').get_string()
+        total = drive.get_cached_property('Size').get_uint64()
+        free = -1
+        mount = ''
         fs = obj.get_filesystem()
         if fs:
             mount_points = fs.get_cached_property('MountPoints').get_bytestring_array()
-            if fstype == 'vfat' and len(mount_points) == 0:
+            if len(mount_points)>0:
+                mount= mount_points[0]
+            if not mount and fstype == 'vfat':
                 try:
                     mount = self.retry_mount(fs)
                 except:
                     logging.exception(QApplication.translate("uDisk","Échec au montage du disque : %s",None, QApplication.UnicodeUTF8) % path)
-                    return
-            else:
-                mount = mount_points and mount_points[0]
-        else:
-            mount = None
-
         if mount:
             total, free = fs_size(mount)
-        else:
-            # si le disque n'est pas monté, on a accès à la taille mais pas
-            # à son utilisation.
-            total = drive.get_cached_property('Size').get_uint64()
-            free = -1
-            mount = ''
         self.logger.debug('mount: %s' % mount+inspectData())
-        isUsb=False
-        for s in block.get_cached_property('Symlinks'):
-            if '/dev/disk/by-id/usb' in bytes(s).decode("utf-8"):
-                isUsb=True
-        if total > 1:
+        is_system = block.get_cached_property('HintSystem').get_boolean()
+        isUsb=self.objIsUsb(obj)
+        if isUsb and total > 1:
             self.targets[path] = {
                 'isUsb'      : isUsb,
+                'is_system'  : is_system,
                 'fstype'     : fstype,  
                 'uuid'       : block.get_cached_property('IdUUID').get_string(),
                 'serial'     : block.get_cached_property('Drive').get_string().split('_')[-1],
@@ -313,21 +295,12 @@ class UDisksBackend:
                 'mountpoint' : mount,
                 'parent'     : str(parent),
             }
-            if self.show_all:
-                if isCallable(self.target_added_cb):
-                    self.target_added_cb(device)
-            else:
-                if parent in self.targets:
-                    if isCallable(self.target_removed_cb):
-                        self.target_removed_cb(parent)
-                if isCallable(self.target_added_cb):
-                    self.target_added_cb(path)
         else:
-            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition à 0 octets.",None, QApplication.UnicodeUTF8)+inspectData())            
+            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition non-USB ou à 0 octets.",None, QApplication.UnicodeUTF8)+inspectData())            
              
-    def _udisks_drive_added(self, obj, block, drive, path):
-        if not drive:
-            return
+    def _udisks_drive_added(self, obj, drive, part):
+        path  = obj.get_object_path()
+        block = obj.get_block()
         if path in self.targets:
             self.logger.debug(QApplication.translate("uDisk","Disque déjà ajouté auparavant : %s",None, QApplication.UnicodeUTF8) % path+inspectData())
         else:
@@ -337,15 +310,13 @@ class UDisksBackend:
             if size <= 0:
                 self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition à 0 octets.",None, QApplication.UnicodeUTF8)+inspectData())
                 return
-            isUsb=False
-            for s in block.get_cached_property('Symlinks'):
-                if '/dev/disk/by-id/usb' in bytes(s).decode("utf-8"):
-                    isUsb=True
+            is_system = block.get_cached_property('HintSystem').get_boolean()
+            isUsb = self.objIsUsb(obj)
             if not isUsb:
-                self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : type non USB.",None, QApplication.UnicodeUTF8)+inspectData())
                 return
             self.targets[path] = {
                 'isUsb'      : isUsb,
+                'is_system'  : is_system,
                 'fstype'     : '',  
                 'uuid'       : block.get_cached_property('IdUUID').get_string(),
                 'serial'     : block.get_cached_property('Drive').get_string().split('_')[-1],
@@ -358,28 +329,21 @@ class UDisksBackend:
                 'mountpoint' : None,
                 'parent' : None,
             }
-            if isCallable(self.target_added_cb):
-                if self.show_all:
-                    self.target_added_cb(path)
-                else:
-                    children = [x for x in self.targets
-                                if self.targets[x]['parent'] == path]
-                    if not children:
-                        self.target_added_cb(path)
             
     def _device_changed(self, obj):
         path = obj.get_object_path()
         self.logger.debug(QApplication.translate("uDisk","Changement pour le disque %s",None, QApplication.UnicodeUTF8) % path+inspectData())
 
-    def _device_removed(self, device):
+    def _udisks_obj_removed(self, obj):
         """
-        Fonction de rappel déclenchée par le retrait d'un disque
+        Fonction de rappel déclenchée par le retrait d'un disque.
+        Met à jour self.targets
+        @param obj une instance de UDisksObjectProxy
         """
-        logging.debug(QApplication.translate("uDisk","Disque débranché du système : %s",None, QApplication.UnicodeUTF8) % device)
-        if device in self.targets:
-            if isCallable(self.target_removed_cb):
-                self.target_removed_cb(device)
-            self.targets.pop(device)
+        path=obj.get_object_path()
+        logging.debug(QApplication.translate("uDisk","Disque débranché du système : %s",None, QApplication.UnicodeUTF8) % path)
+        if path in self.targets:
+            self.targets.pop(path)
 
 
 class uDisk2:
@@ -762,6 +726,13 @@ if __name__=="__main__":
 
     machin=Available()
     print (machin)
+    
+    machin.addHook('object-added', lambda man, obj: print("=O=> ajout de", obj,obj.get_object_path(),"\ntargets.keys=", [s.split("/")[-1] for s in machin.targets.keys()]))
+    machin.addHook('object-removed', lambda man, obj: print("<=O= retrait de", obj,obj.get_object_path(),"\ntargets.keys=", [s.split("/")[-1] for s in machin.targets.keys()]))
+    
+    machin.addHook('interface-added', lambda man, obj: print("=I=> ajout de", obj,"\ntargets.keys=", [s.split("/")[-1] for s in machin.targets.keys()]))
+    machin.addHook('interface-removed', lambda man, obj: print("<=I= retrait de", obj,"\ntargets.keys=", [s.split("/")[-1] for s in machin.targets.keys()]))
+    
     app = QApplication(sys.argv)
     main = MainWindow()
     main.show()
