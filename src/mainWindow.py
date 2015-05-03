@@ -209,9 +209,6 @@ class mainWindow(QMainWindow):
             return
         disk=qApp.available.targets[self.recentConnect]
         if disk.parent: # c'est une partition
-            print ("=== Il faudrait enregistrer le disque", disk)
-            # pas tout à fait équivalent à l'émission d'un signal avec emit :
-            # le timer s'exécutera en dehors du thread qui appartient à DBUS !
             QTimer.singleShot(0, self.namingADrive)
             self.checkDisks(noLoop=True)
             
@@ -219,7 +216,6 @@ class mainWindow(QMainWindow):
         """
         fonction de rappel pour un medium retiré ; se base sur la valeur de self.recentDisConnect
         """
-        print("===", self.recentDisConnect, "a été débranché, il faut mettre à jour l'affichage")
         self.checkDisks()
         
     def initRedoStuff(self):
