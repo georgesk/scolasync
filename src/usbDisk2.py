@@ -384,7 +384,7 @@ class uDisk2:
 
     def __init__(self, path, mp='', isUsb=False, vendor='', model='', parent=None,
                  fstype='', serial='', uuid='',
-                 free=0, capacity=0, device='', firstFat=False, selected=True):
+                 free=0, capacity=0, device='', firstFat=None, selected=True):
         """
         Le constructeur
         @param path un chemin comme '/org/freedesktop/UDisks2/block_devices/sdX'
@@ -400,7 +400,7 @@ class uDisk2:
         @param free taille de la zone libre pour l'écriture
         @param capacity taille du périphérique
         @param device pseudo-fichier pour l'accès au périphérique
-        @param firstFat vrai s'il s'agit de la première partition de type vfat
+        @param firstFat une instance de uDisk2, de type vfat parmi les partitions
         @param selected vrai/faux selon qu'on sélectionne ou non le périphérique (vrai par défaut)
         """
         self.path=path
