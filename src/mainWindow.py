@@ -754,7 +754,13 @@ class usbTableModel(QAbstractTableModel):
         elif role != Qt.DisplayRole: 
             return QVariant()
         if index.row()<len(self.donnees):
-            return QVariant(self.donnees[index.row()][index.column()])
+            try:
+                return QVariant(self.donnees[index.row()][index.column()])
+            except KeyError:
+                print("Le bug du retrait de clé non détecté a encore frappé, quand sera-t-il éliminé ?")
+                self.pere.findAllDisks()
+                return QVariant("")
+                    
         else:
             return QVariant()
 
