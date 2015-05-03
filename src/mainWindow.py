@@ -31,7 +31,6 @@ import diskFull, preferences, checkBoxDialog
 import os.path, operator, subprocess, dbus, re, time, copy
 from notification import Notification
 import db
-import deviceListener
 import choixEleves
 import nameAdrive
 from globaldef import logFileName, _dir
@@ -87,7 +86,6 @@ class mainWindow(QMainWindow):
         self.proxy=QSortFilterProxyModel()
         self.proxy.setSourceModel(self.t.model())
         self.timer=QTimer()
-        self.listener=deviceListener.DeviceListener(self)
         self.applyPreferences()
         self.updateButtons()
         self.setAvailableNames(False)
@@ -156,8 +154,10 @@ class mainWindow(QMainWindow):
         self.recentConnect
         """
         if self.availableNames:
-            stickId, tattoo, uuid = self.listener.identify(self.recentConnect)
-            hint=db.readStudent(stickId, uuid, tattoo)
+            if self.recentConnect not in qapp.Available.targets:
+                return
+            disk=qapp.Available.targets[self.recentConnect]
+            hint=db.readStudent(disk.serial, disk.uuid, ownedUsbDisk.tattooInDir(disk.mp))
             if hint != None:
                 oldName=hint
             else:
@@ -177,11 +177,9 @@ class mainWindow(QMainWindow):
         def _cbAdded(man, obj):
             if qApp.diskData.modified:
                 path=obj.get_object_path()
-                if path not in qApp.diskData.targets:
-                    return
-                disk=qApp.diskData.targets[path]
-                if disk.parent: # c'est une partition
-                    print ("=== Il faudrait enregistrer le disque", disk)
+                self.recentConnect=str(path)
+                delai=0.5 # petit délai pour que targets soit à jour
+                QTimer.singleShot(delai, self.deviceAdded) 
                 qApp.diskData.modified=False
         return _cbAdded
     
@@ -195,32 +193,33 @@ class mainWindow(QMainWindow):
                 path=obj.get_object_path()
                 if path in qApp.diskData.targets:
                     partition=bool(qApp.diskData.targets[path].parent)
-                    qApp.diskData.targets.pop(path)
                     if partition:
-                        print("===",path,"a été débranché, il faut mettre à jour l'affichage")
+                        self.recentDisConnect=str(path)
+                        delai=0.5 # petit délai pour que targets soit à jour
+                        QTimer.singleShot(delai, self.deviceRemoved) 
                 qApp.diskData.modified=False
         return _cbRemoved
     
-    def deviceAdded(self, s):
+    def deviceAdded(self):
         """
-        fonction de rappel pour un medium ajouté
-        @param s chemin UDisks, exemple : /org/freedesktop/UDisks/devices/sdb3
+        Fonction de rappel pour un medium ajouté ; se base sur la valeur de self.recentConnect
         """
-        vfatPath = self.listener.vfatUsbPath(str(s))
-        if vfatPath:
-            self.recentConnect=str(s)
+        if self.recentConnect not in qApp.diskData.targets:
+            return
+        disk=qApp.diskData.targets[self.recentConnect]
+        if disk.parent: # c'est une partition
+            print ("=== Il faudrait enregistrer le disque", disk)
             # pas tout à fait équivalent à l'émission d'un signal avec emit :
             # le timer s'exécutera en dehors du thread qui appartient à DBUS !
             QTimer.singleShot(0, self.namingADrive)
-        self.checkDisks(noLoop=True)
+            self.checkDisks(noLoop=True)
             
-    def deviceRemoved(self, s):
+    def deviceRemoved(self):
         """
-        fonction de rappel pour un medium retiré
-        @param s une chaine de caractères du type /dev/sdxy
+        fonction de rappel pour un medium retiré ; se base sur la valeur de self.recentDisConnect
         """
-        if qApp.diskData.hasDev(s):
-            self.checkDisks()
+        print("===", self.recentDisConnect, "a été débranché, il faut mettre à jour l'affichage")
+        self.checkDisks()
         
     def initRedoStuff(self):
         """
@@ -269,12 +268,27 @@ class mainWindow(QMainWindow):
         self.setTimer()
         self.manFileLocation=prefs["manfile"]
         self.mv=prefs["mv"]
-        # initialisation du catalogue de disques déjà présents
-        qApp.diskData=ownedUsbDisk.Available(access="firstFat")
         self.header=ownedUsbDisk.uDisk2.headers()
-        self.connectTableModel(qApp.diskData)
-        self.updateButtons()
+        self.findAllDisks()
+        return
 
+    def findAllDisks(self, other=None):
+        """
+        Initialisation du catalogue des disques USB connectés, et
+        maintenance de l'interface graphique.
+        @param other un catalogue déjà tout prêt de disques (None par défaut)
+        """
+        if other:
+            qApp.diskData=other
+        else:
+            qApp.diskData=ownedUsbDisk.Available(access="firstFat")
+        self.connectTableModel(qApp.diskData)
+        connectedCount=int(qApp.diskData)
+        self.ui.lcdNumber.display(connectedCount)
+        self.t.resizeColumnsToContents()
+        self.updateButtons()
+        return
+        
     def changeWd(self, newDir):
         """
         change le répertoire par défaut contenant les fichiers de travail
@@ -361,11 +375,10 @@ class mainWindow(QMainWindow):
         @param idx un QModelIndex qui pointe sur le propriétaire d'une clé
         """
         student="%s" %self.tm.data(idx,Qt.DisplayRole).toString()
+        # on fait une modification dans la base de donnée des propriétaires de clés
         ownedUsbDisk.editRecord(self.diskFromOwner(student), hint=student)
-        other=ownedUsbDisk.Available(access="firstFat")
-        qApp.diskData=other
-        self.connectTableModel(other)
-        self.checkDisks()
+        # après quoi on relit brutalement toute la list des clés connectées
+        self.findAllDisks()
 
     def setAvailableNames(self, available):
         """
@@ -669,17 +682,11 @@ class mainWindow(QMainWindow):
             access="firstFat",
             noLoop=noLoop)
         if force or not self.sameDiskData(qApp.diskData, other):
-            qApp.diskData=other
-            connectedCount=int(other)
-            self.connectTableModel(other)
-            self.updateButtons()
-            self.t.resizeColumnsToContents()
-            self.ui.lcdNumber.display(connectedCount)
+            self.findAllDisks(other)
         self.flashLCD()
         # met la table en ordre par la colonne des propriétaires
         self.t.horizontalHeader().setSortIndicator(1, Qt.AscendingOrder);
         self.t.setSortingEnabled(True)
-        self.t.resizeColumnsToContents()
         self.checkDisksLock=False
 
 

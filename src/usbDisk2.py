@@ -166,8 +166,8 @@ class UDisksBackend:
     def retry_mount(self, fs, timeout=5, retryDelay=0.3):
         """
         Essaie de monter un système de fichier jusqu'à ce qu'il
-        cesse d'échouer avec "Busy". Échoue si l'erreur est autre
-        que "Busy".
+        cesse d'échouer avec "Busy", ou que l'erreur soit "déjà monté".
+        Échoue si l'erreur est autre que les deux précédentes.
         @param fs un système de fichier à monter
         @param timeout nombre de secondes d'attente au maximum
         @param retryDelay délai entre deux essais
@@ -176,9 +176,13 @@ class UDisksBackend:
             try:
                 return fs.call_mount_sync(no_options, None)
             except GLib.GError as e:
-                if not 'UDisks2.Error.DeviceBusy' in e.message:
+                if 'UDisks2.Error.AlreadyMounted' in e.message:
+                    m=re.match(r".*already mounted[^/]*([^\']+).*",e.message)
+                    return m.group(1)
+                elif 'UDisks2.Error.DeviceBusy' in e.message:
+                    pass
+                else:
                     raise
-                logger.debug(QApplication.translate("uDisk","Disque occupé (Busy)",None, QApplication.UnicodeUTF8)+inspectData())
                 time.sleep(retryDelay)
                 timeout -= retryDelay
         return ''
