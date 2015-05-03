@@ -33,7 +33,7 @@ from gi.repository import Gio, GLib, UDisks
 from PyQt4.QtGui import *
 
 #################### activate debugging #######################
-debug=True
+debug=False
 def inspectData():
     return ""
 
@@ -94,17 +94,17 @@ class UDisksBackend:
     def __init__(self, logger=logging):
         """
         Le constructeur.
-        @param bus un bus de dbus, si on ne précise rien ce sera
-        dbus.SystemBus().
         @param logger un objet permettant de journaliser les messages ; 
         par défaut il se confond avec le module logging
         """
         self.install_thread = None
         self.logger=logger
         ## self.targets est un dictionnaire des disques détectés
-        ## les clés sont les paths et les contenus des dictionnaires
-        ## précis. On pourrait faire des contenus uDisk2 ????
+        ## les clés sont les paths et les contenus des instances de uDisk2
         self.targets = {}
+        ## self.modified signifie une modification récente, à prendre en compte
+        ## par une application au niveau utilisateur
+        self.modified=False
         DBusGMainLoop(set_as_default=True)
         threads_init()
         self.bus = dbus.SystemBus()
@@ -295,6 +295,7 @@ class UDisksBackend:
                 device=block.get_cached_property('Device').get_bytestring().decode('utf-8'),
             )
             self.targets[path] = udisk
+            self.modified=True
         return
              
     def _udisks_drive_added(self, obj, drive, part):
@@ -328,6 +329,7 @@ class UDisksBackend:
                 device=block.get_cached_property('Device').get_bytestring().decode('utf-8'),
             )
             self.targets[path] =udisk
+            self.modified=True
         return
         
     def _device_changed(self, obj):
@@ -344,6 +346,7 @@ class UDisksBackend:
         logging.debug(QApplication.translate("uDisk","Disque débranché du système : %s",None, QApplication.UnicodeUTF8) % path)
         if path in self.targets:
             self.targets.pop(path)
+            self.modified=True
 
 
 class uDisk2:
@@ -627,12 +630,12 @@ class Available (UDisksBackend):
         r=  "Available USB disks\n"
         r+= "===================\n"
         for d in sorted(self.disks()):
-            r+="%s\n" %(self.targets[d]["device"])
+            r+="%s\n" %(self.targets[d].devStuff)
             partlist=self.parts(d)
             if len(partlist)>0:
                 r+="    Partitions :\n"
                 for part in partlist:
-                    r+="        %s\n" %(self.targets[part]["device"],)
+                    r+="        %s\n" %(self.targets[part].devStuff,)
         return r
 
     def __str__(self):
@@ -660,9 +663,9 @@ class Available (UDisksBackend):
         @return le nième disque USB connecté
         """
         if self.access=="disk":
-            return uDisk2(self.targets.keys()[n], self)
+            return self.targets.keys()[n]
         elif self.access=="firstFat":
-            return uDisk2(self.firstFats[n],self)
+            return self.firstFats[n]
 
     def __len__(self):
         """
@@ -729,13 +732,12 @@ if __name__=="__main__":
 
     machin=Available()
     print (machin)
-    
-    machin.addHook('object-added', lambda man, obj: print("=O=> ajout de", obj,obj.get_object_path(),"\ntargets.keys=", [s.split("/")[-1] for s in machin.targets.keys()]))
-    machin.addHook('object-removed', lambda man, obj: print("<=O= retrait de", obj,obj.get_object_path(),"\ntargets.keys=", [s.split("/")[-1] for s in machin.targets.keys()]))
-    
-    machin.addHook('interface-added', lambda man, obj: print("=I=> ajout de", obj,"\ntargets.keys=", [s.split("/")[-1] for s in machin.targets.keys()]))
-    machin.addHook('interface-removed', lambda man, obj: print("<=I= retrait de", obj,"\ntargets.keys=", [s.split("/")[-1] for s in machin.targets.keys()]))
-    
+    def print_targets_if_modif(manager, obj):
+        if machin.modified:
+            print([s.split("/")[-1] for s in machin.targets.keys()])
+    machin.addHook('object-added',   print_targets_if_modif)
+    machin.addHook('object-removed', print_targets_if_modif)
+        
     app = QApplication(sys.argv)
     main = MainWindow()
     main.show()
