@@ -640,8 +640,9 @@ class mainWindow(QMainWindow):
             return
         for d in qApp.available.disks_ud():
             for partition in qApp.available.parts_ud(d.path):
-                cmd="umount {0}".format(partition.mp)
-                subprocess.call(cmd, shell=True)
+                if partition.mp:
+                    cmd="umount {0}".format(partition.mp)
+                    subprocess.call(cmd, shell=True)
             cmd= "udisks --detach {0}".format(d.devStuff)
             subprocess.call(cmd, shell=True)
         self.findAllDisks()     # remet à jour le compte de disques

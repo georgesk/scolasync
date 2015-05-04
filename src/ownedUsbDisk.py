@@ -237,6 +237,8 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         @param ownerDialog si vrai : fait dialogue interactif
         @return un nom de propriétaire
         """
+        if self.parent and not self.mp : # partiton non montée
+            return
         ud=self.getFat()
         assert (ud.parent) # ud désigne une partition vfat
         if not db.knowsId(ud.stickid, ud.uuid, ud.tattoo()) :
