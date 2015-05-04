@@ -96,6 +96,7 @@ class chooseDialog(QDialog):
         sélectionné dans la fenêtre principale
         """
         sel=self.mainWindow.ui.tableView.selectedIndexes()
+        print("GRRR in listStorages qApp.available=", qApp.available)
         for d in qApp.available:
             o=qApp.available.targets[d].ownerByDb()
             mountPath=d.ensureMounted()
