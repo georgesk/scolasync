@@ -55,10 +55,10 @@ class ThreadRegister:
         @param thread un thread
         Empile un thread pour le baladeur ud
         """
-        if ud.owner not in self.dico.keys():
-            self.dico[ud.owner]=[thread]
+        if ud.getOwner() not in self.dico.keys():
+            self.dico[ud.getOwner()]=[thread]
         else:
-            self.dico[ud.owner].append(thread)
+            self.dico[ud.getOwner()].append(thread)
 
     def pop(self, ud, thread):
         """
@@ -66,7 +66,7 @@ class ThreadRegister:
         @param thread un thread
         Dépile un thread pour le baladeur ud
         """
-        self.dico[ud.owner].remove(thread)
+        self.dico[ud.getOwner()].remove(thread)
 
     def busy(self, owner):
         """
@@ -307,7 +307,8 @@ class threadCopyToUSB(abstractThreadUSB):
         for f in fileList:
             cmd="copying %s to %s" %(f, destpath)
             if self.parent:
-                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.owner, cmd)
+                print("GRRR dans toDo, ud=", ud, "ud.getOwner()=", ud.getOwner())
+                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
             destpath1=os.path.join(destpath, os.path.basename(f))
             # copie d'arbre si on copie un répertoire, ou de simple fichier
             if os.path.isdir(f):
@@ -328,7 +329,7 @@ class threadCopyToUSB(abstractThreadUSB):
             for e in errors:
                 msg+= " <%s>" %str(e)
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.owner, cmd)
+                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.getOwner(), cmd)
             self.writeToLog(msg)
             
 class threadCopyFromUSB(abstractThreadUSB):
@@ -376,7 +377,7 @@ class threadCopyFromUSB(abstractThreadUSB):
             ensureDirExists(toPath)
             cmd="copying %s to %s" %(fromPath, toPath)
             if self.parent:
-                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.owner, cmd)
+                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
             destpath1=os.path.join(toPath, os.path.basename(f))
             if os.path.isdir(fromPath):
                 errors=self.copytree(fromPath, destpath1)
@@ -396,7 +397,7 @@ class threadCopyFromUSB(abstractThreadUSB):
             for e in errors:
                 msg += " <%s>" %e
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.owner, msg)
+                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.getOwner(), msg)
             self.writeToLog(msg)
 
 class threadMoveFromUSB(abstractThreadUSB):
@@ -445,7 +446,7 @@ class threadMoveFromUSB(abstractThreadUSB):
             ensureDirExists(toPath)
             cmd="copying %s to %s" %(fromPath, toPath)
             if self.parent:
-                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.owner, cmd)
+                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
             destpath1=os.path.join(toPath, os.path.basename(f))
             if os.path.isdir(fromPath):
                 errors=self.copytree(fromPath, destpath1, erase=True)
@@ -470,7 +471,7 @@ class threadMoveFromUSB(abstractThreadUSB):
             for e in errors:
                 msg += " <%s>" %e
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.owner, msg)
+                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.getOwner(), msg)
             self.writeToLog(msg)
 
 class threadDeleteInUSB(abstractThreadUSB):
@@ -510,7 +511,7 @@ class threadDeleteInUSB(abstractThreadUSB):
             cmd="Deleting %s" %toDel
             errors=[]
             if self.parent:
-                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.owner, cmd)
+                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
             if os.path.isdir(toDel):
                 try:
                     for root, dirs, files in os.walk(toDel, topdown=False):
@@ -535,7 +536,7 @@ class threadDeleteInUSB(abstractThreadUSB):
             for e in errors:
                 msg += " <%s>" %e
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(string, string)"), ud.owner, msg)
+                self.parent.emit(SIGNAL("popCmd(string, string)"), ud.getOwner(), msg)
             self.writeToLog(msg)
 
 if __name__=="__main__":

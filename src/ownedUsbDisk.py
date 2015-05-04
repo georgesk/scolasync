@@ -23,7 +23,7 @@ licence['en']="""
 """
 
 import usbDisk2, db
-import os.path, dbus, subprocess, time
+import os.path, dbus, subprocess, time, random
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from globaldef import markFileName
@@ -108,6 +108,18 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         QObject.__init__(self)
         self.owner="" # le propriétaire est déterminé plus tard
         self.visibleDirs=self.readQuirks()
+
+    def getOwner(self):
+        """
+        Renvoie le propriétaire
+        @return le propriétaire de la clé
+        """
+        if self.parent:
+            ud=qApp.available.targets[self.parent]
+        else:
+            ud=self
+        assert(not ud.parent) # on a affaire à un disque et non une partition
+        return ud.owner
 
     def uniqueId(self):
         """
@@ -202,22 +214,44 @@ class uDisk2(usbDisk2.uDisk2,QObject):
     
     headers = staticmethod(headers)
 
-    def ensureOwner(self, noLoop):
+    def ensureOwner(self, noDialog):
         """
         Demande un nom de propriétaire si celui-ci n'est pas encore défini
         pour cette clé USB
-        @param noLoop si True : ne fait pas de dialogue interactif
+        @param noDialog si True : ne fait pas de dialogue interactif
         @return un nom de propriétaire si c'est un disque, sinon None
         """
-        if not self.parent and self.isUsb:
-            if noLoop==False and not db.knowsId(self.stickid, self.uuid, self.tattoo()) :
-                prompt=QApplication.translate("Dialog","La cle {id}<br>n'est pas identifiee, donnez le nom du proprietaire",None, QApplication.UnicodeUTF8).format(id=self.stickid)
+        ## on remonte au niveau du disque si nécessaire
+        if self.parent:
+            ud=self.parent
+        else:
+            ud=self
+        assert (not ud.parent) # ud désigne le disque et non une partition
+        if not db.knowsId(ud.stickid, ud.uuid, ud.tattoo()) :
+            if noDialog:
+                text=randomText(6)
+            else:
+                prompt=QApplication.translate("Dialog","La cle {id}<br>n'est pas identifiee, donnez le nom du proprietaire",None, QApplication.UnicodeUTF8).format(id=ud.stickid)
                 title=QApplication.translate("Dialog","Entrer un nom",None, QApplication.UnicodeUTF8)
                 text,ok = QInputDialog.getText(None, title, prompt)
                 if ok and len(text)>0 and not db.hasStudent(text):
-                    db.writeStudent(self.stickid, self.uuid, self.tattoo(), text)
-        return db.readStudent(self.stickid, self.uuid, self.tattoo())
-        
+                    pass
+                else:
+                    text=randomText(6)
+            db.writeStudent(ud.stickid, ud.uuid, ud.tattoo(), text)
+        return db.readStudent(ud.stickid, ud.uuid, ud.tattoo())
+
+def randomText(length):
+    """
+    fabrique un texte aléatoire de longueur donnée
+    @param length la longueur recherchée
+    @return un texte pseudo-aléatoire
+    """
+    result=""
+    for i in range(length):
+        result+=random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+    return result
+
 class Available(usbDisk2.Available):
     """
     Une classe qui fournit une collection de disques USB connectés,

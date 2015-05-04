@@ -661,7 +661,8 @@ class usbTableModel(QAbstractTableModel):
         @param cmd la commande shell effectuée sur ce baladeur
         """
         global activeThreads, pastCommands, lastCommand
-        owner="%s" %owner
+        owner=str(owner)
+        print("GRRR owner=", owner,"activeThreads=",activeThreads)
         if owner in activeThreads:
             activeThreads[owner].append(cmd)
         else:
