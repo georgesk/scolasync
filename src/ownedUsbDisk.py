@@ -281,7 +281,7 @@ class Available(usbDisk2.Available):
         """
         self.ownerDialog=ownerDialog
         usbDisk2.Available.__init__(self, access, diskClass)
-        self.finishInit()
+        # self.finishInit() # non! cette routine est déjà appelée par usbDisk2.Available.__init__
         
     def finishInit(self):
         """

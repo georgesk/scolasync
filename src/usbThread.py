@@ -367,14 +367,14 @@ class threadCopyFromUSB(abstractThreadUSB):
         for f in fileList:
             ## prend le fichier ou le répertoire sur le disque courant
             fromPath=os.path.join(ud.ensureMounted(), f)
-            owner=ud.ownerByDb()
+            owner=ud.getOwner()
             ## personnalise le nom de la destination
             newName="%s_%s" %(owner,os.path.dirname(f))
             ## calcule le point de copie et le répertoire à créer s'il le faut
             toPath=os.path.join(dest,newName)
             # crée le répertoire cible si nécessaire
             ensureDirExists(toPath)
-            cmd="copying %s to %s" %(fromPath, toPath)
+            cmd="Copie de {0} vers {1}".format(fromPath, toPath)
             if self.parent:
                 self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
             destpath1=os.path.join(toPath, os.path.basename(f))
@@ -436,7 +436,7 @@ class threadMoveFromUSB(abstractThreadUSB):
         for f in fileList:
             ## prend le fichier ou le répertoire sur le disque courant
             fromPath=os.path.join(ud.ensureMounted(), f)
-            owner=ud.ownerByDb()
+            owner=ud.getOwner()
             ## personnalise le nom de la destination
             newName="%s_%s" %(owner,os.path.dirname(f))
             ## calcule le point de copie et le répertoire à créer s'il le faut
@@ -507,7 +507,7 @@ class threadDeleteInUSB(abstractThreadUSB):
         """
         for f in fileList:
             toDel=os.path.join(ud.ensureMounted(), f)
-            cmd="Deleting %s" %toDel
+            cmd="Effacement de {0}".format(toDel)
             errors=[]
             if self.parent:
                 self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
