@@ -305,9 +305,8 @@ class threadCopyToUSB(abstractThreadUSB):
         ensureDirExists(destpath)
         # boucle de copie
         for f in fileList:
-            cmd="copying %s to %s" %(f, destpath)
+            cmd="Copie de {0} vers {1}".format(f, destpath)
             if self.parent:
-                print("GRRR dans toDo, ud=", ud, "ud.getOwner()=", ud.getOwner())
                 self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
             destpath1=os.path.join(destpath, os.path.basename(f))
             # copie d'arbre si on copie un répertoire, ou de simple fichier

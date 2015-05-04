@@ -487,7 +487,7 @@ class uDisk2:
         """
         prefix="\n"+" "*indent
         r=""
-        props=["mp", "isUsb", "parent", "fstype", "stickid", "uuid", "vendor", "model", "devStuff", "free", "capacity"]
+        props=["mp", "parent", "fstype", "stickid", "uuid", "vendor", "model", "devStuff", "free", "capacity"]
         for prop in props:
             r+=prefix+"%s = %s" %(prop, getattr(self,prop))
         return r
@@ -707,15 +707,12 @@ class Available (UDisksBackend):
         elif self.access=="firstFat":
             return len(self.firstFats)
 
-    def getFirstFats(self, setOwners=False):
+    def getFirstFats(self):
         """
         Facilite l'accès aux partitions de type DOS-FAT, et a des effets
         de bord :
-          * marque le disque avec l'uuid de la première partition FAT.
+          * marque la première vfat dans chaque instance de disque
           * construit une liste des chemins uDisk des FATs
-        @param setOwners si égale à True,
-          signale que la liste devra comporter des attributs de propriétaire
-          de medias.
         @return une liste de partitions, constituée de la première
           partition de type FAT de chaque disque USB connecté
         """
@@ -726,11 +723,8 @@ class Available (UDisksBackend):
             for p in parts:
                 if self.targets[p].fstype=="vfat":
                     result.append(p)
+                    # inscrit l'information dans l'instance du disque, par effet de bord
                     self.targets[d].firstFat=self.targets[p]
-                    if setOwners:
-                        print(" !!!! IL FAUT DÉBOGUER ÇA CE CODE N'EST PAS PROPRE DANS getFirstFats")
-                        p.owner=d.owner
-                    
         return result
 
     def hasDev(self, dev):

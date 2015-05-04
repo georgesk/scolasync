@@ -66,13 +66,14 @@ def editRecord(owd, hint=""):
     @param owd une instance de ownedUsbDisk
     @param hint chaîne vide par défaut. Peut être le nom de l'ancien propriétaire
     """
-    #### !!! là il faut partir de owd et trouver sa firstfat
+    ud=owd.getFat()
     title=QApplication.translate("Dialog", "Choix du propriétaire", None, QApplication.UnicodeUTF8)
     prompt=QApplication.translate("Dialog", "Nouveau nom du propriétaire du baladeur", None, QApplication.UnicodeUTF8)
     newStudent, ok = QInputDialog.getText(None, title, prompt, text=hint)
     if ok:
         newStudent="%s" %newStudent
-        db.writeStudent(owd.stickid, owd.uuid, owd.tattoo(), newStudent)
+        assert (ud.parent) # ud est une partition de type vfat
+        db.writeStudent(ud.stickid, ud.uuid, ud.tattoo(), newStudent)
 
 class uDisk2(usbDisk2.uDisk2,QObject):
     """
@@ -114,12 +115,29 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         Renvoie le propriétaire
         @return le propriétaire de la clé
         """
+        return self.getFat().owner
+
+    def getFat(self):
+        """
+        Renvoie à coup sûr la partition vfat d'un disque
+        @return une instance uDisk2 représentant une partition vfat
+        """
         if self.parent:
-            ud=qApp.available.targets[self.parent]
+            return self
         else:
-            ud=self
-        assert(not ud.parent) # on a affaire à un disque et non une partition
-        return ud.owner
+            return self.firstFat
+
+    def valuableProperties(self,indent=4):
+        """
+        Facilite l'accès aux propriétés intéressantes d'une instance
+        @return une chaîne indentée avec les propriétés intéressantes, une par ligne
+        """
+        prefix="\n"+" "*indent
+        r=""
+        props=["mp", "parent", "fstype", "stickid", "uuid", "vendor", "model", "devStuff", "free", "capacity", "owner"]
+        for prop in props:
+            r+=prefix+"%s = %s" %(prop, getattr(self,prop))
+        return r
 
     def uniqueId(self):
         """
@@ -133,12 +151,9 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         Renvoie un tatouage présent sur la clé, quitte à le créer.
         @result un tatouage, supposément unique.
         """
-        if not self.parent: # on a affaire à un disque, pas une partition
-            mp=self.firstFat.mp
-        else:
-            mp=self.mp
-        if mp:
-            return tattooInDir(mp)
+        ud=self.getFat()
+        if ud.mp:
+            return tattooInDir(ud.mp)
         else:
             return ""
     
@@ -214,43 +229,38 @@ class uDisk2(usbDisk2.uDisk2,QObject):
     
     headers = staticmethod(headers)
 
-    def ensureOwner(self, noDialog):
+    def ensureOwner(self, ownerDialog):
         """
         Demande un nom de propriétaire si celui-ci n'est pas encore défini
-        pour cette clé USB
-        @param noDialog si True : ne fait pas de dialogue interactif
-        @return un nom de propriétaire si c'est un disque, sinon None
+        pour cette clé USB. Enregistre au passage le nom du propriétaire
+        dans les instances du disque et de sa partiton vfat
+        @param ownerDialog si vrai : fait dialogue interactif
+        @return un nom de propriétaire
         """
-        ## on remonte au niveau du disque si nécessaire
-        if self.parent:
-            ud=self.parent
-        else:
-            ud=self
-        assert (not ud.parent) # ud désigne le disque et non une partition
+        ud=self.getFat()
+        assert (ud.parent) # ud désigne une partition vfat
         if not db.knowsId(ud.stickid, ud.uuid, ud.tattoo()) :
-            if noDialog:
-                text=randomText(6)
-            else:
+            text=self.randomOwner(6)
+            if ownerDialog:
                 prompt=QApplication.translate("Dialog","La cle {id}<br>n'est pas identifiee, donnez le nom du proprietaire",None, QApplication.UnicodeUTF8).format(id=ud.stickid)
                 title=QApplication.translate("Dialog","Entrer un nom",None, QApplication.UnicodeUTF8)
                 text,ok = QInputDialog.getText(None, title, prompt)
-                if ok and len(text)>0 and not db.hasStudent(text):
-                    pass
-                else:
-                    text=randomText(6)
             db.writeStudent(ud.stickid, ud.uuid, ud.tattoo(), text)
-        return db.readStudent(ud.stickid, ud.uuid, ud.tattoo())
+        o=db.readStudent(ud.stickid, ud.uuid, ud.tattoo())
+        self.owner=o
+        ud.owner=o
+        return o
 
-def randomText(length):
-    """
-    fabrique un texte aléatoire de longueur donnée
-    @param length la longueur recherchée
-    @return un texte pseudo-aléatoire
-    """
-    result=""
-    for i in range(length):
-        result+=random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-    return result
+    def randomOwner(self,length):
+        """
+        fabrique un texte aléatoire de longueur donnée
+        @param length la longueur recherchée
+        @return un texte pseudo-aléatoire
+        """
+        result="inconnu_"
+        for i in range(length):
+            result+=random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+        return result
 
 class Available(usbDisk2.Available):
     """
@@ -259,16 +269,17 @@ class Available(usbDisk2.Available):
     avant le montage des partions FAT.
     """
 
-    def __init__(self, access="disk", diskClass=uDisk2, noLoop=True):
+    def __init__(self, access="disk", diskClass=uDisk2, ownerDialog=False):
         """
         Le constructeur est un proxy pour usbDisk.Available.__init__
         qui force la classe de disques à utiliser : en effet ici
         uDisk désigne ownedUsbDisk.uDisk
         @param access le mode d'accès : 'disk' ou 'firstFat'
         @param diskClass la classe d'objets à créer pour chaque disque
-        @param noLoop doit être True pour éviter de lancer un dialogue
+        @param ownerDialog vrai si on veut qu'il y ait un dialogue automatique
+        pour déterminer le propriétaire des disques non reconnus
         """
-        self.noLoop=noLoop
+        self.ownerDialog=ownerDialog
         usbDisk2.Available.__init__(self, access, diskClass)
         self.finishInit()
         
@@ -277,9 +288,9 @@ class Available(usbDisk2.Available):
         Fin de l'initialisation : trouve les propriétaires des disques
         puis identifie les partitions FAT et les monte
         """
-        self.getFirstFats() # premier passage, pour repérer chaque partition FAT
+        self.getFirstFats() # repère chaque partition FAT dans les instances des disques
         for d in self.disks_ud():
-            d.owner=d.ensureOwner(self.noLoop)
+            d.owner=d.ensureOwner(self.ownerDialog)
         self.mountFirstFats()
 
 

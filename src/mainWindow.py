@@ -631,8 +631,6 @@ class mainWindow(QMainWindow):
         """
         @return True si les ensembles de uniqueId de one et two sont identiques
         """
-        print ("GRRR one=", one)
-        print ("GRRR two=", two)
         return len(one.targets) == len(two.targets) and \
             set([p.uniqueId() for p in one]) == set([p.uniqueId() for p in two])
 
@@ -661,8 +659,6 @@ class usbTableModel(QAbstractTableModel):
         @param cmd la commande shell effectuée sur ce baladeur
         """
         global activeThreads, pastCommands, lastCommand
-        owner=str(owner)
-        print("GRRR owner=", owner,"activeThreads=",activeThreads)
         if owner in activeThreads:
             activeThreads[owner].append(cmd)
         else:
@@ -677,8 +673,6 @@ class usbTableModel(QAbstractTableModel):
         @param cmd la commande shell effectuée sur ce baladeur
         """
         global activeThreads, pastCommands, lastCommand
-        owner="%s" %owner
-        owner=owner.encode("utf-8")
         if owner in activeThreads:
             cmd0=activeThreads[owner].pop()
             if cmd0 in cmd:
@@ -848,7 +842,6 @@ class UsbDiskDelegate(QStyledItemDelegate):
         rect1.setSize(QSize(w-h,h))
         QApplication.style().drawItemText (painter, rect1, Qt.AlignLeft+Qt.AlignVCenter, option.palette, True, text)
         QApplication.style().drawItemText (painter, rect0, Qt.AlignCenter, option.palette, True, "O")
-        text=("%s" %text).encode("utf-8")
         if text in activeThreads:
             QApplication.style().drawItemPixmap (painter, rect0, Qt.AlignCenter, self.busyPixmap)
         else:
