@@ -107,6 +107,46 @@ class mainWindow(QMainWindow):
         ## accrochage d'une fonction de rappel pour les disque ajoutés
         qApp.available.addHook('object-added',   self.cbAdded())
         qApp.available.addHook('object-removed', self.cbRemoved())
+        self.connect(self, SIGNAL("pushCmd(QString, QString)"), self.pushCmd)
+        self.connect(self, SIGNAL("popCmd(QString, QString)"), self.popCmd)
+
+    def pushCmd(self,owner,cmd):
+        """
+        fonction de rappel déclenchée par les threads (au commencement)
+        @param owner le propriétaire du baladeur associé au thread
+        @param cmd la commande shell effectuée sur ce baladeur
+        """
+        global activeThreads, pastCommands, lastCommand
+        if owner in activeThreads:
+            activeThreads[owner].append(cmd)
+        else:
+            activeThreads[owner]=[cmd]
+        self.tm.updateOwnerColumn()
+        self.updateButtons()
+
+    def popCmd(self,owner, cmd):
+        """
+        fonction de rappel déclenchée par les threads (à la fin)
+        @param owner le propriétaire du baladeur associé au thread
+        @param cmd la commande shell effectuée sur ce baladeur
+        """
+        global activeThreads, pastCommands, lastCommand
+        if owner in activeThreads:
+            cmd0=activeThreads[owner].pop()
+            if cmd0 in cmd:
+                msg=cmd.replace(cmd0,"")+"\n"
+                logFile=open(os.path.expanduser(logFileName),"a")
+                logFile.write(msg)
+                logFile.close()
+            else:
+                raise Exception(("mismatched commands\n%s\n%s" %(cmd,cmd0)))
+            if len(activeThreads[owner])==0:
+                activeThreads.pop(owner)
+        else:
+            raise Exception("End of command without a begin.")
+        self.tm.updateOwnerColumn()
+        if len(activeThreads)==0 :
+            self.updateButtons()
         
     def checkModify(self, boolFunc):
         """
@@ -437,7 +477,7 @@ class mainWindow(QMainWindow):
                 QApplication.translate("Dialog","Etes-vous certain de vouloir effacer : "+"\n".join(pathList),None, QApplication.UnicodeUTF8),
                 buttons, defaultButton)
             if reply == QMessageBox.Ok:
-                cmd="usbThread.threadDeleteInUSB(p,{paths},subdir='Travail', logfile='{log}', parent=self.tm)".format(paths=pathList,log=logFileName)
+                cmd="usbThread.threadDeleteInUSB(p,{paths},subdir='Travail', logfile='{log}', parent=self)".format(paths=pathList,log=logFileName)
                 for p in qApp.available:
                     if not p.selected: continue # pas les médias désélectionnés
                     registerCmd(cmd,p)
@@ -460,7 +500,7 @@ class mainWindow(QMainWindow):
         d=copyToDialog1.copyToDialog1(parent=self, workdir=self.workdir)
         d.exec_()
         if d.ok==True:
-            cmd="usbThread.threadCopyToUSB(p,{selected},subdir='{subdir}', logfile='{logfile}', parent=self.tm)".format(selected=list(d.selectedList()), subdir=self.workdir, logfile=logFileName)
+            cmd="usbThread.threadCopyToUSB(p,{selected},subdir='{subdir}', logfile='{logfile}', parent=self)".format(selected=list(d.selectedList()), subdir=self.workdir, logfile=logFileName)
             ## !!!!!!!!!!!!!!!!! itérations dans qApp.available à revoir !
             for p in qApp.available:
                 if not p.selected: continue # pas les médias désélectionnés
@@ -504,12 +544,12 @@ class mainWindow(QMainWindow):
                 cmd="""usbThread.threadMoveFromUSB(
                            p,{paths},subdir=self.workdir,
                            rootPath='{mp}', dest='{dest}', logfile='{log}',
-                           parent=self.tm)""".format(paths=pathList, mp=mp, dest=destDir, log=logFileName)
+                           parent=self)""".format(paths=pathList, mp=mp, dest=destDir, log=logFileName)
             else:
                 cmd="""usbThread.threadCopyFromUSB(
                            p,{paths},subdir=self.workdir,
                            rootPath='{mp}', dest='{dest}', logfile='{log}',
-                           parent=self.tm)""".format(paths=pathList, mp=mp, dest=destDir, log=logFileName)
+                           parent=self)""".format(paths=pathList, mp=mp, dest=destDir, log=logFileName)
                 
             for p in qApp.available:
                 if not p.selected: continue # pas les médias désélectionnés
@@ -649,46 +689,6 @@ class usbTableModel(QAbstractTableModel):
         self.header=header
         self.donnees=donnees
         self.pere=parent
-        self.connect(self, SIGNAL("pushCmd(QString, QString)"), self.pushCmd)
-        self.connect(self, SIGNAL("popCmd(QString, QString)"), self.popCmd)
-
-    def pushCmd(self,owner,cmd):
-        """
-        fonction de rappel déclenchée par les threads (au commencement)
-        @param owner le propriétaire du baladeur associé au thread
-        @param cmd la commande shell effectuée sur ce baladeur
-        """
-        global activeThreads, pastCommands, lastCommand
-        if owner in activeThreads:
-            activeThreads[owner].append(cmd)
-        else:
-            activeThreads[owner]=[cmd]
-        self.updateOwnerColumn()
-        self.pere.updateButtons()
-
-    def popCmd(self,owner, cmd):
-        """
-        fonction de rappel déclenchée par les threads (à la fin)
-        @param owner le propriétaire du baladeur associé au thread
-        @param cmd la commande shell effectuée sur ce baladeur
-        """
-        global activeThreads, pastCommands, lastCommand
-        if owner in activeThreads:
-            cmd0=activeThreads[owner].pop()
-            if cmd0 in cmd:
-                msg=cmd.replace(cmd0,"")+"\n"
-                logFile=open(os.path.expanduser(logFileName),"a")
-                logFile.write(msg)
-                logFile.close()
-            else:
-                raise Exception(("mismatched commands\n%s\n%s" %(cmd,cmd0)))
-            if len(activeThreads[owner])==0:
-                activeThreads.pop(owner)
-        else:
-            raise Exception("End of command without a begin.")
-        self.updateOwnerColumn()
-        if len(activeThreads)==0 :
-            self.pere.updateButtons()
 
     def updateOwnerColumn(self):
         """

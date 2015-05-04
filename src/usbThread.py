@@ -535,7 +535,7 @@ class threadDeleteInUSB(abstractThreadUSB):
             for e in errors:
                 msg += " <%s>" %e
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(string, string)"), ud.getOwner(), msg)
+                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.getOwner(), msg)
             self.writeToLog(msg)
 
 if __name__=="__main__":
