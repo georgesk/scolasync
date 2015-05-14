@@ -1,1 +1,0 @@
-python3safe=True

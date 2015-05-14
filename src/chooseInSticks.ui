@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>images/scolasync.svg</normaloff>images/scolasync.svg</iconset>
+    <normaloff>images/scolasync.png</normaloff>images/scolasync.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -148,7 +148,7 @@ p, li { white-space: pre-wrap; }
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/remove.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/remove.svg</iconset>
+                      <normaloff>../../../../../../usr/share/icons/Tango/24x24/actions/remove.png</normaloff>../../../../../../usr/share/icons/Tango/24x24/actions/remove.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -171,7 +171,7 @@ p, li { white-space: pre-wrap; }
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/add.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/add.svg</iconset>
+                      <normaloff>../../../../../../usr/share/icons/Tango/24x24/actions/add.png</normaloff>../../../../../../usr/share/icons/Tango/24x24/actions/add.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -213,7 +213,7 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/fileopen.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/fileopen.svg</iconset>
+                   <normaloff>images/icons32/actions/fileopen.png</normaloff>images/icons32/actions/fileopen.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../../../../../usr/share/icons/Tango/scalable/places/folder.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/places/folder.svg</iconset>
+                   <normaloff>images/icons32/places/folder.png</normaloff>images/icons32/places/folder.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>

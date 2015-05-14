@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-    
 # 	$Id: db.py 47 2011-06-13 10:20:14Z georgesk $	
 
 licence={}
@@ -42,7 +41,7 @@ def openDb():
     cursor=database.cursor()
     cursor.execute('''create table if not exists owners (stickid text, uuid text, tatoo text, student text)''')
     cursor.execute('''create table if not exists version (major text, minor text)''')
-    cursor.execute('''create table if not exists preferences (checkable int, mv int, schoolfile text, workdir text, manfile text, refresh_enabled int, refresh_delay int)''')
+    cursor.execute('''create table if not exists preferences (checkable int, mv int, schoolfile text, workdir text, manfile text)''')
     database.commit()
     checkVersion(version.major(), version.minor())
 
@@ -117,7 +116,7 @@ def readPrefs():
     @return un dictionnaire de préférences
     """
     global cursor
-    cursor.execute("select checkable, mv, schoolfile,workdir, manfile, refresh_enabled, refresh_delay from preferences")
+    cursor.execute("select checkable, mv, schoolfile,workdir, manfile from preferences")
     s = cursor.fetchone()
     if s != None:
         checkable      = s[0]==1
@@ -125,15 +124,11 @@ def readPrefs():
         schoolFile     = s[2]
         workdir        = s[3]
         manfile        = s[4]
-        refreshEnabled = s[5]==1
-        refreshDelay   = s[6]
         return {"checkable"     : checkable,
                 "mv"            : mv,
                 "schoolFile"    : schoolFile,
                 "workdir"       : workdir,
                 "manfile"       : manfile,
-                "refreshEnabled": refreshEnabled,
-                "refreshDelay"  : refreshDelay
                 }
     else:
         # valeur par défaut si la base est vide de préférences
@@ -142,8 +137,6 @@ def readPrefs():
                 "schoolFile"    : "/usr/share/scolasync/exemple/SCONET_test.xml",
                 "workdir"       : "Travail",
                 "manfile"       : "/usr/share/scolasync/help/manualPage_fr_FR.html",
-                "refreshEnabled": False,
-                "refreshDelay"  : 30
                 }
 
 def setWd(newDir):
@@ -180,20 +173,16 @@ def writePrefs(prefs):
         mv=1
     else:
         mv=0
-    if prefs["refreshEnabled"]:
-        refreshEnabled=1
-    else:
-        refreshEnabled=0
     cursor.execute("select checkable from preferences")
     s = cursor.fetchone()
-    newValues=(1, mv, prefs["schoolFile"], prefs["workdir"], prefs["manfile"], refreshEnabled, prefs["refreshDelay"])
+    newValues=(1, mv, prefs["schoolFile"], prefs["workdir"], prefs["manfile"])
     if s != None:
         cursor.execute("""update preferences
-                          set checkable=?, mv=?, schoolfile=?, workdir=?, manfile=?, refresh_enabled=?, refresh_delay=?""",
+                          set checkable=?, mv=?, schoolfile=?, workdir=?, manfile=?""",
                        newValues)
     else:
         cursor.execute("""insert into preferences
-                          values (?,?,?,?,?,?,?)""",
+                          values (?,?,?,?,?)""",
                        newValues)
     database.commit()
 

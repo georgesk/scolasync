@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 # 	$Id: mytextbrowser.py 8 2010-10-11 10:03:05Z georgesk $	
 
 licence={}
@@ -23,10 +22,8 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 import subprocess
 
 class myTextBrowser(QTextBrowser):
@@ -38,7 +35,7 @@ class myTextBrowser(QTextBrowser):
         lance Firefox en tâche de fond.
         @param url l'adresse à ouvrir.
         """
-        subprocess.call("(firefox %s &)"%url.toString(),shell=True)
+        subprocess.call("(firefox %s &)"%url,shell=True)
         
     def setHtml(self,url):
         """

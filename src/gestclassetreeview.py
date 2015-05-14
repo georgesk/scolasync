@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 licence={}
 licence['en']="""
@@ -22,12 +21,10 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
 import gestClasse
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 
 class gestClasseTreeView(QTreeView):
     def __init__(self, parent=None):

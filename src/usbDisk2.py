@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-    
 # $Id: usbDisk2.py 36 2014-03-16 19:37:27Z georgesk $	
 
 licence={}
@@ -30,7 +29,7 @@ dependences="python3-dbus python3-dbus.mainloop.qt"
 import dbus, subprocess, os, os.path, re, time, threading, logging, inspect
 from dbus.mainloop.glib import DBusGMainLoop, threads_init
 from gi.repository import Gio, GLib, UDisks
-from PyQt4.QtGui import *
+from PyQt5.QtWidgets import *
 
 #################### activate debugging #######################
 debug=False
@@ -280,7 +279,7 @@ class UDisksBackend:
         """
         path  = safePath(obj)
         block = obj.get_block()
-        self.logger.debug(QApplication.translate("uDisk","Partition ajoutée %s",None, QApplication.UnicodeUTF8) % path+inspectData())
+        self.logger.debug(QApplication.translate("uDisk","Partition ajoutée %s",None) % path+inspectData())
         fstype = block.get_cached_property('IdType').get_string()
         parent = partition.get_cached_property('Table').get_string()
         total = drive.get_cached_property('Size').get_uint64()
@@ -295,14 +294,14 @@ class UDisksBackend:
                 try:
                     mount = self.retry_mount(fs)
                 except:
-                    logging.exception(QApplication.translate("uDisk","Échec au montage du disque : %s",None, QApplication.UnicodeUTF8) % path)
+                    logging.exception(QApplication.translate("uDisk","Échec au montage du disque : %s",None) % path)
         if mount:
             total, free = fs_size(mount)
         isUsb=self.objIsUsb(obj)
         if not isUsb:
-            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition non-USB",None, QApplication.UnicodeUTF8)+inspectData())
+            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition non-USB",None)+inspectData())
         elif total < 1:
-            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition vide",None, QApplication.UnicodeUTF8)+inspectData())
+            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition vide",None)+inspectData())
         else:
             udisk=self.diskClass(
                 path=path, mp=mount, isUsb=isUsb,
@@ -324,20 +323,20 @@ class UDisksBackend:
         path  = safePath(obj)
         block = obj.get_block()
         if path in self.targets:
-            self.logger.debug(QApplication.translate("uDisk","Disque déjà ajouté auparavant : %s",None, QApplication.UnicodeUTF8) % path+inspectData())
+            self.logger.debug(QApplication.translate("uDisk","Disque déjà ajouté auparavant : %s",None) % path+inspectData())
             return
-        self.logger.debug(QApplication.translate("uDisk","Disque ajouté : %s",None, QApplication.UnicodeUTF8) % path+inspectData())
+        self.logger.debug(QApplication.translate("uDisk","Disque ajouté : %s",None) % path+inspectData())
         size = drive.get_cached_property('Size').get_uint64()
         ##### désactivé, quelquefois drive.get_cached_property('Size').get_uint64()
         ##### renvoie des résultats erronés juste après le branchement
         """
         if size <= 0:
-            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition à 0 octets.",None, QApplication.UnicodeUTF8)+inspectData())
+            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition à 0 octets.",None)+inspectData())
             return
         """
         isUsb = self.objIsUsb(obj)
         if not isUsb:
-            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition non-USB",None, QApplication.UnicodeUTF8)+inspectData())
+            self.logger.debug(QApplication.translate("uDisk","On n'ajoute pas le disque : partition non-USB",None)+inspectData())
         else:
             udisk=self.diskClass(
                 path=path,
@@ -356,7 +355,7 @@ class UDisksBackend:
         
     def _device_changed(self, obj):
         path = safePath(obj)
-        self.logger.debug(QApplication.translate("uDisk","Changement pour le disque %s",None, QApplication.UnicodeUTF8) % path+inspectData())
+        self.logger.debug(QApplication.translate("uDisk","Changement pour le disque %s",None) % path+inspectData())
 
     def _udisks_obj_removed(self, obj):
         """
@@ -365,7 +364,7 @@ class UDisksBackend:
         @param obj une instance de UDisksObjectProxy
         """
         path=safePath(obj)
-        logging.debug(QApplication.translate("uDisk","Disque débranché du système : %s",None, QApplication.UnicodeUTF8) % path)
+        logging.debug(QApplication.translate("uDisk","Disque débranché du système : %s",None) % path)
         if path in self.targets:
             self.targets.pop(path)
             self.modified=True
@@ -421,14 +420,14 @@ class uDisk2:
         return
             
     _itemNames={
-        "1mp":QApplication.translate("uDisk","point de montage",None, QApplication.UnicodeUTF8),
-        "2capacity":QApplication.translate("uDisk","taille",None, QApplication.UnicodeUTF8),
-        "3vendor":QApplication.translate("uDisk","marque",None, QApplication.UnicodeUTF8),
-        "4model":QApplication.translate("uDisk","modèle de disque",None, QApplication.UnicodeUTF8),
-        "5stickid":QApplication.translate("uDisk","numéro de série",None, QApplication.UnicodeUTF8),
+        "1mp":QApplication.translate("uDisk","point de montage",None),
+        "2capacity":QApplication.translate("uDisk","taille",None),
+        "3vendor":QApplication.translate("uDisk","marque",None),
+        "4model":QApplication.translate("uDisk","modèle de disque",None),
+        "5stickid":QApplication.translate("uDisk","numéro de série",None),
         }
 
-    _specialItems={"0Check":QApplication.translate("uDisk","cocher",None, QApplication.UnicodeUTF8)}
+    _specialItems={"0Check":QApplication.translate("uDisk","cocher",None)}
 
     _ItemPattern=re.compile("[0-9]?(.*)")
     
@@ -743,8 +742,8 @@ class Available (UDisksBackend):
 
 
 if __name__=="__main__":
-    from PyQt4.QtCore import *
-    from PyQt4.QtGui import *
+    from PyQt5.QtCore import *
+    from PyQt5.QtGui import *
     import sys
     class MainWindow(QMainWindow):
         def __init__(self):
@@ -752,7 +751,7 @@ if __name__=="__main__":
 
             # The only thing in the app is a quit button
             quitbutton = QPushButton('Examinez le terminal\nbranchez et débranchez des clés USB, puis\nQuittez', self)
-            QObject.connect(quitbutton, SIGNAL("clicked()"), self.close)
+            quitbutton.clicked.connect(self.close)
             self.setCentralWidget(quitbutton)
     
 

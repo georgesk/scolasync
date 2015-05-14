@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 # 	$Id: preferences.py 42 2011-01-15 22:38:04Z georgesk $	
 
 licence={}
@@ -23,10 +22,8 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 
 class preferenceWindow(QDialog):
     def __init__(self, parent=None):
@@ -37,8 +34,6 @@ class preferenceWindow(QDialog):
         from Ui_preferences import Ui_Dialog
         self.ui=Ui_Dialog()
         self.ui.setupUi(self)
-        self.connect(self.ui.refreshEnabledBox, SIGNAL("stateChanged(int)"), self.enableDelay)
-        self.connect(self.ui.refreshDelaySlider, SIGNAL("valueChanged(int)"), self.updateRefreshLabel)
 
     def enableDelay(self, state):
         """
@@ -52,7 +47,7 @@ class preferenceWindow(QDialog):
         Met à jour l'affichage de la valeur du délai de rafraichissement
         @param val un nombre entier qui exprime le délai en secondes
         """
-        labelTxt=QApplication.translate("Dialog", "{t} secondes", None, QApplication.UnicodeUTF8)
+        labelTxt=QApplication.translate("Dialog", "{t} secondes", None)
         val="%2d" %val
         labelTxt=labelTxt.format(t=val)
         self.ui.refreshDelayLabel.setText(labelTxt)
@@ -67,8 +62,6 @@ class preferenceWindow(QDialog):
         prefs["schoolFile"]     = self.ui.lineEditSchoolFile.text()
         prefs["workdir"]        = self.ui.dirEdit.text()
         prefs["manfile"]        = self.ui.manFileEdit.text()
-        prefs["refreshEnabled"] = bool(self.ui.refreshEnabledBox.isChecked())
-        prefs["refreshDelay"]   = self.ui.refreshDelaySlider.value()
         return prefs
 
     def setValues(self, prefs):
@@ -81,13 +74,6 @@ class preferenceWindow(QDialog):
         else:
             state=Qt.Unchecked
         self.ui.mvCheck.setCheckState(state)
-        if prefs["refreshEnabled"]:
-            state=Qt.Checked
-        else:
-            state=Qt.Unchecked
-        self.ui.refreshEnabledBox.setCheckState(state)
-        self.ui.refreshDelaySlider.setEnabled(prefs["refreshEnabled"])
         self.ui.lineEditSchoolFile.setText(prefs["schoolFile"])
         self.ui.dirEdit.setText(prefs["workdir"])
         self.ui.manFileEdit.setText(prefs["manfile"])
-        self.ui.refreshDelaySlider.setValue(prefs["refreshDelay"])

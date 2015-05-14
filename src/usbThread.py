@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-    
 # $Id: usbThread.py 47 2011-06-13 10:20:14Z georgesk $	
 
 licenceEn="""
@@ -23,7 +22,7 @@ licenceEn="""
 
 import subprocess, threading, re, os, os.path, shutil
 import time, glob, shlex, io
-from PyQt4.QtCore import *
+from PyQt5.QtCore import *
 
 _threadNumber=0
 
@@ -307,7 +306,7 @@ class threadCopyToUSB(abstractThreadUSB):
         for f in fileList:
             cmd="Copie de {0} vers {1}".format(f, destpath)
             if self.parent:
-                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
+                self.parent.pushCmdSignal.emit(ud.getOwner(), cmd)
             destpath1=os.path.join(destpath, os.path.basename(f))
             # copie d'arbre si on copie un répertoire, ou de simple fichier
             if os.path.isdir(f):
@@ -328,7 +327,7 @@ class threadCopyToUSB(abstractThreadUSB):
             for e in errors:
                 msg+= " <%s>" %str(e)
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.getOwner(), cmd)
+                self.parent.popCmdSignal.emit(ud.getOwner(), cmd)
             self.writeToLog(msg)
             
 class threadCopyFromUSB(abstractThreadUSB):
@@ -376,7 +375,7 @@ class threadCopyFromUSB(abstractThreadUSB):
             ensureDirExists(toPath)
             cmd="Copie de {0} vers {1}".format(fromPath, toPath)
             if self.parent:
-                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
+                self.parent.pushCmdSignal.emit(ud.getOwner(), cmd)
             destpath1=os.path.join(toPath, os.path.basename(f))
             if os.path.isdir(fromPath):
                 errors=self.copytree(fromPath, destpath1)
@@ -396,7 +395,7 @@ class threadCopyFromUSB(abstractThreadUSB):
             for e in errors:
                 msg += " <%s>" %e
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.getOwner(), msg)
+                self.parent.popCmdSignal.emit(ud.getOwner(), msg)
             self.writeToLog(msg)
 
 class threadMoveFromUSB(abstractThreadUSB):
@@ -445,7 +444,7 @@ class threadMoveFromUSB(abstractThreadUSB):
             ensureDirExists(toPath)
             cmd="copying %s to %s" %(fromPath, toPath)
             if self.parent:
-                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
+                self.parent.pushCmdSignal.emit(ud.getOwner(), cmd)
             destpath1=os.path.join(toPath, os.path.basename(f))
             if os.path.isdir(fromPath):
                 errors=self.copytree(fromPath, destpath1, erase=True)
@@ -470,7 +469,7 @@ class threadMoveFromUSB(abstractThreadUSB):
             for e in errors:
                 msg += " <%s>" %e
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.getOwner(), msg)
+                self.parent.popCmdSignal.emit(ud.getOwner(), msg)
             self.writeToLog(msg)
 
 class threadDeleteInUSB(abstractThreadUSB):
@@ -510,7 +509,7 @@ class threadDeleteInUSB(abstractThreadUSB):
             cmd="Effacement de {0}".format(toDel)
             errors=[]
             if self.parent:
-                self.parent.emit(SIGNAL("pushCmd(QString, QString)"), ud.getOwner(), cmd)
+                self.parent.pushCmdSignal.emit(ud.getOwner(), cmd)
             if os.path.isdir(toDel):
                 try:
                     for root, dirs, files in os.walk(toDel, topdown=False):
@@ -535,7 +534,7 @@ class threadDeleteInUSB(abstractThreadUSB):
             for e in errors:
                 msg += " <%s>" %e
             if self.parent:
-                self.parent.emit(SIGNAL("popCmd(QString, QString)"), ud.getOwner(), msg)
+                self.parent.popCmdSignal.emit(ud.getOwner(), msg)
             self.writeToLog(msg)
 
 if __name__=="__main__":

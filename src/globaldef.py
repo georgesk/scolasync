@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 # 	$Id: globaldef.py 47 2011-06-13 10:20:14Z georgesk $	
 
 """
@@ -28,8 +27,6 @@ licenceEn="""
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-
-python3safe=True
 
 import platform, os
 

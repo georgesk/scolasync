@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>images/scolasync.svg</normaloff>images/scolasync.svg</iconset>
+    <normaloff>images/scolasync.png</normaloff>images/scolasync.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -56,7 +56,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/system.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/system.svg</iconset>
+             <normaloff>images/icons32/devices/system.png</normaloff>images/icons32/devices/system.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -138,7 +138,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/multimedia-player.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/multimedia-player.svg</iconset>
+              <normaloff>images/icons16/devices/multimedia-player.png</normaloff>images/icons16/devices/multimedia-player.png</iconset>
             </property>
            </widget>
            <widget class="QToolButton" name="toolButton_3">
@@ -161,7 +161,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/media-flash.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/media-flash.svg</iconset>
+              <normaloff>images/icons16/devices/media-flash.png</normaloff>images/icons16/devices/media-flash.png</iconset>
             </property>
            </widget>
            <widget class="QToolButton" name="toolButton_4">
@@ -184,7 +184,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/usbpendrive_unmount.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/usbpendrive_unmount.svg</iconset>
+              <normaloff>images/icons16/devices/usbpendrive_unmount.png</normaloff>images/icons16/devices/usbpendrive_unmount.png</iconset>
             </property>
            </widget>
           </widget>
@@ -308,7 +308,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/next.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/next.svg</iconset>
+             <normaloff>images/icons32/actions/next.png</normaloff>images/icons32/actions/next.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -331,7 +331,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/previous.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/previous.svg</iconset>
+             <normaloff>images/icons16/actions/previous.png</normaloff>images/icons16/actions/previous.png</iconset>
            </property>
           </widget>
          </item>

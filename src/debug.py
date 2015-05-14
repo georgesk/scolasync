@@ -48,8 +48,8 @@ licenceFr="""
 """
 licence['fr']=licenceFr
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 
 def button(w, cb):
     """
@@ -66,7 +66,7 @@ def button(w, cb):
         return
 
     b=QPushButton("Debug",w)
-    b.connect(b, SIGNAL("clicked()"), cbWrapper)
+    b.clicked.connect(cbWrapper)
     b.show()
     return
 

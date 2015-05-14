@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>images/scolasync.svg</normaloff>images/scolasync.svg</iconset>
+    <normaloff>images/scolasync.png</normaloff>images/scolasync.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -52,12 +52,12 @@ padding:0px</string>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/back.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/back.svg</iconset>
+           <normaloff>images/icons32/actions/back.png</normaloff>images/icons32/actions/back.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>32</width>
+           <height>32</height>
           </size>
          </property>
         </widget>
@@ -79,12 +79,12 @@ padding:0px</string>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/forward.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/forward.svg</iconset>
+           <normaloff>images/icons32/actions/forward.png</normaloff>images/icons32/actions/forward.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>32</width>
+           <height>32</height>
           </size>
          </property>
         </widget>
@@ -106,12 +106,12 @@ padding:0px</string>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/edit-clear.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/edit-clear.svg</iconset>
+           <normaloff>images/icons32/actions/edit-clear.png</normaloff>images/icons32/actions/edit-clear.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>32</width>
+           <height>32</height>
           </size>
          </property>
         </widget>
@@ -133,12 +133,12 @@ padding:0px</string>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/top.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/top.svg</iconset>
+           <normaloff>images/icons32/actions/top.png</normaloff>images/icons32/actions/top.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>32</width>
+           <height>32</height>
           </size>
          </property>
         </widget>
@@ -173,12 +173,12 @@ padding:0px</string>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-jump.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-jump.svg</iconset>
+           <normaloff>images/icons32/actions/go-jump.png</normaloff>images/icons32/actions/go-jump.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>32</width>
+           <height>32</height>
           </size>
          </property>
          <property name="checkable">
@@ -203,12 +203,12 @@ padding:0px</string>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/gtk-find.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/gtk-find.svg</iconset>
+           <normaloff>images/icons32/actions/gtk-find.png</normaloff>images/icons32/actions/gtk-find.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>32</width>
+           <height>32</height>
           </size>
          </property>
         </widget>
@@ -228,6 +228,21 @@ padding:0px</string>
        </item>
        <item>
         <widget class="QLCDNumber" name="lcdNumber">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Affiche le nombre de baladeurs connectés</string>
          </property>
@@ -238,7 +253,7 @@ padding:0px</string>
           <string notr="true">border:0px; border-radius:0px; padding: 0px; font-weight:normal; color: black;
 padding:0px</string>
          </property>
-         <property name="numDigits">
+         <property name="digitCount">
           <number>2</number>
          </property>
          <property name="intValue" stdset="0">
@@ -263,12 +278,12 @@ padding:0px</string>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/multimedia-player.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/multimedia-player.svg</iconset>
+           <normaloff>images/icons32/devices/multimedia-player.png</normaloff>images/icons32/devices/multimedia-player.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>32</width>
+           <height>32</height>
           </size>
          </property>
         </widget>
@@ -290,12 +305,12 @@ padding:0px</string>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../../../../../usr/share/icons/Tango/scalable/categories/package_settings.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/categories/package_settings.svg</iconset>
+           <normaloff>images/icons32/categories/package_settings.png</normaloff>images/icons32/categories/package_settings.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>32</width>
+           <height>32</height>
           </size>
          </property>
         </widget>
@@ -317,12 +332,12 @@ padding:0px</string>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../../../../../usr/share/icons/Tango/scalable/status/info.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/status/info.svg</iconset>
+           <normaloff>images/icons32/status/info.png</normaloff>images/icons32/status/info.png</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>48</width>
-           <height>48</height>
+           <width>32</width>
+           <height>32</height>
           </size>
          </property>
         </widget>

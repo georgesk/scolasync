@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-    
 # 	$Id: version.py 43 2011-01-15 23:12:57Z georgesk $	
 
 licence={}
@@ -26,13 +25,13 @@ def major():
     """
     @return le numéro majeur de version
     """
-    return "4"
+    return "5"
 
 def minor():
     """
     @return le numéro mineur de version
     """
-    return "0"
+    return "1"
 
 def version():
     """

@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 # 	$Id: mainWindow.py 47 2011-06-13 10:20:14Z georgesk $	
 
 licence={}
@@ -24,8 +23,9 @@ licence['en']="""
 """
 
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 import ownedUsbDisk, help, copyToDialog1, chooseInSticks, usbThread
 import diskFull, preferences, checkBoxDialog
 import os.path, operator, subprocess, dbus, re, time, copy
@@ -59,6 +59,17 @@ def registerCmd(cmd,partition):
     lastCommand=cmd
 
 class mainWindow(QMainWindow):
+    """
+    defines the main window of the application.
+    """
+    ############# custom signals ########################
+    checkAllSignal=pyqtSignal()
+    checkToggleSignal=pyqtSignal()
+    checkNoneSignal=pyqtSignal()
+    shouldNameDrive=pyqtSignal()
+    pushCmdSignal=pyqtSignal(str, str)
+    popCmdSignal=pyqtSignal(str, str)
+    
     def __init__(self, parent, locale="fr_FR"):
         """
         Le constructeur
@@ -71,13 +82,23 @@ class mainWindow(QMainWindow):
         from Ui_mainWindow  import Ui_MainWindow
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.copyfromIcon=QIcon("/usr/share/icons/Tango/scalable/actions/back.svg")
-        self.movefromIcon=QIcon("/usr/share/scolasync/images/movefrom.svg")
+        QIcon.setThemeName("Tango")
+        icon=self.setThemedIcon(self.ui.fromButton,"back")
+        self.copyfromIcon=icon
+        self.movefromIcon=QIcon.fromTheme("movefrom",QIcon("/usr/share/scolasync/images/movefrom.png"))
+        self.setThemedIcon(self.ui.toButton,"forward")
+        self.setThemedIcon(self.ui.delButton,"edit-clear")
+        self.setThemedIcon(self.ui.umountButton,"top")
+        self.setThemedIcon(self.ui.redoButton,"go-jump")
+        self.setThemedIcon(self.ui.namesButton,"gtk-find")
+        self.setThemedIcon(self.ui.forceCheckButton,"multimedia-player")
+        self.setThemedIcon(self.ui.preferenceButton,"package_settings")
+        self.setThemedIcon(self.ui.helpButton,"info")
         # crée le dialogue des nouveaux noms
-        self.namesFullIcon=QIcon("/usr/share/icons/Tango/scalable/actions/gtk-find-and-replace.svg")
-        self.namesEmptyIcon=QIcon("/usr/share/icons/Tango/scalable/actions/gtk-find.svg")
-        self.namesFullTip=QApplication.translate("MainWindow", "<br />Des noms sont disponibles pour renommer les prochains baladeurs que vous brancherez", None, QApplication.UnicodeUTF8)
-        self.namesEmptyTip=QApplication.translate("MainWindow", "<br />Cliquez sur ce bouton pour préparer une liste de noms afin de renommer les prochains baladeurs que vous brancherez", None, QApplication.UnicodeUTF8)
+        self.namesFullIcon=QIcon.fromTheme("gtk-find-and-replace.svg")
+        self.namesEmptyIcon=QIcon.fromTheme("gtk-find")
+        self.namesFullTip=QApplication.translate("MainWindow", "<br />Des noms sont disponibles pour renommer les prochains baladeurs que vous brancherez", None)
+        self.namesEmptyTip=QApplication.translate("MainWindow", "<br />Cliquez sur ce bouton pour préparer une liste de noms afin de renommer les prochains baladeurs que vous brancherez", None)
         self.namesDialog=choixEleves.choixElevesDialog(parent =self)
         self.recentConnect="" # chemin dbus pour un baladeur récemment connecté
         # initialise deux icônes
@@ -91,25 +112,43 @@ class mainWindow(QMainWindow):
         self.setAvailableNames(False)
         self.operations=[] # liste des opérations précédemment "réussies"
         self.oldThreads=set() # threads lancés éventuellement encore vivants
-        QObject.connect(self.ui.helpButton, SIGNAL("clicked()"), self.help)
-        QObject.connect(self.ui.umountButton, SIGNAL("clicked()"), self.umount)
-        QObject.connect(self.ui.toButton, SIGNAL("clicked()"), self.copyTo)
-        QObject.connect(self.ui.fromButton, SIGNAL("clicked()"), self.copyFrom)
-        QObject.connect(self.ui.delButton, SIGNAL("clicked()"), self.delFiles)
-        QObject.connect(self.ui.redoButton, SIGNAL("clicked()"), self.redoCmd)
-        QObject.connect(self.ui.namesButton, SIGNAL("clicked()"), self.namesCmd)
-        QObject.connect(self.ui.preferenceButton, SIGNAL("clicked()"), self.preference)
-        QObject.connect(self.ui.tableView, SIGNAL("doubleClicked(const QModelIndex&)"), self.tableClicked)
-        QObject.connect(self,SIGNAL("checkAll()"), self.checkAll)
-        QObject.connect(self,SIGNAL("checkToggle()"), self.checkToggle)
-        QObject.connect(self,SIGNAL("checkNone()"), self.checkNone)
-        QObject.connect(self,SIGNAL("shouldNameDrive()"), self.namingADrive)
+        self.ui.helpButton.clicked.connect(self.help)
+        self.ui.umountButton.clicked.connect(self.umount)
+        self.ui.toButton.clicked.connect(self.copyTo)
+        self.ui.fromButton.clicked.connect(self.copyFrom)
+        self.ui.delButton.clicked.connect(self.delFiles)
+        self.ui.redoButton.clicked.connect(self.redoCmd)
+        self.ui.namesButton.clicked.connect(self.namesCmd)
+        self.ui.preferenceButton.clicked.connect(self.preference)
+        self.ui.tableView.doubleClicked.connect(self.tableClicked)
+        self.checkAllSignal.connect(self.checkAll)
+        self.checkToggleSignal.connect(self.checkToggle)
+        self.checkNoneSignal.connect(self.checkNone)
+        self.shouldNameDrive.connect(self.namingADrive)
         ## accrochage d'une fonction de rappel pour les disque ajoutés
         qApp.available.addHook('object-added',   self.cbAdded())
         qApp.available.addHook('object-removed', self.cbRemoved())
-        self.connect(self, SIGNAL("pushCmd(QString, QString)"), self.pushCmd)
-        self.connect(self, SIGNAL("popCmd(QString, QString)"), self.popCmd)
+        self.pushCmdSignal.connect(self.pushCmd)
+        self.popCmdSignal.connect(self.popCmd)
+        return
 
+    def setThemedIcon(self, button, name, default=None):
+        """
+        Associe une icone à un bouton, dans le thème courant
+        @param button le bouton à décorer
+        @param name le nom de l'icone
+        @param default un fichier PNG ; si rien n'est donné, il aura
+        comme valeur par défaut "images/icons32/"+name+".png"
+        @return l'objet de type QIcon qui a été associé au bouton
+        """
+        icon=QIcon()
+        try:
+            icon.addPixmap(QIcon.fromTheme(name).pixmap(32))
+        except:
+            icon.addPixmap("images/icons32/"+name+".png")
+        button.setIcon(icon)
+        return button.icon()
+    
     def pushCmd(self,owner,cmd):
         """
         fonction de rappel déclenchée par les threads (au commencement)
@@ -159,7 +198,7 @@ class mainWindow(QMainWindow):
         index1=model.createIndex(len(model.donnees)-1,0)
         srange=QItemSelectionRange(index0,index1)
         for i in srange.indexes():
-            checked=i.model().data(i,Qt.DisplayRole).toBool()
+            checked=bool(i.model().data(i,Qt.DisplayRole))
             model.setData(i, boolFunc(checked),Qt.EditRole)
 
     def checkAll(self):
@@ -253,14 +292,14 @@ class mainWindow(QMainWindow):
         """
         # réserve les icônes
         self.iconRedo = QIcon()
-        self.iconRedo.addPixmap(QPixmap("/usr/share/icons/Tango/scalable/actions/go-jump.svg"), QIcon.Normal, QIcon.Off)
+        self.iconRedo.addPixmap(QIcon.fromTheme("go-jump").pixmap(32), QIcon.Normal, QIcon.Off)
         self.iconStop = QIcon()
-        self.iconStop.addPixmap(QPixmap("/usr/share/icons/Tango/scalable/actions/stop.svg"), QIcon.Normal, QIcon.Off)
+        self.iconStop.addPixmap(QIcon.fromTheme("stop").pixmap(32), QIcon.Normal, QIcon.Off)
         # réserve les phrases d'aide
-        self.redoToolTip=QApplication.translate("MainWindow", "Refaire à nouveau", None, QApplication.UnicodeUTF8)
-        self.redoStatusTip=QApplication.translate("MainWindow", "Refaire à nouveau la dernière opération réussie, avec les baladeurs connectés plus récemment", None, QApplication.UnicodeUTF8)
-        self.stopToolTip=QApplication.translate("MainWindow", "Arrêter les opérations en cours", None, QApplication.UnicodeUTF8)
-        self.stopStatusTip=QApplication.translate("MainWindow", "Essaie d'arrêter les opérations en cours. À faire seulement si celles-ci durent trop longtemps", None, QApplication.UnicodeUTF8)
+        self.redoToolTip=QApplication.translate("MainWindow", "Refaire à nouveau", None)
+        self.redoStatusTip=QApplication.translate("MainWindow", "Refaire à nouveau la dernière opération réussie, avec les baladeurs connectés plus récemment", None)
+        self.stopToolTip=QApplication.translate("MainWindow", "Arrêter les opérations en cours", None)
+        self.stopStatusTip=QApplication.translate("MainWindow", "Essaie d'arrêter les opérations en cours. À faire seulement si celles-ci durent trop longtemps", None)
 
     def applyPreferences(self):
         """
@@ -269,8 +308,6 @@ class mainWindow(QMainWindow):
         prefs=db.readPrefs()
         self.schoolFile=prefs["schoolFile"]
         self.workdir=prefs["workdir"]
-        self.refreshEnabled=prefs["refreshEnabled"]
-        self.refreshDelay=prefs["refreshDelay"]
         self.manFileLocation=prefs["manfile"]
         self.mv=prefs["mv"]
         self.header=ownedUsbDisk.uDisk2.headers()
@@ -318,7 +355,7 @@ class mainWindow(QMainWindow):
             # case du propriétaire
             self.editOwner(mappedIdx)
         elif "mp" in h:
-            cmd="xdg-open '%s'" %idx.data().toString ()
+            cmd="xdg-open '%s'" %idx.data()
             subprocess.call(cmd, shell=True)
         elif "capacity" in h:
             mount=idx.model().partition(idx).mountPoint()
@@ -328,8 +365,8 @@ class mainWindow(QMainWindow):
             w.show()
         else:
             QMessageBox.warning(None,
-                                QApplication.translate("Dialog","Double-clic non pris en compte",None, QApplication.UnicodeUTF8),
-                                QApplication.translate("Dialog","pas d'action pour l'attribut {a}",None, QApplication.UnicodeUTF8).format(a=h))
+                                QApplication.translate("Dialog","Double-clic non pris en compte",None),
+                                QApplication.translate("Dialog","pas d'action pour l'attribut {a}",None).format(a=h))
 
     def manageCheckBoxes(self):
         """
@@ -379,7 +416,7 @@ class mainWindow(QMainWindow):
         Édition du propriétaire d'une clé.
         @param idx un QModelIndex qui pointe sur le propriétaire d'une clé
         """
-        student="%s" %self.tm.data(idx,Qt.DisplayRole).toString()
+        student="%s" %self.tm.data(idx,Qt.DisplayRole).value()
         # on fait une modification dans la base de donnée des propriétaires de clés
         ownedUsbDisk.editRecord(self.diskFromOwner(student), hint=student)
         # après quoi on relit brutalement toute la list des clés connectées
@@ -463,8 +500,8 @@ class mainWindow(QMainWindow):
         """
         Lance l'action de supprimer des fichiers ou des répertoires dans les clés USB
         """
-        titre1=QApplication.translate("Dialog","Choix de fichiers à supprimer",None, QApplication.UnicodeUTF8)
-        titre2=QApplication.translate("Dialog","Choix de fichiers à supprimer (jokers autorisés)",None, QApplication.UnicodeUTF8)
+        titre1=QApplication.translate("Dialog","Choix de fichiers à supprimer",None)
+        titre2=QApplication.translate("Dialog","Choix de fichiers à supprimer (jokers autorisés)",None)
         d=chooseInSticks.chooseDialog(self, titre1, titre2)
         ok = d.exec_()
         if ok:
@@ -473,8 +510,8 @@ class mainWindow(QMainWindow):
             defaultButton=QMessageBox.Cancel
             reply=QMessageBox.warning(
                 None,
-                QApplication.translate("Dialog","Vous allez effacer plusieurs baladeurs",None, QApplication.UnicodeUTF8),
-                QApplication.translate("Dialog","Etes-vous certain de vouloir effacer : "+"\n".join(pathList),None, QApplication.UnicodeUTF8),
+                QApplication.translate("Dialog","Vous allez effacer plusieurs baladeurs",None),
+                QApplication.translate("Dialog","Etes-vous certain de vouloir effacer : "+"\n".join(pathList),None),
                 buttons, defaultButton)
             if reply == QMessageBox.Ok:
                 cmd="usbThread.threadDeleteInUSB(p,{paths},subdir='Travail', logfile='{log}', parent=self)".format(paths=pathList,log=logFileName)
@@ -489,8 +526,8 @@ class mainWindow(QMainWindow):
         else:
             msgBox=QMessageBox.warning(
                 None,
-                QApplication.translate("Dialog","Aucun fichier sélectionné",None, QApplication.UnicodeUTF8),
-                QApplication.translate("Dialog","Veuillez choisir au moins un fichier",None, QApplication.UnicodeUTF8))
+                QApplication.translate("Dialog","Aucun fichier sélectionné",None),
+                QApplication.translate("Dialog","Veuillez choisir au moins un fichier",None))
             return True
 
     def copyTo(self):
@@ -513,23 +550,23 @@ class mainWindow(QMainWindow):
         else:
             msgBox=QMessageBox.warning(
                 None,
-                QApplication.translate("Dialog","Aucun fichier sélectionné",None, QApplication.UnicodeUTF8),
-                QApplication.translate("Dialog","Veuillez choisir au moins un fichier",None, QApplication.UnicodeUTF8))
+                QApplication.translate("Dialog","Aucun fichier sélectionné",None),
+                QApplication.translate("Dialog","Veuillez choisir au moins un fichier",None))
             return True
 
     def copyFrom(self):
         """
         Lance l'action de copier depuis les clés USB
         """
-        titre1=QApplication.translate("Dialog","Choix de fichiers à copier",None, QApplication.UnicodeUTF8)
-        titre2=QApplication.translate("Dialog", "Choix de fichiers à copier depuis les baladeurs", None, QApplication.UnicodeUTF8)
-        okPrompt=QApplication.translate("Dialog", "Choix de la destination ...", None, QApplication.UnicodeUTF8)
+        titre1=QApplication.translate("Dialog","Choix de fichiers à copier",None)
+        titre2=QApplication.translate("Dialog", "Choix de fichiers à copier depuis les baladeurs", None)
+        okPrompt=QApplication.translate("Dialog", "Choix de la destination ...", None)
         d=chooseInSticks.chooseDialog(self, title1=titre1, title2=titre2, okPrompt=okPrompt)
         d.exec_()
         if not d.ok :
             msgBox=QMessageBox.warning(None,
-                                       QApplication.translate("Dialog","Aucun fichier sélectionné",None, QApplication.UnicodeUTF8),
-                                       QApplication.translate("Dialog","Veuillez choisir au moins un fichier",None, QApplication.UnicodeUTF8))
+                                       QApplication.translate("Dialog","Aucun fichier sélectionné",None),
+                                       QApplication.translate("Dialog","Veuillez choisir au moins un fichier",None))
             return True
         # bon, alors c'est OK pour le choix des fichiers à envoyer
         pathList=d.pathList()
@@ -537,7 +574,7 @@ class mainWindow(QMainWindow):
         initialPath=os.path.expanduser("~")
         destDir = QFileDialog.getExistingDirectory(
             None,
-            QApplication.translate("Dialog","Choisir un répertoire de destination",None, QApplication.UnicodeUTF8),
+            QApplication.translate("Dialog","Choisir un répertoire de destination",None),
             initialPath)
         if destDir and len(destDir)>0 :
             if self.mv:
@@ -568,16 +605,16 @@ class mainWindow(QMainWindow):
             defaultButton=QMessageBox.Cancel
             if QMessageBox.question(
                 None,
-                QApplication.translate("Dialog","Voir les copies",None, QApplication.UnicodeUTF8),
-                QApplication.translate("Dialog","Voulez-vous voir les fichiers copiés ?",None, QApplication.UnicodeUTF8),
+                QApplication.translate("Dialog","Voir les copies",None),
+                QApplication.translate("Dialog","Voulez-vous voir les fichiers copiés ?",None),
                 buttons, defaultButton)==QMessageBox.Ok:
                 subprocess.call("xdg-open '%s'" %destDir,shell=True)
             return True
         else:
             msgBox=QMessageBox.warning(
                 None,
-                QApplication.translate("Dialog","Destination manquante",None, QApplication.UnicodeUTF8),
-                QApplication.translate("Dialog","Veuillez choisir une destination pour la copie des fichiers",None, QApplication.UnicodeUTF8))
+                QApplication.translate("Dialog","Destination manquante",None),
+                QApplication.translate("Dialog","Veuillez choisir une destination pour la copie des fichiers",None))
             return True
 
     def redoCmd(self):
@@ -599,8 +636,8 @@ class mainWindow(QMainWindow):
                 return
             if QMessageBox.question(
                 None,
-                QApplication.translate("Dialog","Réitérer la dernière commande",None, QApplication.UnicodeUTF8),
-                QApplication.translate("Dialog","La dernière commande était<br>{cmd}<br>Voulez-vous la relancer avec les nouveaux baladeurs ?",None, QApplication.UnicodeUTF8).format(cmd=lastCommand))==QMessageBox.Cancel:
+                QApplication.translate("Dialog","Réitérer la dernière commande",None),
+                QApplication.translate("Dialog","La dernière commande était<br>{cmd}<br>Voulez-vous la relancer avec les nouveaux baladeurs ?",None).format(cmd=lastCommand))==QMessageBox.Cancel:
                 return
             for p in qApp.available:
                 if p.owner in pastCommands[lastCommand] : continue
@@ -633,8 +670,8 @@ class mainWindow(QMainWindow):
         defaultButton=QMessageBox.Cancel
         button=QMessageBox.question (
             self,
-            QApplication.translate("Main","Démontage des baladeurs",None, QApplication.UnicodeUTF8),
-            QApplication.translate("Main","Êtes-vous sûr de vouloir démonter tous les baladeurs cochés de la liste ?",None, QApplication.UnicodeUTF8),
+            QApplication.translate("Main","Démontage des baladeurs",None),
+            QApplication.translate("Main","Êtes-vous sûr de vouloir démonter tous les baladeurs cochés de la liste ?",None),
             buttons,defaultButton)
         if button!=QMessageBox.Ok:
             return
@@ -696,7 +733,7 @@ class usbTableModel(QAbstractTableModel):
         force la mise à jour de la colonne des propriétaires
         """
         column=1
-        self.emit(SIGNAL("dataChanged(QModelIndex, QModelIndex)"), self.index(0,column), self.index(len(self.donnees)-1, column))
+        self.dataChanged.emit(self.index(0,column), self.index(len(self.donnees)-1, column))
         self.pere.t.viewport().update()
 
     def rowCount(self, parent):
@@ -732,19 +769,19 @@ class usbTableModel(QAbstractTableModel):
             c=index.column()
             h=self.pere.header[c]
             if c==0:
-                return QApplication.translate("Main","Cocher ou décocher cette case en cliquant.<br><b>Double-clic</b> pour agir sur plusieurs baladeurs.",None, QApplication.UnicodeUTF8)
+                return QApplication.translate("Main","Cocher ou décocher cette case en cliquant.<br><b>Double-clic</b> pour agir sur plusieurs baladeurs.",None)
             elif c==1:
-                return QApplication.translate("Main","Propriétaire de la clé USB ou du baladeur ;<br><b>Double-clic</b> pour modifier.",None, QApplication.UnicodeUTF8)
+                return QApplication.translate("Main","Propriétaire de la clé USB ou du baladeur ;<br><b>Double-clic</b> pour modifier.",None)
             elif "mp" in h:
-                return QApplication.translate("Main","Point de montage de la clé USB ou du baladeur ;<br><b>Double-clic</b> pour voir les fichiers.",None, QApplication.UnicodeUTF8)
+                return QApplication.translate("Main","Point de montage de la clé USB ou du baladeur ;<br><b>Double-clic</b> pour voir les fichiers.",None)
             elif "capacity" in h:
-                return QApplication.translate("Main","Capacité de la clé USB ou du baladeur en kO ;<br><b>Double-clic</b> pour voir la place occupée.",None, QApplication.UnicodeUTF8)
+                return QApplication.translate("Main","Capacité de la clé USB ou du baladeur en kO ;<br><b>Double-clic</b> pour voir la place occupée.",None)
             elif "vendor" in h:
-                return QApplication.translate("Main","Fabricant de la clé USB ou du baladeur.",None, QApplication.UnicodeUTF8)
+                return QApplication.translate("Main","Fabricant de la clé USB ou du baladeur.",None)
             elif "model" in h:
-                return QApplication.translate("Main","Modèle de la clé USB ou du baladeur.",None, QApplication.UnicodeUTF8)
+                return QApplication.translate("Main","Modèle de la clé USB ou du baladeur.",None)
             elif "stickid" in h:
-                return QApplication.translate("Main","Numéro de série de la clé USB ou du baladeur.",None, QApplication.UnicodeUTF8)
+                return QApplication.translate("Main","Numéro de série de la clé USB ou du baladeur.",None)
             else:
                 return ""
         elif role != Qt.DisplayRole: 
@@ -772,11 +809,11 @@ class usbTableModel(QAbstractTableModel):
         @param Ncol numéro de la colonne de tri
         @param order l'odre de tri, Qt.DescendingOrder par défaut
         """
-        self.emit(SIGNAL("layoutAboutToBeChanged()"))
+        self.layoutAboutToBeChanged.emit()
         self.donnees = sorted(self.donnees, key=operator.itemgetter(Ncol))        
         if order == Qt.DescendingOrder:
             self.donnees.reverse()
-        self.emit(SIGNAL("layoutChanged()"))
+        self.layoutChanged.emit()
 
 def CheckBoxRect(view_item_style_options):
     """
@@ -794,7 +831,7 @@ class CheckBoxDelegate(QStyledItemDelegate):
         QStyledItemDelegate.__init__(self,parent)
 
     def paint(self, painter, option, index):
-        checked = index.model().data(index, Qt.DisplayRole).toBool()
+        checked = bool(index.model().data(index, Qt.DisplayRole))
         check_box_style_option=QStyleOptionButton()
         check_box_style_option.state |= QStyle.State_Enabled
         if checked:
@@ -815,7 +852,7 @@ class CheckBoxDelegate(QStyledItemDelegate):
                 return False
         else:
             return False
-        checked = index.model().data(index, Qt.DisplayRole).toBool()
+        checked = bool(index.model().data(index, Qt.DisplayRole))
         result = model.setData(index, not checked, Qt.EditRole)
         return result
 
@@ -833,7 +870,7 @@ class UsbDiskDelegate(QStyledItemDelegate):
 
     def paint(self, painter, option, index):
         global activeThreads
-        text = index.model().data(index, Qt.DisplayRole).toString()
+        text = index.model().data(index, Qt.DisplayRole).value()
         rect0=QRect(option.rect)
         rect1=QRect(option.rect)
         h=rect0.height()
@@ -859,11 +896,8 @@ class DiskSizeDelegate(QStyledItemDelegate):
         
 
     def paint(self, painter, option, index):
-        text=index.model().data(index, Qt.DisplayRole).toString()
-        if text=="":
-            value=0
-        else:
-            value = int(index.model().data(index, Qt.DisplayRole).toString())
+        v=index.model().data(index, Qt.DisplayRole)
+        value = v.value()
         text = self.val2txt(value)
         rect0=QRect(option.rect)
         rect1=QRect(option.rect)

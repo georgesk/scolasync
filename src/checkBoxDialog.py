@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-    
-
 licenceEn="""
     file checkBoxDialog.py
     this file is part of the project scolasync
@@ -20,10 +18,8 @@ licenceEn="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 
 import Ui_checkBoxDialog
 
@@ -40,30 +36,30 @@ class CheckBoxDialog(QDialog):
         self.mainWindow=parent
         self.ui=Ui_checkBoxDialog.Ui_checkBoxDialog()
         self.ui.setupUi(self)
-        QObject.connect(self.ui.allButton, SIGNAL("clicked()"), self.all)
-        QObject.connect(self.ui.ToggleButton, SIGNAL("clicked()"), self.toggle)
-        QObject.connect(self.ui.NoneButton, SIGNAL("clicked()"), self.none)
-        QObject.connect(self.ui.escButton, SIGNAL("clicked()"), self.esc)
+        self.ui.allButton.clicked.connect(self.all)
+        self.ui.ToggleButton.clicked.connect(self.toggle)
+        self.ui.NoneButton.clicked.connect(self.none)
+        self.ui.escButton.clicked.connect(self.esc)
 
     def all(self):
         """
         Fait cocher tous les baladeurs
         """
-        self.mainWindow.emit(SIGNAL("checkAll()"))
+        self.mainWindow.checkAllSignal.emit()
         self.close()
 
     def toggle(self):
         """
         Fait inverser tous les boutons
         """
-        self.mainWindow.emit(SIGNAL("checkToggle()"))
+        self.mainWindow.checkToggleSignal.emit()
         self.close()
 
     def none(self):
         """
         Fait décocher tous les boutons
         """
-        self.mainWindow.emit(SIGNAL("checkNone()"))
+        self.mainWindow.checkNoneSignal.emit()
         self.close()
 
     def esc(self):

@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 """
 Ce module permet de gérer des classes d'élèves. La classe
@@ -27,8 +26,6 @@ licence['en']="""
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-
-python3safe=True
 
 import xml.dom.minidom, copy
 

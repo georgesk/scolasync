@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 # 	$Id: help.py 47 2011-06-13 10:20:14Z georgesk $	
 
 licence={}
@@ -7,7 +6,7 @@ licence['en']="""
     file help.py
     this file is part of the project scolasync
     
-    Copyright (C) 2010 Georges Khaznadar <georgesk@ofset.org>
+    Copyright (C) 2010-2015 Georges Khaznadar <georgesk@debian.org>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,10 +22,8 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 import version
 from globaldef import _dir
 from xml.dom.minidom import parse
@@ -40,9 +37,9 @@ class helpWindow(QDialog):
         from Ui_help import Ui_Aide
         self.ui=Ui_Aide()
         self.ui.setupUi(self)
-        self.ui.labelVersion.setText(QApplication.translate("Main","Version numéro {major}.{minor}",None, QApplication.UnicodeUTF8).format(major=version.major(), minor=version.minor()))
+        self.ui.labelVersion.setText(QApplication.translate("Main","Version numéro {major}.{minor}",None).format(major=version.major(), minor=version.minor()))
         self.loadBrowsers(_dir("help"),self.parent().locale)
-        QObject.connect(self.ui.closeButton, SIGNAL("clicked()"), self.close)
+        self.ui.closeButton.clicked.connect(self.close)
 
     def loadBrowsers(self, dir, locale):
         """

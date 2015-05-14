@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 # 	$Id: diskFull.py 33 2010-12-12 00:39:46Z georgesk $	
 
 licence={}
@@ -23,8 +22,9 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
 
 class mainWindow(QMainWindow):
     def __init__(self, parent, percent, total=0, used=0, title="Disk"):
@@ -46,8 +46,8 @@ class mainWindow(QMainWindow):
         self.total=self.ui.label_total
         self.used=self.ui.label_used
         self.v.setScene(sceneWithUsage(self.v, QRectF(5,5,230,230), percent))
-        self.total.setText(QApplication.translate("diskFull","Place totale : {size} kilo-octets",None, QApplication.UnicodeUTF8).format(size=total))
-        self.used.setText(QApplication.translate("diskFull","Place utilisée : {size} kilo-octets",None, QApplication.UnicodeUTF8).format(size=used))
+        self.total.setText(QApplication.translate("diskFull","Place totale : {size} kilo-octets",None).format(size=total))
+        self.used.setText(QApplication.translate("diskFull","Place utilisée : {size} kilo-octets",None).format(size=used))
 
 def sceneWithUsage(parent, rect, percent):
     """

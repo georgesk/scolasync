@@ -48,7 +48,7 @@ clean:
 	for d in $(SUBDIRS); do make clean -C $$d DESTDIR=$(DESTDIR); done
 
 distclean: clean
-	rm -rf doc/latex doc/html
+	rm -rf doc/*
 	for d in $(SUBDIRS); do make distclean -C $$d DESTDIR=$(DESTDIR); done
 
 tgz: all clean

@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 licence={}
 licence['en']="""
@@ -22,10 +21,8 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 import Ui_nameAdrive
 import re
 import db
@@ -55,12 +52,11 @@ class nameAdriveDialog(QDialog):
             self.ui.listWidget.addItem(n)
         self.ui.lineEditOld.setText(self.oldName)
         self.numPattern=re.compile("^([0-9][0-9][0-9]?)-.*")
-        self.connect(self.ui.listWidget, SIGNAL("itemSelectionChanged()"), self.selectionChanged)
-        self.connect(self.ui.pushButtonOK, SIGNAL("clicked()"), self.ok)
-        self.connect(self.ui.pushButtonEsc, SIGNAL("clicked()"), self.esc)
+        self.ui.listWidget.itemSelectionChanged.connect(self.selectionChanged)
+        self.ui.pushButtonOK.clicked.connect(self.ok)
+        self.ui.pushButtonEsc.clicked.connect(self.esc)
         self.makeSelection()
 
-    
     def makeSelection(self):
         """
         Si l'ancien nom commence par un numéro, sélectionne le premier élément
@@ -88,7 +84,7 @@ class nameAdriveDialog(QDialog):
         """
         l=self.ui.listWidget.selectedItems()
         i=l[0]
-        t=i.data(Qt.DisplayRole).toString()
+        t=i.data(Qt.DisplayRole)
         self.ui.lineEditNew.setText(t)
         return
 

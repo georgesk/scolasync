@@ -1,8 +1,8 @@
 SOURCES = $(shell find .. -name "*.py"| grep -v marques.py| grep -v "^Ui_")
 FORMS = $(shell find .. -name "*.ui")
 TRANSLATIONS = $(shell ls *.ts)
-LRELEASE = lrelease-qt4
-LUPDATE = pylupdate4
+LRELEASE = lrelease -qt5
+LUPDATE = pylupdate5
 
 all: scolasync.pro
 	$(LUPDATE) -verbose $<

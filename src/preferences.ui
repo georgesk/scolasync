@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>725</width>
-    <height>349</height>
+    <width>652</width>
+    <height>249</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>images/scolasync.svg</normaloff>images/scolasync.svg</iconset>
+    <normaloff>images/scolasync.png</normaloff>images/scolasync.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -33,26 +33,6 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QCheckBox" name="checkCheck">
-           <property name="toolTip">
-            <string>Les cases à cocher permettent de n'agir que sur une part des baladeurs</string>
-           </property>
-           <property name="statusTip">
-            <string>Les cases à cocher permettent de n'agir que sur une part des baladeurs</string>
-           </property>
-           <property name="text">
-            <string>Utiliser des cases à cocher pour désigner les baladeurs</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/multimedia-player.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/devices/multimedia-player.svg</iconset>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item>
           <widget class="QCheckBox" name="mvCheck">
            <property name="sizePolicy">
@@ -72,7 +52,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/edit-clear.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/edit-clear.svg</iconset>
+             <normaloff>images/icons16/actions/edit-clear.png</normaloff>images/icons16/actions/edit-clear.png</iconset>
            </property>
           </widget>
          </item>
@@ -88,6 +68,16 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QFormLayout" name="formLayout_2">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Fichier des élèves :</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <widget class="QLineEdit" name="lineEditSchoolFile">
            <property name="enabled">
@@ -123,14 +113,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
-          <widget class="QCheckBox" name="refreshEnabledBox">
-           <property name="text">
-            <string>Recomptage automatique des médias :</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
+         <item row="3" column="1">
           <widget class="QWidget" name="widget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout">
             <property name="topMargin">
@@ -139,53 +122,7 @@
             <property name="bottomMargin">
              <number>0</number>
             </property>
-            <item>
-             <widget class="QLabel" name="label_4">
-              <property name="text">
-               <string>toutes les</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSlider" name="refreshDelaySlider">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="minimum">
-               <number>15</number>
-              </property>
-              <property name="maximum">
-               <number>95</number>
-              </property>
-              <property name="singleStep">
-               <number>5</number>
-              </property>
-              <property name="value">
-               <number>30</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="tickPosition">
-               <enum>QSlider::TicksBothSides</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="refreshDelayLabel">
-              <property name="text">
-               <string>30 secondes</string>
-              </property>
-             </widget>
-            </item>
            </layout>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Fichier des élèves :</string>
-           </property>
           </widget>
          </item>
         </layout>

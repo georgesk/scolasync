@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-    
 # 	$Id: ownedUsbDisk.py 47 2011-06-13 10:20:14Z georgesk $	
 
 licence={}
@@ -24,8 +23,8 @@ licence['en']="""
 
 import usbDisk2, db
 import os.path, dbus, subprocess, time, random
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 from globaldef import markFileName
 
 """
@@ -67,8 +66,8 @@ def editRecord(owd, hint=""):
     @param hint chaîne vide par défaut. Peut être le nom de l'ancien propriétaire
     """
     ud=owd.getFat()
-    title=QApplication.translate("Dialog", "Choix du propriétaire", None, QApplication.UnicodeUTF8)
-    prompt=QApplication.translate("Dialog", "Nouveau nom du propriétaire du baladeur", None, QApplication.UnicodeUTF8)
+    title=QApplication.translate("Dialog", "Choix du propriétaire", None)
+    prompt=QApplication.translate("Dialog", "Nouveau nom du propriétaire du baladeur", None)
     newStudent, ok = QInputDialog.getText(None, title, prompt, text=hint)
     if ok:
         newStudent="%s" %newStudent
@@ -152,7 +151,7 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         @result un tatouage, supposément unique.
         """
         ud=self.getFat()
-        if ud.mp:
+        if ud and ud.mp:
             return tattooInDir(ud.mp)
         else:
             return ""
@@ -195,7 +194,7 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         @return une liste de titres de colonnes
         """
         result=usbDisk2.uDisk2.headers(locale)
-        ownerProp=QApplication.translate("uDisk","owner",None, QApplication.UnicodeUTF8)
+        ownerProp=QApplication.translate("uDisk","owner",None)
         result.insert(1,ownerProp)
         return result
 
@@ -207,7 +206,7 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         if s != None:
             return s
         else:
-            return QApplication.translate("Dialog","inconnu",None, QApplication.UnicodeUTF8)
+            return QApplication.translate("Dialog","inconnu",None)
 
     def __getitem__(self,n):
         """
@@ -244,8 +243,8 @@ class uDisk2(usbDisk2.uDisk2,QObject):
         if not db.knowsId(ud.stickid, ud.uuid, ud.tattoo()) :
             text=self.randomOwner(6)
             if ownerDialog:
-                prompt=QApplication.translate("Dialog","La cle {id}<br>n'est pas identifiee, donnez le nom du proprietaire",None, QApplication.UnicodeUTF8).format(id=ud.stickid)
-                title=QApplication.translate("Dialog","Entrer un nom",None, QApplication.UnicodeUTF8)
+                prompt=QApplication.translate("Dialog","La cle {id}<br>n'est pas identifiee, donnez le nom du proprietaire",None).format(id=ud.stickid)
+                title=QApplication.translate("Dialog","Entrer un nom",None)
                 text,ok = QInputDialog.getText(None, title, prompt)
             db.writeStudent(ud.stickid, ud.uuid, ud.tattoo(), text)
         o=db.readStudent(ud.stickid, ud.uuid, ud.tattoo())
@@ -297,8 +296,8 @@ class Available(usbDisk2.Available):
 
 
 if __name__=="__main__":
-    from PyQt4.QtCore import *
-    from PyQt4.QtGui import *
+    from PyQt5.QtCore import *
+    from PyQt5.QtWidgets import *
     import sys
     class MainWindow(QMainWindow):
         def __init__(self):
@@ -306,7 +305,7 @@ if __name__=="__main__":
 
             # The only thing in the app is a quit button
             quitbutton = QPushButton('Examinez le terminal\nbranchez et débranchez des clés USB, puis\nQuittez', self)
-            QObject.connect(quitbutton, SIGNAL("clicked()"), self.close)
+            quitbutton.clicked.connect(self.close)
             self.setCentralWidget(quitbutton)
     
     machin=Available()

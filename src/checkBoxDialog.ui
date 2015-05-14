@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>images/scolasync.svg</normaloff>images/scolasync.svg</iconset>
+    <normaloff>images/scolasync.png</normaloff>images/scolasync.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -31,7 +31,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-smile.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-smile.svg</iconset>
+       <normaloff>images/icons16/emotes/face-smile.png</normaloff>images/icons16/emotes/face-smile.png</iconset>
      </property>
     </widget>
    </item>
@@ -48,7 +48,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-wink.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-wink.svg</iconset>
+       <normaloff>images/icons16/emotes/face-wink.png</normaloff>images/icons16/emotes/face-wink.png</iconset>
      </property>
     </widget>
    </item>
@@ -65,7 +65,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-angel.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-angel.svg</iconset>
+       <normaloff>images/icons16/emotes/face-angel.png</normaloff>images/icons16/emotes/face-angel.png</iconset>
      </property>
     </widget>
    </item>
@@ -82,7 +82,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-monkey.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/emotes/face-monkey.svg</iconset>
+       <normaloff>images/icons16/emotes/face-monkey.png</normaloff>images/icons16/emotes/face-monkey.png</iconset>
      </property>
     </widget>
    </item>

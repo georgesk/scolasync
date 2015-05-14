@@ -15,18 +15,21 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>images/scolasync.svg</normaloff>images/scolasync.svg</iconset>
+    <normaloff>images/scolasync.png</normaloff>images/scolasync.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="tabShape">
+      <enum>QTabWidget::Triangular</enum>
+     </property>
      <property name="currentIndex">
       <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="icon">
        <iconset>
-        <normaloff>../../../../../../usr/share/icons/Tango/scalable/status/info.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/status/info.svg</iconset>
+        <normaloff>images/icons16/status/info.png</normaloff>images/icons16/status/info.png</iconset>
       </attribute>
       <attribute name="title">
        <string>Aide</string>
@@ -80,7 +83,7 @@ font-weight:bold;
      <widget class="QWidget" name="tab_2">
       <attribute name="icon">
        <iconset>
-        <normaloff>../../../../../../usr/share/icons/Tango/scalable/status/stock_attach.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/status/stock_attach.svg</iconset>
+        <normaloff>images/icons16/status/stock_attach.png</normaloff>images/icons16/status/stock_attach.png</iconset>
       </attribute>
       <attribute name="title">
        <string>A propos</string>

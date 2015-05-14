@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-    
 # $Id: chooseInSticks.py 47 2011-06-13 10:20:14Z georgesk $	
 
 licenceEn="""
@@ -21,10 +20,9 @@ licenceEn="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
 import os.path
 
 import Ui_chooseInSticks
@@ -73,13 +71,13 @@ class chooseDialog(QDialog):
         ##
         self._ui.minusButton.setEnabled(False)
         self._ui.travailEdit.setText(self.mainWindow.workdir)
-        QObject.connect(self._ui.plusButton, SIGNAL("clicked()"), self.plus)
-        QObject.connect(self._ui.chooseButton, SIGNAL("clicked()"), self.choose)
-        QObject.connect(self._ui.chooseButton_dir, SIGNAL("clicked()"), self.choose_dir)
-        QObject.connect(self.okButton, SIGNAL("clicked()"), self.checkValues)
-        QObject.connect(self._ui.minusButton, SIGNAL("clicked()"), self.minus)
-        QObject.connect(self._ui.listView, SIGNAL("clicked(QModelIndex)"), self.activate)
-        QObject.connect(self._ui.travailEdit, SIGNAL("editingFinished()"), self.changeWd)
+        self._ui.plusButton.clicked.connect(self.plus)
+        self._ui.chooseButton.clicked.connect(self.choose)
+        self._ui.chooseButton_dir.clicked.connect(self.choose_dir)
+        self.okButton.clicked.connect(self.checkValues)
+        self._ui.minusButton.clicked.connect(self.minus)
+        self._ui.listView.clicked.connect(self.activate)
+        self._ui.travailEdit.editingFinished.connect(self.changeWd)
         self.ok=False
 
     def checkValues(self):
@@ -102,7 +100,7 @@ class chooseDialog(QDialog):
             item=QStandardItem(o)
             # on cherche à voir si la clé est déjà sélectionnée
             for modelIndex in sel:
-                if o == "%s" %modelIndex.data(Qt.DisplayRole).toString():
+                if o == "%s" %modelIndex.data(Qt.DisplayRole):
                     break
             self._storListModel.appendRow(item)
             self.ownedUsbDictionary[o]=mountPath
@@ -122,12 +120,12 @@ class chooseDialog(QDialog):
         selection = self._storListProxyModel.mapSelectionToSource(selection)
         selectedRows=map(lambda x: x.row(), self._ui.listChoixCle.selectedIndexes())
         itemList=self._storListModel.findItems ("*",Qt.MatchWildcard)
-        itemList.sort(key=lambda i: i.data(Qt.DisplayRole).toString())
+        itemList.sort(key=lambda i: i.data(Qt.DisplayRole))
         # parcours des items de la liste par ordre alphabétique
         # pour élire celui qui sera sélectionné initialement
         for item in itemList:
             index=self._storListModel.indexFromItem(item)
-            o="%s" %item.data(Qt.DisplayRole).toString()
+            o="%s" %item.data(Qt.DisplayRole)
             testDir=os.path.join(self.ownedUsbDictionary[o],self.mainWindow.workdir)
             if os.path.isdir(testDir):
                 # si l'item concerne un disque qui contient le répertoire de
@@ -180,7 +178,7 @@ class chooseDialog(QDialog):
         if len(selection)==0:
             return None
         selection = self._storListProxyModel.mapSelectionToSource(selection)
-        return "%s" %selection.indexes()[0].data(Qt.DisplayRole).toString()
+        return "%s" %selection.indexes()[0].data(Qt.DisplayRole)
                 
     def changeWd(self):
         """
@@ -201,13 +199,11 @@ class chooseDialog(QDialog):
         if kind == "file":
             func=QFileDialog.getOpenFileNames
             msg=QApplication.translate("Dialog",
-                                       "Choissez un fichier (ou plus)",
-                                       encoding=QApplication.UnicodeUTF8)
+                                       "Choissez un fichier (ou plus)")
         else:
             func=QFileDialog.getExistingDirectory
             msg=QApplication.translate("Dialog",
-                                       "Choissez un répertoire",
-                                       encoding=QApplication.UnicodeUTF8)
+                                       "Choissez un répertoire")
         cd=self.baseDir()
         if cd!=None:
             f = func (None, msg, cd)
@@ -222,11 +218,9 @@ class chooseDialog(QDialog):
                     self.plus()
         else:
             titre=QApplication.translate("Dialog",
-                                         "Aucune clé modèle sélectionnée",
-                                         encoding=QApplication.UnicodeUTF8)
+                                         "Aucune clé modèle sélectionnée")
             msg=QApplication.translate("Dialog",
-                                       "Veuillez choisir une clé modèle<br>parmi les clés connectées en cliquant<br>sur une ligne du tableau, pour<br>bénéficier de l'aide au choix de fichiers.<br><br>Cette clé doit contenir au moins<br>un répertoire « {workdir} ».".format(workdir=self.mainWindow.workdir),
-                                       encoding=QApplication.UnicodeUTF8)
+                                       "Veuillez choisir une clé modèle<br>parmi les clés connectées en cliquant<br>sur une ligne du tableau, pour<br>bénéficier de l'aide au choix de fichiers.<br><br>Cette clé doit contenir au moins<br>un répertoire « {workdir} ».".format(workdir=self.mainWindow.workdir))
             msgBox=QMessageBox.warning(None, titre, msg)
         
     def choose_dir(self):

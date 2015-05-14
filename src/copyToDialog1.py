@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-    
 # $Id: copyToDialog1.py 47 2011-06-13 10:20:14Z georgesk $	
 
 licenceEn="""
@@ -21,10 +20,9 @@ licenceEn="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
 import os.path, subprocess
 
 import Ui_copyToDialog1
@@ -53,11 +51,11 @@ class copyToDialog1(QDialog):
         ##
         # \var ok vrai si on a cliqué sur Continuer ...
         self.ok="False"
-        QObject.connect(self._ui.selectButton, SIGNAL("clicked()"), self.select)
-        QObject.connect(self._ui.removeButton, SIGNAL("clicked()"), self.remove)
-        QObject.connect(self._ui.cancelButton, SIGNAL("clicked()"), self.cancel)
-        QObject.connect(self._ui.continueButton, SIGNAL("clicked()"), self.cont)
-        QObject.connect(self._ui.travailEdit, SIGNAL("editingFinished()"), self.changeWd)
+        self._ui.selectButton.clicked.connect(self.select)
+        self._ui.removeButton.clicked.connect(self.remove)
+        self._ui.cancelButton.clicked.connect(self.cancel)
+        self._ui.continueButton.clicked.connect(self.cont)
+        self._ui.travailEdit.editingFinished.connect(self.changeWd)
 
     def changeWd(self):
         """
@@ -87,7 +85,7 @@ class copyToDialog1(QDialog):
         self._model1 = QDirModel()
         self._model1.setFilter(QDir.AllEntries)
         self._ui.listViewFrom.setModel(self._model1)
-        QObject.connect(self._ui.listViewFrom, SIGNAL("doubleClicked(QModelIndex)"), self.cd)
+        self._ui.listViewFrom.doubleClicked.connect(self.cd)
         
     def setFromListeDir(self,directory):
         """
@@ -104,7 +102,7 @@ class copyToDialog1(QDialog):
         Change le répertoire courant si possible
         @param ev un évènement
         """
-        d= "%s" %index.data().toString()
+        d= "%s" %index.data()
         p= "%s" %self._fromDir.path()
         j=os.path.abspath(os.path.join(p,d))
         if os.path.isdir(j):
@@ -136,7 +134,7 @@ class copyToDialog1(QDialog):
         sel=self._ui.listViewFrom.selectedIndexes()
         if len(sel)>0:
             index=sel[0]
-            d= "%s" %index.data().toString()
+            d= "%s" %index.data()
             p= "%s" %self._fromDir.path()
             j=os.path.abspath(os.path.join(p,d))
             f=self._model2.findItems(j)
@@ -161,13 +159,13 @@ class copyToDialog1(QDialog):
                 total+= int(size)
             except:
                 pass
-        unit="%s" %QApplication.translate("Dialog","%s kilo-octets",None, QApplication.UnicodeUTF8)
+        unit="%s" %QApplication.translate("Dialog","%s kilo-octets",None)
         if total>1024:
             total= 0.1*int(10*total/1024)
-            unit="%s" %QApplication.translate("Dialog","%s méga-octets",None, QApplication.UnicodeUTF8)
+            unit="%s" %QApplication.translate("Dialog","%s méga-octets",None)
         if total>1024:
             total= 0.1*int(10*total/1024)
-            unit="%s" %QApplication.translate("Dialog","%s giga-octets",None, QApplication.UnicodeUTF8)
+            unit="%s" %QApplication.translate("Dialog","%s giga-octets",None)
         self._ui.lineEdit_size.setText(unit %total)
 
     def remove(self):

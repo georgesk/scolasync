@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # 	$Id: scolasync.py 47 2011-06-13 10:20:14Z georgesk $	
 
 """@package scolasync
@@ -134,8 +133,8 @@ sip.setapi('QVariant', 1)
 
 import debug
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 
 def run(debugger=False, callback=lambda x: print(x)):
     """
@@ -152,7 +151,7 @@ def run(debugger=False, callback=lambda x: print(x)):
 
     locale = "%s" %QLocale.system().name()
     qtTranslator = QTranslator()
-    if qtTranslator.load("qt_" + locale, "/usr/share/qt4/translations"):
+    if qtTranslator.load("qt_" + locale, "/usr/share/qt5/translations"):
         # print "OK for qttranslator"
         app.installTranslator(qtTranslator)
     appTranslator = QTranslator()
@@ -173,4 +172,5 @@ def run(debugger=False, callback=lambda x: print(x)):
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
-    run(debugger=True, callback=debug.listePartitionsCochees)
+    # run(debugger=True, callback=debug.listePartitionsCochees)
+    run()

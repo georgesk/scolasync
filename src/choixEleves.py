@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 licence={}
 licence['en']="""
@@ -22,11 +21,9 @@ licence['en']="""
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-python3safe=True
-
 import gestClasse
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 from Ui_choixEleves import Ui_Dialog
 import db
 import sys, os.path
@@ -59,15 +56,15 @@ class choixElevesDialog(QDialog):
         self.ui.checkBoxNumero.setChecked(True)
         self.ui.spinBoxNumero.setValue(1)
         self.ui.spinBoxNumero.setEnabled(True)
-        self.connect(self.ui.pushButtonFile, SIGNAL('clicked()'), self.fichierEleves)
-        self.connect(self.ui.pushButton_replierArbre, SIGNAL("clicked()"), self.replie)
-        self.connect(self.ui.pushButton_cocher, SIGNAL("clicked()"), self.coche)
-        self.connect(self.ui.pushButton_decocher, SIGNAL("clicked()"), self.decoche)
-        self.connect(self.ui.pushButton_addToList, SIGNAL("clicked()"), self.addToList)
-        self.connect(self.ui.pushButton_delInList, SIGNAL("clicked()"), self.delInList)
-        self.connect(self.ui.pushButton_OK, SIGNAL("clicked()"), self.valid)
-        self.connect(self.ui.pushButton_Esc, SIGNAL("clicked()"), self.escape)
-        self.connect(self.ui.checkBoxNumero, SIGNAL("stateChanged(int)"), self.checkNum)
+        self.ui.pushButtonFile.clicked.connect(self.fichierEleves)
+        self.ui.pushButton_replierArbre.clicked.connect(self.replie)
+        self.ui.pushButton_cocher.clicked.connect(self.coche)
+        self.ui.pushButton_decocher.clicked.connect(self.decoche)
+        self.ui.pushButton_addToList.clicked.connect(self.addToList)
+        self.ui.pushButton_delInList.clicked.connect(self.delInList)
+        self.ui.pushButton_OK.clicked.connect(self.valid)
+        self.ui.pushButton_Esc.clicked.connect(self.escape)
+        self.ui.checkBoxNumero.stateChanged.connect(self.checkNum)
 
     def fichierEleves(self):
         """
@@ -94,8 +91,8 @@ class choixElevesDialog(QDialog):
                                                   renew=renew)
         except Exception as err:
             QMessageBox.warning(None,
-                                QApplication.translate("Dialog","Échec à l'ouverture du fichier élèves",None, QApplication.UnicodeUTF8),
-                                QApplication.translate("Dialog","Le fichier {schoolfile} n'a pas pu être traité : {erreur}",None, QApplication.UnicodeUTF8).format(schoolfile=self.prefs["schoolFile"], erreur=err))
+                                QApplication.translate("Dialog","Échec à l'ouverture du fichier élèves",None),
+                                QApplication.translate("Dialog","Le fichier {schoolfile} n'a pas pu être traité : {erreur}",None).format(schoolfile=self.prefs["schoolFile"], erreur=err))
     
     def checkNum(self, state):
         """
@@ -175,8 +172,6 @@ class choixElevesDialog(QDialog):
         i=self.ui.listWidget.takeItem(0)
         self.updateParentIcon()
         data=i.data(Qt.DisplayRole)
-        if not isinstance(data, str):
-            data = data.toString()
         return data
 
     def itemStrings(self):
@@ -184,10 +179,7 @@ class choixElevesDialog(QDialog):
         @return une liste des chaînes contenues dans les items
         """
         itemList=self.ui.listWidget.findItems("*",Qt.MatchWrap | Qt.MatchWildcard)
-        if not isinstance (itemList[0].data(Qt.DisplayRole),str):
-            l=[i.data(Qt.DisplayRole).toString() for i in itemList]
-        else:
-            l=[i.data(Qt.DisplayRole) for i in itemList]
+        l=[i.data(Qt.DisplayRole) for i in itemList]
         l.sort()
         return l
 
@@ -203,8 +195,6 @@ class choixElevesDialog(QDialog):
             i=self.ui.listWidget.takeItem(r)
             self.updateParentIcon()
             data=i.data(Qt.DisplayRole)
-            if not isinstance(data, str):
-                data = data.toString()
             return data
         return ""
 

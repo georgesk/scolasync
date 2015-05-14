@@ -75,7 +75,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-top.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-top.svg</iconset>
+          <normaloff>images/icons16/actions/go-top.png</normaloff>images/icons16/actions/go-top.png</iconset>
         </property>
        </widget>
       </item>
@@ -122,7 +122,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-next.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/go-next.svg</iconset>
+          <normaloff>images/icons16/actions/go-next.png</normaloff>images/icons16/actions/go-next.png</iconset>
         </property>
        </widget>
       </item>
@@ -136,7 +136,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/gtk-goto-first-ltr.svg</normaloff>../../../../../../usr/share/icons/Tango/scalable/actions/gtk-goto-first-ltr.svg</iconset>
+          <normaloff>images/icons16/actions/gtk-goto-first-ltr.png</normaloff>images/icons16/actions/gtk-goto-first-ltr.png</iconset>
         </property>
        </widget>
       </item>

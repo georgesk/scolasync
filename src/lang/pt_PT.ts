@@ -3,52 +3,52 @@
 <context>
     <name>Aide</name>
     <message>
-        <location filename="../Ui_help.py" line="162"/>
+        <location filename="../Ui_help.py" line="150"/>
         <source>Aide</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../Ui_help.py" line="161"/>
+        <location filename="../Ui_help.py" line="149"/>
         <source>Mode d&apos;emploi</source>
         <translation>Ordens para uso</translation>
     </message>
     <message>
-        <location filename="../Ui_help.py" line="169"/>
+        <location filename="../Ui_help.py" line="157"/>
         <source>A propos</source>
         <translation>Sobre</translation>
     </message>
     <message>
-        <location filename="../Ui_help.py" line="164"/>
+        <location filename="../Ui_help.py" line="152"/>
         <source>ScolaSync, pour gerer les fichiers des baladeurs</source>
         <translation>ScolaSync, para a gestão de ficheiros dos leitores de MP3</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_help.py" line="165"/>
+        <location filename="../Ui_help.py" line="153"/>
         <source>Numero de version :</source>
         <translation>Número de versão :</translation>
     </message>
     <message>
-        <location filename="../Ui_help.py" line="166"/>
+        <location filename="../Ui_help.py" line="154"/>
         <source>Auteurs</source>
         <translation>Autores</translation>
     </message>
     <message>
-        <location filename="../Ui_help.py" line="167"/>
+        <location filename="../Ui_help.py" line="155"/>
         <source>Licence</source>
         <translation>Licença</translation>
     </message>
     <message>
-        <location filename="../Ui_help.py" line="168"/>
+        <location filename="../Ui_help.py" line="156"/>
         <source>Langues et traductions</source>
         <translation>Idiomas e traduções</translation>
     </message>
     <message>
-        <location filename="../Ui_help.py" line="170"/>
+        <location filename="../Ui_help.py" line="158"/>
         <source>Fermer</source>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../Ui_help.py" line="163"/>
+        <location filename="../Ui_help.py" line="151"/>
         <source>Manuel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -56,17 +56,17 @@
 <context>
     <name>Dialog</name>
     <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="151"/>
+        <location filename="../Ui_chooseInSticks.py" line="138"/>
         <source>Choix de fichiers à supprimer</source>
         <translation>Escolha dos ficheiros a suprimir</translation>
     </message>
     <message>
-        <location filename="../Ui_chooseInSticks.py" line="152"/>
+        <location filename="../Ui_chooseInSticks.py" line="139"/>
         <source>Zone de recherche</source>
         <translation>Zona de pesquisa</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="153"/>
+        <location filename="../Ui_chooseInSticks.py" line="140"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -81,37 +81,37 @@ p, li { white-space: pre-wrap; }(new line)
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;documentos de &lt;br /&gt;travail&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="159"/>
+        <location filename="../Ui_chooseInSticks.py" line="146"/>
         <source>Le répertoire des clés&lt;br&gt;où se trouvent les&lt;br&gt;documents de travail</source>
         <translation>A pasta das chaves&lt;br&gt;aonde se encontram&lt;br&gt;os documentos de trabalho</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="160"/>
+        <location filename="../Ui_chooseInSticks.py" line="147"/>
         <source>Le répertoire des clés où se trouvent les documents de travail</source>
         <translation>A pasta das chaves aonde se encontram os documentos de trabalho</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="161"/>
+        <location filename="../Ui_chooseInSticks.py" line="148"/>
         <source>Choix de clé modèle</source>
         <translation>Escolha da chave modelo</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="163"/>
+        <location filename="../Ui_chooseInSticks.py" line="150"/>
         <source>Choisir une des clés</source>
         <translation>Escolher uma das chaves</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="164"/>
+        <location filename="../Ui_chooseInSticks.py" line="151"/>
         <source>Liste de fichiers à traiter (jokers autorisés)</source>
         <translation>Lista de ficheiros a tratar (jokers autorizados)</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="166"/>
+        <location filename="../Ui_chooseInSticks.py" line="153"/>
         <source>Supprimer l&apos;item sélectionné</source>
         <translation>Suprimir o elemento selecionado</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="207"/>
+        <location filename="../Ui_copyToDialog1.py" line="194"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -126,117 +126,117 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">Acrescentar um ficheiro ou um filtro</translation>
     </message>
     <message>
-        <location filename="../Ui_chooseInSticks.py" line="174"/>
+        <location filename="../Ui_chooseInSticks.py" line="161"/>
         <source>Rechercher (fichier) ...</source>
         <translation>Procurar (ficheiro) ...</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="177"/>
+        <location filename="../Ui_chooseInSticks.py" line="164"/>
         <source>Rechercher (répertoire) ...</source>
         <translation>Procurar (pasta) ...</translation>
     </message>
     <message>
-        <location filename="../Ui_preferences.py" line="128"/>
+        <location filename="../Ui_preferences.py" line="90"/>
         <source>Preferences de ScolaSync</source>
         <translation>Preferências de ScolaSync</translation>
     </message>
     <message>
-        <location filename="../Ui_preferences.py" line="129"/>
+        <location filename="../Ui_preferences.py" line="91"/>
         <source>Preferences</source>
         <translation>Preferências</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_preferences.py" line="131"/>
+        <location filename="../Ui_preferences.py" line="100"/>
         <source>Les cases à cocher permettent de n&apos;agir que sur une part des baladeurs</source>
-        <translation>As casas a assinalar permitem só de agir numa parte dos leitores</translation>
+        <translation type="obsolete">As casas a assinalar permitem só de agir numa parte dos leitores</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_preferences.py" line="132"/>
+        <location filename="../Ui_preferences.py" line="101"/>
         <source>Utiliser des cases à cocher pour désigner les baladeurs</source>
-        <translation>Utilizar casas a assinalar para designar os leitores</translation>
+        <translation type="obsolete">Utilizar casas a assinalar para designar os leitores</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_preferences.py" line="136"/>
+        <location filename="../Ui_preferences.py" line="96"/>
         <source>Répertoire pour les travaux :</source>
         <translation>Pasta para os trabalhos :</translation>
     </message>
     <message>
-        <location filename="../Ui_preferences.py" line="137"/>
+        <location filename="../Ui_preferences.py" line="97"/>
         <source>Travail</source>
         <translation>Trabalho</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_copyToDialog1.py" line="183"/>
+        <location filename="../Ui_copyToDialog1.py" line="170"/>
         <source>Choix des fichiers à copier</source>
         <translation>Escolha dos ficheiros a copiar</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="184"/>
+        <location filename="../Ui_copyToDialog1.py" line="171"/>
         <source>/</source>
         <translation>/</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="185"/>
+        <location filename="../Ui_copyToDialog1.py" line="172"/>
         <source>Ordinateur</source>
         <translation>Computador</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="187"/>
+        <location filename="../Ui_copyToDialog1.py" line="174"/>
         <source>Disque dur</source>
         <translation>Disco duro</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_copyToDialog1.py" line="189"/>
+        <location filename="../Ui_copyToDialog1.py" line="176"/>
         <source>Répertoire de destination des baladeurs</source>
         <translation>Pasta de destinação dos leitores</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_copyToDialog1.py" line="191"/>
+        <location filename="../Ui_copyToDialog1.py" line="178"/>
         <source>Répertoire de destination sur les baladeurs,&lt;br&gt;peut être modifié dans les préférences</source>
         <translation>Pasta de destinação nos leitores,&lt;br&gt;pode ser modificada nas preferênçias</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="193"/>
+        <location filename="../Ui_copyToDialog1.py" line="180"/>
         <source>Baladeur</source>
         <translation>Leitor</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="196"/>
+        <location filename="../Ui_copyToDialog1.py" line="183"/>
         <source>Disque flash</source>
         <translation>Disco flash</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="199"/>
+        <location filename="../Ui_copyToDialog1.py" line="186"/>
         <source>Cle USB</source>
         <translation>Chave USB</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_copyToDialog1.py" line="201"/>
+        <location filename="../Ui_copyToDialog1.py" line="188"/>
         <source>Taille totale :</source>
         <translation>Tamanho total :</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="203"/>
+        <location filename="../Ui_copyToDialog1.py" line="190"/>
         <source>Ajouter a la liste</source>
         <translation>Acrenscentar à lista</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="206"/>
+        <location filename="../Ui_copyToDialog1.py" line="193"/>
         <source>Retirer de la liste</source>
         <translation>Tirar da lista</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="208"/>
+        <location filename="../Ui_copyToDialog1.py" line="195"/>
         <source>Abandonner</source>
         <translation>Abandonar</translation>
     </message>
     <message>
-        <location filename="../Ui_copyToDialog1.py" line="209"/>
+        <location filename="../Ui_copyToDialog1.py" line="196"/>
         <source>Continuer ...</source>
         <translation>Continuar...</translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="277"/>
+        <location filename="../mainWindow.py" line="369"/>
         <source>Double-clic non pris en compte</source>
         <translation>Clique-duplo não é considerado</translation>
     </message>
@@ -246,57 +246,57 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">sem ação para o atributo %1</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="418"/>
+        <location filename="../mainWindow.py" line="506"/>
         <source>Choix de fichiers à supprimer (jokers autorisés)</source>
         <translation>Escolha de ficheiros a suprimir (jokers autorizados)</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="480"/>
+        <location filename="../mainWindow.py" line="569"/>
         <source>Aucun fichier sélectionné</source>
         <translation>Nenhum ficheiro selecionado</translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="480"/>
+        <location filename="../mainWindow.py" line="569"/>
         <source>Veuillez choisir au moins un fichier</source>
         <translation>Escolha pelo menos um ficheiro</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="474"/>
+        <location filename="../mainWindow.py" line="563"/>
         <source>Choix de fichiers à copier</source>
         <translation>Escolha de ficheiros a copiar</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="475"/>
+        <location filename="../mainWindow.py" line="564"/>
         <source>Choix de fichiers à copier depuis les baladeurs</source>
         <translation>Escolha de ficheiros a copiar a partir dos leitores</translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="476"/>
+        <location filename="../mainWindow.py" line="565"/>
         <source>Choix de la destination ...</source>
         <translation>Escolha do destino ...</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="488"/>
+        <location filename="../mainWindow.py" line="577"/>
         <source>Choisir un répertoire de destination</source>
         <translation>Escolher uma pasta de destinação</translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="519"/>
+        <location filename="../mainWindow.py" line="608"/>
         <source>Voir les copies</source>
         <translation>Ver os devers</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="519"/>
+        <location filename="../mainWindow.py" line="608"/>
         <source>Voulez-vous voir les fichiers copiés ?</source>
         <translation>Quer ver os ficheiros copiados ?</translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="527"/>
+        <location filename="../mainWindow.py" line="616"/>
         <source>Destination manquante</source>
         <translation>Falta de destinação</translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="527"/>
+        <location filename="../mainWindow.py" line="616"/>
         <source>Veuillez choisir une destination pour la copie des fichiers</source>
         <translation>Escolha um destino para a cópia dos ficheiros</translation>
     </message>
@@ -311,22 +311,22 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">Pelo menos uma chave USB ou um leitor numérico mudou de estatuto. Verifique eventualmente a lista dos periphéricos de Scolasync</translation>
     </message>
     <message>
-        <location filename="../copyToDialog1.py" line="164"/>
+        <location filename="../copyToDialog1.py" line="162"/>
         <source>%s kilo-octets</source>
-        <translation>%s kilobytes</translation>
+        <translation type="unfinished">%s kilobytes</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../copyToDialog1.py" line="167"/>
+        <location filename="../copyToDialog1.py" line="165"/>
         <source>%s méga-octets</source>
-        <translation>%s megabytes</translation>
+        <translation type="unfinished">%s megabytes</translation>
     </message>
     <message>
-        <location filename="../copyToDialog1.py" line="170"/>
+        <location filename="../copyToDialog1.py" line="168"/>
         <source>%s giga-octets</source>
-        <translation>%s gigabytes</translation>
+        <translation type="unfinished">%s gigabytes</translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="168"/>
+        <location filename="../ownedUsbDisk.py" line="212"/>
         <source>inconnu</source>
         <translation>desconhecido</translation>
     </message>
@@ -336,268 +336,268 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">A chave %1&lt;br&gt;não està identificada, dê o nome do dono</translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="200"/>
+        <location filename="../ownedUsbDisk.py" line="250"/>
         <source>Entrer un nom</source>
         <translation>Escreva um nome</translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="425"/>
+        <location filename="../mainWindow.py" line="513"/>
         <source>Vous allez effacer plusieurs baladeurs</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_preferences.py" line="138"/>
+        <location filename="../Ui_preferences.py" line="98"/>
         <source>Fichier spécial pour le manuel :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_preferences.py" line="139"/>
+        <location filename="../Ui_preferences.py" line="99"/>
         <source>/usr/share/scolasync/help/manualPage_fr_FR.html</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_preferences.py" line="140"/>
-        <source>Recomptage automatique des médias :</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Ui_preferences.py" line="141"/>
-        <source>toutes les</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Ui_preferences.py" line="142"/>
-        <source>30 secondes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="172"/>
+        <location filename="../Ui_chooseInSticks.py" line="159"/>
         <source>Ligne d&apos;édition du nom d&apos;un fichier ou d&apos;un répertoire.&lt;br&gt;Jokers autorisés</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_chooseInSticks.py" line="169"/>
+        <location filename="../Ui_chooseInSticks.py" line="156"/>
         <source>Ajouter un fichier ou un filtre défini dans la ligne d&apos;édition</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="550"/>
+        <location filename="../mainWindow.py" line="639"/>
         <source>Réitérer la dernière commande</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_preferences.py" line="135"/>
+        <location filename="../Ui_preferences.py" line="94"/>
         <source>Efface les fichiers et les répertoires après copie</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_preferences.py" line="133"/>
+        <location filename="../Ui_preferences.py" line="92"/>
         <source>Si la case est cochée,&lt;br&gt;les données sont transférées sur le disque dur&lt;br&gt;puis effacée des baladeurs.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_preferences.py" line="134"/>
+        <location filename="../Ui_preferences.py" line="93"/>
         <source>Si la case est cochée, les données sont transférées sur le disque dur puis effacée des baladeurs.</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="126"/>
+        <location filename="../Ui_choixEleves.py" line="113"/>
         <source>Choix d&apos;un groupe d&apos;élèves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_choixEleves.py" line="129"/>
+        <location filename="../Ui_choixEleves.py" line="116"/>
         <source>Actions</source>
         <translation type="unfinished">Ações</translation>
     </message>
     <message>
-        <location filename="../Ui_choixEleves.py" line="130"/>
+        <location filename="../Ui_choixEleves.py" line="117"/>
         <source>Replier toutes les classes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_choixEleves.py" line="131"/>
+        <location filename="../Ui_choixEleves.py" line="118"/>
         <source>Tout replier</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="132"/>
+        <location filename="../Ui_choixEleves.py" line="119"/>
         <source>Cocher tous les élèves visibles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_choixEleves.py" line="133"/>
+        <location filename="../Ui_choixEleves.py" line="120"/>
         <source>Cocher</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="134"/>
+        <location filename="../Ui_choixEleves.py" line="121"/>
         <source>Décocher tous les élèves, visibles ou non</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="135"/>
+        <location filename="../Ui_choixEleves.py" line="122"/>
         <source>Décocher</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="137"/>
+        <location filename="../Ui_choixEleves.py" line="124"/>
         <source>Ajout à la liste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_choixEleves.py" line="139"/>
+        <location filename="../Ui_choixEleves.py" line="126"/>
         <source>Suppr. de la liste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_choixEleves.py" line="144"/>
+        <location filename="../Ui_choixEleves.py" line="131"/>
         <source>Valider</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="141"/>
+        <location filename="../Ui_choixEleves.py" line="128"/>
         <source>N° à partir de</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="140"/>
+        <location filename="../Ui_choixEleves.py" line="127"/>
         <source>Quand la case est cochée, un numéro sera ajouté comme préfixe aux noms</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="142"/>
+        <location filename="../Ui_choixEleves.py" line="129"/>
         <source>La numérotation commence à cette valeur</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="136"/>
+        <location filename="../Ui_choixEleves.py" line="123"/>
         <source>Ajouter les noms cochés de l&apos;arbre dans la liste à droite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_choixEleves.py" line="138"/>
+        <location filename="../Ui_choixEleves.py" line="125"/>
         <source>Supprimer de la liste les noms en surbrillance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_choixEleves.py" line="143"/>
+        <location filename="../Ui_choixEleves.py" line="130"/>
         <source>Accepter la liste actuelle et fermer ce dialogue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_choixEleves.py" line="145"/>
+        <location filename="../Ui_choixEleves.py" line="132"/>
         <source>Supprimer tous les noms de la liste et fermer ce dialogue</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="146"/>
+        <location filename="../Ui_choixEleves.py" line="133"/>
         <source>Remettre à zéro</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../ownedUsbDisk.py" line="71"/>
+        <location filename="../ownedUsbDisk.py" line="70"/>
         <source>Choix du propriétaire</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../ownedUsbDisk.py" line="72"/>
+        <location filename="../ownedUsbDisk.py" line="71"/>
         <source>Nouveau nom du propriétaire du baladeur</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_choixEleves.py" line="127"/>
+        <location filename="../Ui_choixEleves.py" line="114"/>
         <source>Liste d&apos;élèves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_choixEleves.py" line="128"/>
+        <location filename="../Ui_choixEleves.py" line="115"/>
         <source>Ouvrir un fichier ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_preferences.py" line="143"/>
+        <location filename="../Ui_preferences.py" line="95"/>
         <source>Fichier des élèves :</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_nameAdrive.py" line="81"/>
+        <location filename="../Ui_nameAdrive.py" line="68"/>
         <source>Nommer le baladeur nouvellement connecté</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_nameAdrive.py" line="82"/>
+        <location filename="../Ui_nameAdrive.py" line="69"/>
         <source>Changez le choix parmi cette liste si une autre ligne convient mieux</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_nameAdrive.py" line="84"/>
+        <location filename="../Ui_nameAdrive.py" line="71"/>
         <source>nom actuel du baladeur</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_nameAdrive.py" line="85"/>
+        <location filename="../Ui_nameAdrive.py" line="72"/>
         <source>C&apos;est le nom connu par votre ordinateur, s&apos;il a déjà été défini dans le passé</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_nameAdrive.py" line="86"/>
+        <location filename="../Ui_nameAdrive.py" line="73"/>
         <source>nom proposé</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_nameAdrive.py" line="87"/>
+        <location filename="../Ui_nameAdrive.py" line="74"/>
         <source>Le nouveau nom proposé peut venir de la liste à gauche ou être modifié à la main</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_nameAdrive.py" line="88"/>
+        <location filename="../Ui_nameAdrive.py" line="75"/>
         <source>Renommer le baladeur</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_nameAdrive.py" line="89"/>
+        <location filename="../Ui_nameAdrive.py" line="76"/>
         <source>Choisir comme nouveau nom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_nameAdrive.py" line="90"/>
+        <location filename="../Ui_nameAdrive.py" line="77"/>
         <source>Fermer le dialogue sans rien faire</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_nameAdrive.py" line="91"/>
+        <location filename="../Ui_nameAdrive.py" line="78"/>
         <source>Échappement</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../choixEleves.py" line="96"/>
+        <location filename="../choixEleves.py" line="93"/>
         <source>Échec à l&apos;ouverture du fichier élèves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="199"/>
+        <location filename="../ownedUsbDisk.py" line="249"/>
         <source>La cle {id}&lt;br&gt;n&apos;est pas identifiee, donnez le nom du proprietaire</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../choixEleves.py" line="96"/>
+        <location filename="../choixEleves.py" line="93"/>
         <source>Le fichier {schoolfile} n&apos;a pas pu être traité : {erreur}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../preferences.py" line="55"/>
-        <source>{t} secondes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainWindow.py" line="277"/>
+        <location filename="../mainWindow.py" line="369"/>
         <source>pas d&apos;action pour l&apos;attribut {a}</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="550"/>
+        <location filename="../mainWindow.py" line="639"/>
         <source>La dernière commande était&lt;br&gt;{cmd}&lt;br&gt;Voulez-vous la relancer avec les nouveaux baladeurs ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../chooseInSticks.py" line="201"/>
+        <source>Choissez un fichier (ou plus)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="../chooseInSticks.py" line="205"/>
+        <source>Choissez un répertoire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="../chooseInSticks.py" line="220"/>
+        <source>Aucune clé modèle sélectionnée</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../preferences.py" line="50"/>
+        <source>{t} secondes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -609,12 +609,12 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">Versão número %1.%2</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="584"/>
+        <location filename="../mainWindow.py" line="673"/>
         <source>Démontage des baladeurs</source>
         <translation>Desmontagem dos leitores</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="584"/>
+        <location filename="../mainWindow.py" line="673"/>
         <source>Êtes-vous sûr de vouloir démonter tous les baladeurs cochés de la liste ?</source>
         <translation>Tem a certeza de querer desmontar todos os leitores assinalados ?</translation>
     </message>
@@ -659,7 +659,7 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../help.py" line="43"/>
+        <location filename="../help.py" line="40"/>
         <source>Version numéro {major}.{minor}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -667,12 +667,12 @@ p, li { white-space: pre-wrap; }(new line)
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../Ui_mainWindow.py" line="158"/>
+        <location filename="../Ui_mainWindow.py" line="152"/>
         <source>ScolaSync</source>
         <translation>Scolasync</translation>
     </message>
     <message>
-        <location filename="../Ui_mainWindow.py" line="159"/>
+        <location filename="../Ui_mainWindow.py" line="153"/>
         <source>Actions</source>
         <translation>Ações</translation>
     </message>
@@ -682,7 +682,7 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">Copiar a partir dos leitores</translation>
     </message>
     <message>
-        <location filename="../Ui_diskFull.py" line="66"/>
+        <location filename="../Ui_diskFull.py" line="53"/>
         <source>...</source>
         <translation>... </translation>
     </message>
@@ -707,87 +707,87 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">Preferéncias</translation>
     </message>
     <message>
-        <location filename="../Ui_mainWindow.py" line="185"/>
+        <location filename="../Ui_mainWindow.py" line="179"/>
         <source>Aide</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../Ui_diskFull.py" line="65"/>
+        <location filename="../Ui_diskFull.py" line="52"/>
         <source>Disk size</source>
         <translation>Tamanho do disco</translation>
     </message>
     <message>
-        <location filename="../Ui_diskFull.py" line="67"/>
+        <location filename="../Ui_diskFull.py" line="54"/>
         <source>total size</source>
         <translation>Tamanho total</translation>
     </message>
     <message>
-        <location filename="../Ui_diskFull.py" line="68"/>
+        <location filename="../Ui_diskFull.py" line="55"/>
         <source>Used</source>
         <translation>Utilizado</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_mainWindow.py" line="179"/>
+        <location filename="../Ui_mainWindow.py" line="173"/>
         <source>Force à recompter les baladeurs</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_mainWindow.py" line="177"/>
+        <location filename="../Ui_mainWindow.py" line="171"/>
         <source>Affiche le nombre de baladeurs connectés</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_mainWindow.py" line="182"/>
+        <location filename="../Ui_mainWindow.py" line="176"/>
         <source>Préférences</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="201"/>
+        <location filename="../mainWindow.py" line="301"/>
         <source>Refaire à nouveau</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="202"/>
+        <location filename="../mainWindow.py" line="302"/>
         <source>Refaire à nouveau la dernière opération réussie, avec les baladeurs connectés plus récemment</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_mainWindow.py" line="170"/>
+        <location filename="../Ui_mainWindow.py" line="164"/>
         <source>Éjecter les baladeurs sélectionnés</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_mainWindow.py" line="161"/>
+        <location filename="../Ui_mainWindow.py" line="155"/>
         <source>Copier depuis les baladeurs sélectionnés</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_mainWindow.py" line="164"/>
+        <location filename="../Ui_mainWindow.py" line="158"/>
         <source>Copier vers les baladeurs sélectionnés</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_mainWindow.py" line="167"/>
+        <location filename="../Ui_mainWindow.py" line="161"/>
         <source>Effacer des fichiers ou des dossiers dans les baladeurs sélectionnés</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="203"/>
+        <location filename="../mainWindow.py" line="303"/>
         <source>Arrêter les opérations en cours</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="204"/>
+        <location filename="../mainWindow.py" line="304"/>
         <source>Essaie d&apos;arrêter les opérations en cours. À faire seulement si celles-ci durent trop longtemps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainWindow.py" line="79"/>
+        <location filename="../mainWindow.py" line="100"/>
         <source>&lt;br /&gt;Des noms sont disponibles pour renommer les prochains baladeurs que vous brancherez</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../mainWindow.py" line="80"/>
+        <location filename="../mainWindow.py" line="101"/>
         <source>&lt;br /&gt;Cliquez sur ce bouton pour préparer une liste de noms afin de renommer les prochains baladeurs que vous brancherez</source>
         <translation type="unfinished"></translation>
     </message>
@@ -795,47 +795,47 @@ p, li { white-space: pre-wrap; }(new line)
 <context>
     <name>checkBoxDialog</name>
     <message encoding="UTF-8">
-        <location filename="../Ui_checkBoxDialog.py" line="64"/>
+        <location filename="../Ui_checkBoxDialog.py" line="51"/>
         <source>Gestion des cases à cocher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_checkBoxDialog.py" line="66"/>
+        <location filename="../Ui_checkBoxDialog.py" line="53"/>
         <source>Cocher tous les baladeurs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_checkBoxDialog.py" line="67"/>
+        <location filename="../Ui_checkBoxDialog.py" line="54"/>
         <source>Tout cocher</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_checkBoxDialog.py" line="69"/>
+        <location filename="../Ui_checkBoxDialog.py" line="56"/>
         <source>Inverser le choix de baladeurs&lt;br&gt;Les baladeurs cochés seront décochés, et inversement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_checkBoxDialog.py" line="70"/>
+        <location filename="../Ui_checkBoxDialog.py" line="57"/>
         <source>Inverser le choix</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_checkBoxDialog.py" line="72"/>
+        <location filename="../Ui_checkBoxDialog.py" line="59"/>
         <source>Désélectionner les baladeurs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_checkBoxDialog.py" line="73"/>
+        <location filename="../Ui_checkBoxDialog.py" line="60"/>
         <source>Ne rien cocher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Ui_checkBoxDialog.py" line="75"/>
+        <location filename="../Ui_checkBoxDialog.py" line="62"/>
         <source>Ne rien faire</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../Ui_checkBoxDialog.py" line="76"/>
+        <location filename="../Ui_checkBoxDialog.py" line="63"/>
         <source>Échappement</source>
         <translation type="unfinished"></translation>
     </message>
@@ -853,25 +853,25 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">Lugar utilizado : %1 kilobytes</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../diskFull.py" line="51"/>
+        <location filename="../diskFull.py" line="49"/>
         <source>Place totale : {size} kilo-octets</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../diskFull.py" line="52"/>
+        <location filename="../diskFull.py" line="50"/>
         <source>Place utilisée : {size} kilo-octets</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>uDisk</name>
     <message>
-        <location filename="../usbDisk2.py" line="389"/>
+        <location filename="../usbDisk2.py" line="426"/>
         <source>point de montage</source>
         <translation>Ponto de montagem</translation>
     </message>
     <message>
-        <location filename="../usbDisk2.py" line="390"/>
+        <location filename="../usbDisk2.py" line="427"/>
         <source>taille</source>
         <translation>tamanho</translation>
     </message>
@@ -881,83 +881,68 @@ p, li { white-space: pre-wrap; }(new line)
         <translation type="obsolete">vendedor</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk2.py" line="392"/>
+        <location filename="../usbDisk2.py" line="429"/>
         <source>modèle de disque</source>
         <translation>modelo de disco</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk2.py" line="393"/>
+        <location filename="../usbDisk2.py" line="430"/>
         <source>numéro de série</source>
         <translation>número de série</translation>
     </message>
     <message>
-        <location filename="../usbDisk2.py" line="396"/>
+        <location filename="../usbDisk2.py" line="433"/>
         <source>cocher</source>
         <translation>assinalar</translation>
     </message>
     <message>
-        <location filename="../ownedUsbDisk.py" line="152"/>
+        <location filename="../ownedUsbDisk.py" line="200"/>
         <source>owner</source>
         <translation>dono</translation>
     </message>
     <message>
-        <location filename="../usbDisk2.py" line="391"/>
+        <location filename="../usbDisk2.py" line="428"/>
         <source>marque</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk2.py" line="41"/>
-        <source>%s n&apos;est pas implémenté actuellement</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../usbDisk2.py" line="109"/>
-        <source>UDisksBackend : initialisation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="../usbDisk2.py" line="135"/>
-        <source>Disque occupé (Busy)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="../usbDisk2.py" line="149"/>
-        <source>Détection des disques</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="../usbDisk2.py" line="207"/>
+        <location filename="../usbDisk2.py" line="284"/>
         <source>Partition ajoutée %s</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../usbDisk2.py" line="209"/>
-        <source>id-type %s </source>
-        <translation type="unfinished"></translation>
-    </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk2.py" line="220"/>
+        <location filename="../usbDisk2.py" line="300"/>
         <source>Échec au montage du disque : %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk2.py" line="276"/>
-        <source>On n&apos;ajoute pas le disque : partition à 0 octets.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="../usbDisk2.py" line="272"/>
+        <location filename="../usbDisk2.py" line="331"/>
         <source>Disque ajouté : %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../usbDisk2.py" line="311"/>
+        <location filename="../usbDisk2.py" line="361"/>
         <source>Changement pour le disque %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="../usbDisk2.py" line="321"/>
+        <location filename="../usbDisk2.py" line="370"/>
         <source>Disque débranché du système : %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../usbDisk2.py" line="342"/>
+        <source>On n&apos;ajoute pas le disque : partition non-USB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../usbDisk2.py" line="307"/>
+        <source>On n&apos;ajoute pas le disque : partition vide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="../usbDisk2.py" line="329"/>
+        <source>Disque déjà ajouté auparavant : %s</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
